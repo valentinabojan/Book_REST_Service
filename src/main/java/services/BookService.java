@@ -52,8 +52,8 @@ public class BookService {
         return bookRepository.createBook(book);
     }
 
-    public Book updateBook(Book book) {
-        return bookRepository.updateBook(book);
+    public Book updateBook(String bookId, Book book) {
+        return bookRepository.updateBook(bookId, book);
     }
 
     private Stream<Book> paginateBooks(Stream<Book> books, String start, String end) {

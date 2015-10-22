@@ -80,8 +80,8 @@ public class BookStubRepository implements BookRepository {
     }
 
     @Override
-    public Book updateBook(Book book) {
-        boolean bookFound = books.removeIf(bookToBeUpdated -> book.getId().equals(book.getId()));
+    public Book updateBook(String bookId, Book book) {
+        boolean bookFound = books.removeIf(bookToBeUpdated -> bookToBeUpdated.getId().equals(bookId));
 
         if (!bookFound)
             return null;

@@ -50,9 +50,8 @@ public class BookResource {
     public Response getBook(@PathParam("bookId") String bookId) {
         Book book = bookService.getBook(bookId);
 
-        if(book == null) {
+        if(book == null)
             return Response.status(Status.NOT_FOUND).build();
-        }
 
         return Response.ok().entity(book).build();
     }
@@ -89,12 +88,10 @@ public class BookResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response updateBook(@PathParam("bookId") String bookId, Book book) {
-        System.out.println("gggggg");
-        Book updatedBook = bookService.updateBook(book);
+        Book updatedBook = bookService.updateBook(bookId, book);
 
-        if(updatedBook == null) {
+        if(updatedBook == null)
             return Response.status(Status.NOT_FOUND).build();
-        }
 
         return Response.ok().entity(updatedBook).build();
     }
@@ -106,9 +103,8 @@ public class BookResource {
     public Response deleteBook (@PathParam ("bookId") String bookId) {
         boolean bookWasDeleted = bookService.deleteBook(bookId);
 
-        if(!bookWasDeleted) {
+        if(!bookWasDeleted)
             return Response.status(Status.NOT_FOUND).build();
-        }
 
         return Response.ok().build();
     }

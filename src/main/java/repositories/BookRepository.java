@@ -14,5 +14,5 @@ public interface BookRepository {
 
     Book createBook(Book book);
 
-    Book updateBook(Book book);
+    Book updateBook(String bookId, Book book);
 }
