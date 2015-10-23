@@ -32,6 +32,17 @@ public class BookResourceTest {
     }
 
     @Test
+    public void givenAWrongBookId_getBookById_returns404NOTFOUND() {
+        Mockito.when(mockBookService.getBook(BOOK_ID)).thenReturn(null);
+
+        Response response = bookResource.getBook(BOOK_ID);
+
+        Mockito.verify(mockBookService, times(1)).getBook(BOOK_ID);
+        assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
+        assertThat(response.getEntity()).isEqualTo(null);
+    }
+
+    @Test
     public void givenAValidBookId_getBookById_returns200OK() {
         Book expectedBook = new Book();
         Mockito.when(mockBookService.getBook(BOOK_ID)).thenReturn(expectedBook);
@@ -82,17 +93,6 @@ public class BookResourceTest {
         Response response = bookResource.getBookCover(BOOK_ID);
 
         Mockito.verify(mockBookService, times(1)).getBookCover(BOOK_ID);
-        assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
-        assertThat(response.getEntity()).isEqualTo(null);
-    }
-
-    @Test
-    public void givenAWrongBookId_getBookById_returns404NOTFOUND() {
-        Mockito.when(mockBookService.getBook(BOOK_ID)).thenReturn(null);
-
-        Response response = bookResource.getBook(BOOK_ID);
-
-        Mockito.verify(mockBookService, times(1)).getBook(BOOK_ID);
         assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
         assertThat(response.getEntity()).isEqualTo(null);
     }

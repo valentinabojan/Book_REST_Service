@@ -1,6 +1,5 @@
 package resources;
 
-import entities.Book;
 import entities.ErrorBean;
 import entities.Review;
 import repositories.BookStubRepository;
@@ -14,6 +13,10 @@ import java.util.List;
 public class ReviewResource {
 
     private BookService bookService = BookService.getInstance(BookStubRepository.getInstance());
+
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -65,7 +68,7 @@ public class ReviewResource {
         Review newReview = bookService.createReview(bookId, review);
         String uri = uriInfo.getBaseUri() + "books/" + bookId + "/reviews/" + newReview.getId();
 
-        return Response.ok().entity(newReview).link(uri, "new review").build();
+        return Response.ok().entity(newReview).link(uri, "new_review").build();
     }
 
     @DELETE
