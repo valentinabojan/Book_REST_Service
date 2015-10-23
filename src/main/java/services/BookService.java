@@ -1,12 +1,11 @@
 package services;
 
 import entities.Book;
+import entities.Review;
 import repositories.BookRepository;
 
-import java.util.Comparator;
+import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BookService {
 
@@ -25,15 +24,7 @@ public class BookService {
     }
 
     public List<Book> getAllBooks(String start, String end, String author, String title, String price, String sortCriteria) {
-        List<Book> allBooks = bookRepository.findAllBooks();
-
-        Stream<Book> paginatedBooks = paginateBooks(allBooks.stream(), start, end);
-
-        Stream<Book> filteredBooks = filterBooks(paginatedBooks, author, title, price);
-
-        Stream<Book> sortedBooks = sortBooks(filteredBooks, sortCriteria);
-
-        return sortedBooks.collect(Collectors.toList());
+        return bookRepository.getAllBooksWithPaginationAndFilteringAndSorting(start, end, author, title, price, sortCriteria);
     }
 
     public Book getBook(String bookId) {
@@ -56,50 +47,28 @@ public class BookService {
         return bookRepository.updateBook(bookId, book);
     }
 
-    private Stream<Book> paginateBooks(Stream<Book> books, String start, String end) {
-        if (start != null && end != null)
-            return books.skip(Integer.valueOf(start)).limit(Integer.valueOf(end) - Integer.valueOf(start) + 1);
-        return books;
+
+    public File getBookCover(String bookId) {
+        return bookRepository.findBookCover(bookId);
     }
 
-    private Stream<Book> filterBooks(Stream<Book> books, String author, String title, String price) {
-        if (author != null) {
-            System.out.println(author);
-            books = books.filter(book -> book.getAuthors().stream()
-                                                        .anyMatch(bookAuthor -> bookAuthor.toLowerCase().contains(author.toLowerCase())));
-        }
-        if (title != null) {
-            books = books.filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase()));
-        }
-        if (price != null) {
-            String[] priceRange = price.split(",");
-            int lowPriceBound = Integer.valueOf(priceRange[0]);
-            int highPriceBound = Integer.valueOf(priceRange[1]);
-            books = books.filter(book -> book.getPrice() >= lowPriceBound && book.getPrice() <= highPriceBound);
-        }
-
-        return books;
+    public List<Review> getAllReviews(String bookId) {
+        return bookRepository.findAllBookReviews(bookId);
     }
 
-    private Stream<Book> sortBooks(Stream<Book> books, String sortCriteria) {
-        Comparator<Book> bookComparator = Comparator.comparing(book -> 0);
-
-
-        Stream<Book> sortedBooks = books;
-//        for (String criteria : sortCriteria) {
-//            System.out.println(criteria);
-//            bookComparator = bookComparator.thenComparing(getComaparatorByCriteria(criteria));
-//        }
-
-        return sortedBooks.sorted(bookComparator);
+    public Review getReviewById(String bookId, String reviewId) {
+        return bookRepository.findReviewById(bookId, reviewId);
     }
 
-    private Comparator<Book> getComaparatorByCriteria(String criteria) {
-        if (criteria.contains("title")) {
-            System.out.println("ccccccccccccc");
-            return Comparator.comparing(Book::getTitle);
-        }
-        else
-            return Comparator.comparingDouble(Book::getPrice);
+    public boolean deleteBookReview(String bookId, String reviewId) {
+        return bookRepository.deleteBookReview(bookId, reviewId);
+    }
+
+    public Review updateReview(String bookId, String reviewId, Review review) {
+        return bookRepository.updateReview(bookId, reviewId, review);
+    }
+
+    public Review createReview(String bookId, Review review) {
+        return bookRepository.createReview(bookId, review);
     }
 }

@@ -8,6 +8,7 @@ import services.BookService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
+import java.io.File;
 import java.util.List;
 
 @Path("books")
@@ -45,7 +46,7 @@ public class BookResource {
     }
 
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_OCTET_STREAM})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path("{bookId}")
     public Response getBook(@PathParam("bookId") String bookId) {
         Book book = bookService.getBook(bookId);
@@ -54,6 +55,18 @@ public class BookResource {
             return Response.status(Status.NOT_FOUND).build();
 
         return Response.ok().entity(book).build();
+    }
+
+    @GET
+    @Produces("image/jpeg")
+    @Path("{bookId}")
+    public Response getImageRepresentation(@PathParam("bookId") String bookId) {
+        File bookCover = bookService.getBookCover(bookId);
+
+        if (bookCover == null)
+            return Response.status(Status.NOT_FOUND).build();
+
+        return Response.ok().entity(bookCover).build();
     }
 
     @GET
@@ -66,7 +79,6 @@ public class BookResource {
     }
 
     @POST
-    @Path("book")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response createBook(Book book, @Context UriInfo uriInfo) {
@@ -80,7 +92,7 @@ public class BookResource {
         Book newBook = bookService.createBook(book);
         String uri = uriInfo.getBaseUri() + "books/" + newBook.getId();
 
-        return Response.ok().entity(newBook).link(uri, "new book id").build();
+        return Response.ok().entity(newBook).link(uri, "new book").build();
     }
 
     @PUT
@@ -108,6 +120,4 @@ public class BookResource {
 
         return Response.ok().build();
     }
-
-
 }
