@@ -183,16 +183,16 @@ public class BookStubRepository implements BookRepository {
 
     private Comparator<Book> getComaparatorByCriteria(String criteria) {
         switch (criteria) {
-        case "title":
-            return Comparator.comparing(Book::getTitle);
-        case "price":
-            return Comparator.comparingDouble(Book::getPrice);
-        case "year":
-            return getComparatorByBookPublishYear();
-        case "author":
-            return getComparatorByBookAuthors();
-        default:
-            return Comparator.comparing(book -> 0);
+            case "title":
+                return Comparator.comparing(Book::getTitle);
+            case "price":
+                return Comparator.comparingDouble(Book::getPrice);
+            case "year":
+                return getComparatorByBookPublishYear();
+            case "author":
+                return getComparatorByBookAuthors();
+            default:
+                return Comparator.comparing(book -> 0);
         }
     }
 
@@ -230,8 +230,8 @@ public class BookStubRepository implements BookRepository {
     @Override
     public Review findReviewById(String bookId, String reviewId) {
         return reviews.stream()
-                      .filter(review -> review.getBookId().equals(bookId) && review.getId().equals(reviewId))
-                      .findFirst().orElse(null);
+                .filter(review -> review.getBookId().equals(bookId) && review.getId().equals(reviewId))
+                .findFirst().orElse(null);
     }
 
     @Override

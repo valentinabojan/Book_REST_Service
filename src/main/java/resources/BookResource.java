@@ -9,12 +9,17 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 @Path("books")
 public class BookResource {
 
     private BookService bookService = BookService.getInstance(BookStubRepository.getInstance());
+
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -24,8 +29,8 @@ public class BookResource {
                                 @QueryParam(value="title") String title,
                                 @QueryParam(value="price") String price,
                                 @QueryParam(value="sortBy") String sortCriteria) {
-        System.out.println(start + " -- " + end + " -- " + sortCriteria + " -- " + price);
-        if(start != null && end != null && Integer.valueOf(start) > Integer.valueOf(end)) {
+        if(start != null && end != null && (Integer.valueOf(start) > Integer.valueOf(end)
+                        || Integer.valueOf(start) < 0 || Integer.valueOf(end) < 0)) {
             ErrorBean error = new ErrorBean();
             error.setErrorCode("validation.incorrect.pagination.range");
             return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(error).build();
@@ -60,7 +65,7 @@ public class BookResource {
     @GET
     @Produces("image/jpeg")
     @Path("{bookId}")
-    public Response getImageRepresentation(@PathParam("bookId") String bookId) {
+    public Response getBookCover(@PathParam("bookId") String bookId) {
         File bookCover = bookService.getBookCover(bookId);
 
         if (bookCover == null)
@@ -92,7 +97,7 @@ public class BookResource {
         Book newBook = bookService.createBook(book);
         String uri = uriInfo.getBaseUri() + "books/" + newBook.getId();
 
-        return Response.ok().entity(newBook).link(uri, "new book").build();
+        return Response.ok().entity(newBook).link(URI.create(uri), "new_book").build();
     }
 
     @PUT

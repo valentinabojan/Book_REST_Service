@@ -47,7 +47,6 @@ public class BookService {
         return bookRepository.updateBook(bookId, book);
     }
 
-
     public File getBookCover(String bookId) {
         return bookRepository.findBookCover(bookId);
     }
