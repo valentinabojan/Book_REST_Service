@@ -4,6 +4,7 @@ import entities.ErrorBean;
 import entities.Review;
 import repositories.BookRepositoryStub;
 import services.BookService;
+import services.ReviewService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -12,16 +13,16 @@ import java.util.List;
 @Path("books/{bookId}/reviews")
 public class ReviewResource {
 
-    private BookService bookService = BookService.getInstance(BookRepositoryStub.getInstance());
+    private ReviewService reviewService = ReviewService.getInstance(BookRepositoryStub.getInstance());
 
-    public void setBookService(BookService bookService) {
-        this.bookService = bookService;
+    public void setReviewService(ReviewService reviewService) {
+        this.reviewService = reviewService;
     }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getAllReviews(@PathParam("bookId") String bookId) {
-        List<Review> reviews = bookService.getAllReviews(bookId);
+        List<Review> reviews = reviewService.getAllReviews(bookId);
 
         if (reviews == null || reviews.isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -33,7 +34,7 @@ public class ReviewResource {
     @Path("{reviewId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getReview(@PathParam("bookId") String bookId, @PathParam("reviewId") String reviewId) {
-        Review review = bookService.getReviewById(bookId, reviewId);
+        Review review = reviewService.getReviewById(bookId, reviewId);
 
         if (review == null)
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -46,7 +47,7 @@ public class ReviewResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response updateReview(@PathParam("bookId") String bookId, @PathParam("reviewId") String reviewId, Review review) {
-        Review updatedReview = bookService.updateReview(bookId, reviewId, review);
+        Review updatedReview = reviewService.updateReview(bookId, reviewId, review);
 
         if(updatedReview == null)
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -65,7 +66,7 @@ public class ReviewResource {
             return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(error).build();
         }
 
-        Review newReview = bookService.createReview(bookId, review);
+        Review newReview = reviewService.createReview(bookId, review);
         String uri = uriInfo.getBaseUri() + "books/" + bookId + "/reviews/" + newReview.getId();
 
         return Response.ok().entity(newReview).link(uri, "new_review").build();
@@ -76,7 +77,7 @@ public class ReviewResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response deleteReview(@PathParam("bookId") String bookId, @PathParam("reviewId") String reviewId) {
-        boolean reviewWasDeleted = bookService.deleteBookReview(bookId, reviewId);
+        boolean reviewWasDeleted = reviewService.deleteBookReview(bookId, reviewId);
 
         if(!reviewWasDeleted)
             return Response.status(Response.Status.NOT_FOUND).build();
