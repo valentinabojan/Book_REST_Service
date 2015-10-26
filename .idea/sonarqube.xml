@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SonarQubeConfiguration">
+    <option name="moduleKeys">
+      <map>
+        <entry key="Book_REST_Service" value="Book_Service" />
+      </map>
+    </option>
+  </component>
+</project>

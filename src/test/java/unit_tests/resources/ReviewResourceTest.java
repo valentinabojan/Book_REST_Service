@@ -1,3 +1,5 @@
+package unit_tests.resources;
+
 import entities.Book;
 import entities.ErrorBean;
 import entities.Review;

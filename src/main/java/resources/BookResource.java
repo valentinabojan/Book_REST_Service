@@ -29,14 +29,13 @@ public class BookResource {
                                 @QueryParam(value="title") String title,
                                 @QueryParam(value="price") String price,
                                 @QueryParam(value="sortBy") String sortCriteria) {
-        if(start != null && end != null && (Integer.valueOf(start) > Integer.valueOf(end)
-                        || Integer.valueOf(start) < 0 || Integer.valueOf(end) < 0)) {
+        if(!areValidPaginationParameters(start, end)) {
             ErrorBean error = new ErrorBean();
             error.setErrorCode("validation.incorrect.pagination.range");
             return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(error).build();
         }
 
-        if (price != null && price.split(",").length != 2) {
+        if (!isValidPriceRange(price)) {
             ErrorBean error = new ErrorBean();
             error.setErrorCode("validation.incorrect.price.range");
             return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(error).build();
@@ -44,7 +43,7 @@ public class BookResource {
 
         List<Book> books = bookService.getAllBooks(start, end, author, title, price, sortCriteria);
 
-        if (books == null || books.size() == 0)
+        if (books == null || books.isEmpty())
             return Response.status(Status.NOT_FOUND).build();
 
         return Response.ok().entity(new GenericEntity<List<Book>>(books) {}).build();
@@ -124,5 +123,46 @@ public class BookResource {
             return Response.status(Status.NOT_FOUND).build();
 
         return Response.ok().build();
+    }
+
+    private boolean isValidPriceRange(String price) {
+        if (price == null)
+            return true;
+
+        String[] priceBounds = price.split(",");
+        if (priceBounds.length != 2)
+            return false;
+
+        if (!isPositiveInteger(priceBounds[0]) || !isPositiveInteger(priceBounds[1]))
+            return false;
+
+        return true;
+    }
+
+    private boolean areValidPaginationParameters(String start, String end) {
+        if (start == null && end == null)
+            return true;
+
+        if (start != null && !isPositiveInteger(start))
+            return false;
+
+        if (end != null && !isPositiveInteger(end))
+            return false;
+
+        if (start != null && end != null && Integer.valueOf(start) > Integer.valueOf(end))
+                return false;
+
+        return true;
+    }
+
+    private boolean isPositiveInteger(String number) {
+        try {
+            int integer = Integer.parseInt(number);
+            if (integer >= 0)
+                return true;
+        } catch (NumberFormatException e) {
+        }
+
+        return false;
     }
 }

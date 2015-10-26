@@ -115,4 +115,5 @@ public class Book {
     public void setStars(double stars) {
         this.stars = stars;
     }
+
 }

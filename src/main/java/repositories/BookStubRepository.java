@@ -4,13 +4,10 @@ import entities.Book;
 import entities.BookCategory;
 import entities.Review;
 
-import java.awt.event.ComponentAdapter;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,47 +20,7 @@ public class BookStubRepository implements BookRepository {
 
     private BookStubRepository() {
         books = new ArrayList<>();
-        Book book1 = new Book();
-        book1.setId("1");                                       book1.setTitle("Outlander");
-        book1.setAuthors(Arrays.asList("Diana Gabalon"));       book1.setCategories(Arrays.asList(BookCategory.MYSTERY, BookCategory.DRAMA));
-        book1.setDate(LocalDate.of(2015, Month.JUNE, 12));      book1.setPrice(17.99);
-        book1.setIsbn("1-4028-9462-7");                         book1.setDescription("A very entertaining book.");
-        book1.setCoverPath("book" + book1.getId() + ".jpeg");   book1.setPagesNumber(837);
-        book1.setLanguage("Romanian");                          book1.setStars(4.5);
-        books.add(book1);
-
-        Book book2 = new Book();
-        book2.setId("2");                                       book2.setTitle("Design Patterns");
-        book2.setAuthors(Arrays.asList("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides"));
-        book2.setCategories(Arrays.asList(BookCategory.SCIENCE));
-        book2.setDate(LocalDate.of(2012, Month.MARCH, 1));      book2.setPrice(59.99);
-        book2.setIsbn("0-201-63361-2");                         book2.setDescription("Design patterns for everyone.");
-        book2.setCoverPath("book" + book2.getId() + ".jpeg");   book2.setPagesNumber(395);
-        book2.setLanguage("English");                           book2.setStars(5);
-        books.add(book2);
-
-        Book book3 = new Book();
-        book3.setId("3");                                       book3.setTitle("Design Patterns");
-        book3.setAuthors(Arrays.asList("Erich Gamma", "Ralph Johnson", "John Vlissides", "Richard Helm"));
-        book3.setCategories(Arrays.asList(BookCategory.SCIENCE));
-        book3.setDate(LocalDate.of(2012, Month.MARCH, 1));      book3.setPrice(59.90);
-        book3.setIsbn("0-201-63361-2");                         book3.setDescription("Design patterns for everyone.");
-        book3.setCoverPath("book" + book3.getId() + ".jpeg");   book3.setPagesNumber(395);
-        book3.setLanguage("English");                           book3.setStars(5);
-        books.add(book3);
-
         reviews = new ArrayList<>();
-        Review review1 = new Review();
-        review1.setId("1");                                                 review1.setTitle("Very interesting");
-        review1.setContent("I liked it very much.");                        review1.setUser("Valentina");
-        review1.setDate(LocalDate.of(2015, Month.OCTOBER, 23));             review1.setBookId("1");
-        reviews.add(review1);
-
-        Review review2 = new Review();
-        review2.setId("2");                                                 review2.setTitle("A little dark");
-        review2.setContent("I found some dark and controversial parts");    review2.setUser("Michaela");
-        review2.setDate(LocalDate.of(2015, Month.OCTOBER, 23));             review2.setBookId("1");
-        reviews.add(review2);
     }
 
     public static BookRepository getInstance() {
@@ -141,20 +98,21 @@ public class BookStubRepository implements BookRepository {
     }
 
     private Stream<Book> paginateBooks(Stream<Book> books, String start, String end) {
-        if (start != null && end != null)
-            return books.skip(Integer.valueOf(start)).limit(Integer.valueOf(end) - Integer.valueOf(start) + 1);
-        return books;
+        long firstBook = start == null ? 0 : Long.valueOf(start);
+
+        if (end == null)
+            return books.skip(firstBook);
+        return books.skip(firstBook).limit(Long.valueOf(end) - firstBook + 1);
     }
 
     private Stream<Book> filterBooks(Stream<Book> books, String author, String title, String price) {
-        if (author != null) {
-            System.out.println(author);
+        if (author != null)
             books = books.filter(book -> book.getAuthors().stream()
                     .anyMatch(bookAuthor -> bookAuthor.toLowerCase().contains(author.toLowerCase())));
-        }
-        if (title != null) {
+
+        if (title != null)
             books = books.filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase()));
-        }
+
         if (price != null) {
             String[] priceRange = price.split(",");
             int lowPriceBound = Integer.valueOf(priceRange[0]);
@@ -175,13 +133,13 @@ public class BookStubRepository implements BookRepository {
         Stream<Book> sortedBooks = books;
         for (String criteria : sortCriteria.split(",")) {
             System.out.println(criteria);
-            bookComparator = bookComparator.thenComparing(getComaparatorByCriteria(criteria));
+            bookComparator = bookComparator.thenComparing(getComparatorByCriteria(criteria));
         }
 
         return sortedBooks.sorted(bookComparator);
     }
 
-    private Comparator<Book> getComaparatorByCriteria(String criteria) {
+    private Comparator<Book> getComparatorByCriteria(String criteria) {
         switch (criteria) {
             case "title":
                 return Comparator.comparing(Book::getTitle);

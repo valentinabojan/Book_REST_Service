@@ -23,7 +23,7 @@ public class ReviewResource {
     public Response getAllReviews(@PathParam("bookId") String bookId) {
         List<Review> reviews = bookService.getAllReviews(bookId);
 
-        if (reviews == null || reviews.size() == 0)
+        if (reviews == null || reviews.isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();
 
         return Response.ok().entity(new GenericEntity<List<Review>>(reviews) {}).build();
