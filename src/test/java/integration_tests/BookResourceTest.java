@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response.Status;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BookResourceTest {
 
     private BookServiceClient client;
-    private Book book1, book2;
+    private Book book1, book2, book3, book4;
 
     @Before
     public void setUpClass() {
@@ -50,6 +51,15 @@ public class BookResourceTest {
                                 .withLanguage("English")
                                 .withStars(5)
                                 .build();
+
+        book3 = new BookBuilder().withTitle("Design Patterns")
+                                .withAuthors("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides")
+                                .withPrice(99.99)
+                                .build();
+
+        book4 = new BookBuilder().withTitle("Design Patterns")
+                                .withPrice(79.99)
+                                .build();
     }
 
     @Test
@@ -78,13 +88,18 @@ public class BookResourceTest {
     public void givenManyBooks_GET_returnsTheCorrectListOfBooks() throws UnsupportedEncodingException {
         Book newBook1 = client.post("/books", book1).readEntity(Book.class);
         Book newBook2 = client.post("/books", book2).readEntity(Book.class);
+        Book newBook3 = client.post("/books", book3).readEntity(Book.class);
+        Book newBook4 = client.post("/books", book4).readEntity(Book.class);
 
-        List<Book> books = client.getAllBooks(0, 2, null, null, null, null).readEntity(new GenericType<List<Book>>() {});
-        assertThat(books.get(0).getId()).isEqualTo(newBook1.getId());
-        assertThat(books.get(1).getId()).isEqualTo(newBook2.getId());
+        List<Book> books = client.getAllBooks(0, 10, "Gamma", "Design", "0,200", "title,author,price,year")
+                                .readEntity(new GenericType<List<Book>>() {});
+        assertThat(books.get(0).getId()).isEqualTo(newBook2.getId());
+        assertThat(books.get(1).getId()).isEqualTo(newBook3.getId());
 
         client.delete("/books/" + newBook1.getId());
         client.delete("/books/" + newBook2.getId());
+        client.delete("/books/" + newBook3.getId());
+        client.delete("/books/" + newBook4.getId());
     }
 
     @Test

@@ -54,7 +54,7 @@ public class ReviewResourceTest {
         Review newReview1 = client.post(MAIN_PATH, review1).readEntity(Review.class);
         Review newReview2 = client.post(MAIN_PATH, review2).readEntity(Review.class);
 
-        List<Review> reviews = client.getAllReviews(BOOK_ID).readEntity(new GenericType<List<Review>>() {});
+        List<Review> reviews = client.getAllReviews(MAIN_PATH).readEntity(new GenericType<List<Review>>() {});
         assertThat(reviews.get(0).getId()).isEqualTo(newReview1.getId());
         assertThat(reviews.get(1).getId()).isEqualTo(newReview2.getId());
 

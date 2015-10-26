@@ -29,7 +29,7 @@ public class BookRepositoryStub implements BookRepository {
 
     @Override
     public Book findBookById(String bookId) {
-        return books.stream().filter(book -> book.getId().equals(bookId)).findFirst().get();
+        return books.stream().filter(book -> book.getId().equals(bookId)).findFirst().orElse(null);
     }
 
     @Override

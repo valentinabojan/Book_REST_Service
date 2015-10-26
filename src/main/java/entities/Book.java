@@ -1,6 +1,7 @@
 package entities;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class Book {
         return date;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setDate(LocalDate date) {
         this.date = date;
     }

@@ -3,10 +3,8 @@ package integration_tests;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
 
 public class BookServiceClient {
 
@@ -17,29 +15,18 @@ public class BookServiceClient {
         client = ClientBuilder.newClient();
     }
 
-    public Response getAllBooks(int start, int end, String author, String title, String priceRange, String sortCriteria) throws UnsupportedEncodingException {
-        WebTarget target = client.target("http://localhost:8080/webapi/");
-
-        return target.path("books"
-//                        + URLEncoder.encode("?", "UTF-8") + "?start=0&end=2"
-//                                        + "&author=" + author + "&title=" + title + "&price=" + priceRange
-//                                        + "&sortBy=" + sortCriteria
-        )
-                      .request(MediaType.APPLICATION_JSON)
-                      .get(Response.class);
+    public Response getAllBooks(int start, int end, String author, String title, String priceRange, String sortCriteria) {
+        return client.target(TARGET).path("books")
+                                    .queryParam("start", start).queryParam("end", end).queryParam("author", author).queryParam("title", title)
+                                    .request(MediaType.APPLICATION_JSON)
+                                    .get(Response.class);
     }
 
-    public Response getAllReviews(String bookId) {
-        WebTarget target = client.target("http://localhost:8080/webapi/");
-
-        return target.path("books" + "/" + bookId + "/reviews")
-                .request(MediaType.APPLICATION_JSON)
-                .get(Response.class);
+    public Response getAllReviews(String path) {
+        return client.target(TARGET).path(path)
+                                    .request(MediaType.APPLICATION_JSON)
+                                    .get(Response.class);
     }
-
-
-
-
 
     public Response getSize(String path) {
         return client.target(TARGET).path(path)
