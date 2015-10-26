@@ -2,7 +2,7 @@ package resources;
 
 import entities.Book;
 import entities.ErrorBean;
-import repositories.BookStubRepository;
+import repositories.BookRepositoryStub;
 import services.BookService;
 
 import javax.ws.rs.*;
@@ -15,7 +15,7 @@ import java.util.List;
 @Path("books")
 public class BookResource {
 
-    private BookService bookService = BookService.getInstance(BookStubRepository.getInstance());
+    private BookService bookService = BookService.getInstance(BookRepositoryStub.getInstance());
 
     public void setBookService(BookService bookService) {
         this.bookService = bookService;

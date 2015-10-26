@@ -1,8 +1,5 @@
 package integration_tests;
 
-import entities.Book;
-import entities.Review;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -11,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 
-public class BookServiceClient<T> {
+public class BookServiceClient {
 
     private static String TARGET = "http://localhost:8080/webapi/";
     private Client client;
@@ -56,13 +53,13 @@ public class BookServiceClient<T> {
                                     .get(Response.class);
     }
 
-    public Response post(String path, T entity) {
+    public <T> Response post(String path, T entity) {
         return client.target(TARGET).path(path)
                                     .request(MediaType.APPLICATION_JSON)
                                     .post(Entity.entity(entity, MediaType.APPLICATION_JSON));
     }
 
-    public Response put(String path, T entity) {
+    public <T> Response put(String path, T entity) {
         return client.target(TARGET).path(path)
                                     .request(MediaType.APPLICATION_JSON)
                                     .put(Entity.entity(entity, MediaType.APPLICATION_JSON));

@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface BookRepository {
 
-    List<Book> findAllBooks();
-
     Book findBookById(String bookId);
 
     boolean deleteBook(String bookId);
@@ -18,7 +16,7 @@ public interface BookRepository {
 
     Book updateBook(String bookId, Book book);
 
-    List<Book> getAllBooksWithPaginationAndFilteringAndSorting(String start, String end, String author, String title, String price, String sortCriteria);
+    List<Book> findAllBooksWithPaginationAndFilteringAndSorting(String start, String end, String author, String title, String price, String sortCriteria);
 
     File findBookCover(String bookId);
 
@@ -31,4 +29,6 @@ public interface BookRepository {
     Review updateReview(String bookId, String reviewId, Review review);
 
     Review createReview(String bookId, Review review);
+
+    int getBooksCount();
 }

@@ -1,18 +1,15 @@
 package unit_tests.resources;
 
-import entities.Book;
 import entities.ErrorBean;
 import entities.Review;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import resources.BookResource;
 import resources.ReviewResource;
 import services.BookService;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.File;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;

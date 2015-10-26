@@ -5,7 +5,6 @@ import entities.ErrorBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import repositories.BookRepository;
 import resources.BookResource;
 import services.BookService;
 

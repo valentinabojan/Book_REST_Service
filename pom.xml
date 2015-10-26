@@ -7,7 +7,6 @@
     <artifactId>book-rest-service</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>com.pluralsight</name>
 
     <build>
         <finalName>book-rest-service</finalName>

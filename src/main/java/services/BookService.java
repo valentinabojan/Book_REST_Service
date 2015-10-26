@@ -24,7 +24,7 @@ public class BookService {
     }
 
     public List<Book> getAllBooks(String start, String end, String author, String title, String price, String sortCriteria) {
-        return bookRepository.getAllBooksWithPaginationAndFilteringAndSorting(start, end, author, title, price, sortCriteria);
+        return bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(start, end, author, title, price, sortCriteria);
     }
 
     public Book getBook(String bookId) {
@@ -36,7 +36,7 @@ public class BookService {
     }
 
     public int getBooksCount() {
-        return bookRepository.findAllBooks().size();
+        return bookRepository.getBooksCount();
     }
 
     public Book createBook(Book book) {

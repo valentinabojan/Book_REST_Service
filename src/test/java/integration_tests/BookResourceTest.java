@@ -4,7 +4,6 @@ import builders.BookBuilder;
 import entities.Book;
 import entities.BookCategory;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.ws.rs.core.GenericType;
