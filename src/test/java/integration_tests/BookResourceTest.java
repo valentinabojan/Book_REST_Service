@@ -1,8 +1,8 @@
 package integration_tests;
 
-import builders.BookBuilder;
-import entities.Book;
-import entities.BookCategory;
+import org.junit.After;
+import business_layer.entities.Book;
+import business_layer.entities.BookCategory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,40 +26,45 @@ public class BookResourceTest {
     public void setUpClass() {
         client = new BookServiceClient();
 
-        book1 = new BookBuilder().withTitle("Outlander")
-                                .withAuthors("Diana Gabalon")
-                                .withCategories(BookCategory.MYSTERY, BookCategory.DRAMA)
-                                .withDate(LocalDate.of(2015, Month.JUNE, 12))
-                                .withPrice(17.99)
-                                .withISBN("1-4028-9462-7")
-                                .withDescription("A very entertaining book.")
-                                .withCoverPath("book1.jpeg")
-                                .withPagesNumber(837)
-                                .withLanguage("Romanian")
-                                .withStars(4.5)
-                                .build();
+        book1 = Book.BookBuilder.book().withTitle("Outlander")
+                                        .withAuthors(Arrays.asList("Diana Gabalon"))
+                                        .withCategories(Arrays.asList(BookCategory.MYSTERY, BookCategory.DRAMA))
+                                        .withDate(LocalDate.of(2015, Month.JUNE, 12))
+                                        .withPrice(17.99)
+                                        .withIsbn("1-4028-9462-7")
+                                        .withDescription("A very entertaining book.")
+                                        .withCoverPath("book1.jpeg")
+                                        .withPagesNumber(837)
+                                        .withLanguage("Romanian")
+                                        .withStars(4.5)
+                                        .build();
 
-        book2 = new BookBuilder().withTitle("Design Patterns")
-                                .withAuthors("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides")
-                                .withCategories(BookCategory.SCIENCE)
-                                .withDate(LocalDate.of(2012, Month.MARCH, 1))
-                                .withPrice(59.99)
-                                .withISBN("0-201-63361-2")
-                                .withDescription("Design patterns for everyone.")
-                                .withCoverPath("book2.jpeg")
-                                .withPagesNumber(395)
-                                .withLanguage("English")
-                                .withStars(5)
-                                .build();
+        book2 =  Book.BookBuilder.book().withTitle("Design Patterns")
+                                        .withAuthors(Arrays.asList("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides"))
+                                        .withCategories(Arrays.asList(BookCategory.SCIENCE))
+                                        .withDate(LocalDate.of(2012, Month.MARCH, 1))
+                                        .withPrice(59.99)
+                                        .withIsbn("0-201-63361-2")
+                                        .withDescription("Design patterns for everyone.")
+                                        .withCoverPath("book2.jpeg")
+                                        .withPagesNumber(395)
+                                        .withLanguage("English")
+                                        .withStars(5)
+                                        .build();
 
-        book3 = new BookBuilder().withTitle("Design Patterns")
-                                .withAuthors("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides")
-                                .withPrice(99.99)
-                                .build();
+        book3 =  Book.BookBuilder.book().withTitle("Design Patterns")
+                                        .withAuthors(Arrays.asList("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides"))
+                                        .withPrice(99.99)
+                                        .build();
 
-        book4 = new BookBuilder().withTitle("Design Patterns")
-                                .withPrice(79.99)
-                                .build();
+        book4 =  Book.BookBuilder.book().withTitle("Design Patterns")
+                                        .withPrice(79.99)
+                                        .build();
+    }
+
+    @After
+    public void tearDown() {
+        client.deleteAllBooks("/books");
     }
 
     @Test
@@ -67,21 +72,18 @@ public class BookResourceTest {
         Book book = client.post("/books", book1).readEntity(Book.class);
 
         Book foundBook = client.getEntity("/books/" + book.getId()).readEntity(Book.class);
-        assertThat(foundBook.getId()).isEqualTo(book.getId());
 
-        client.delete("/books/" + book.getId());
+        assertThat(foundBook.getId()).isEqualTo(book.getId());
     }
 
     @Test
     public void givenManyBooks_GETSize_returnsTheCorrectNumberOfBooks() {
-        Book newBook1 = client.post("/books", book1).readEntity(Book.class);
-        Book newBook2 = client.post("/books", book2).readEntity(Book.class);
+        client.post("/books", book1).readEntity(Book.class);
+        client.post("/books", book2).readEntity(Book.class);
 
         int booksNumber = client.getSize("/books/size").readEntity(Integer.class);
-        assertThat(booksNumber).isEqualTo(2);
 
-        client.delete("/books/" + newBook1.getId());
-        client.delete("/books/" + newBook2.getId());
+        assertThat(booksNumber).isEqualTo(2);
     }
 
     @Test
@@ -91,15 +93,11 @@ public class BookResourceTest {
         Book newBook3 = client.post("/books", book3).readEntity(Book.class);
         Book newBook4 = client.post("/books", book4).readEntity(Book.class);
 
-        List<Book> books = client.getAllBooks(0, 10, "Gamma", "Design", "0,200", "title,author,price,year")
+        List<Book> books = client.getAllBooks("0", "10", "Gamma", "Design", "0,200", "title,author,price,year")
                                 .readEntity(new GenericType<List<Book>>() {});
+
         assertThat(books.get(0).getId()).isEqualTo(newBook2.getId());
         assertThat(books.get(1).getId()).isEqualTo(newBook3.getId());
-
-        client.delete("/books/" + newBook1.getId());
-        client.delete("/books/" + newBook2.getId());
-        client.delete("/books/" + newBook3.getId());
-        client.delete("/books/" + newBook4.getId());
     }
 
     @Test
@@ -107,8 +105,6 @@ public class BookResourceTest {
         Book book = client.post("/books", book1).readEntity(Book.class);
 
         assertThat(book.getId()).isNotNull();
-
-        client.delete("/books/" + book.getId());
     }
 
     @Test
@@ -119,8 +115,6 @@ public class BookResourceTest {
 
         Book foundBook = client.getEntity("/books/" + book.getId()).readEntity(Book.class);
         assertThat(foundBook.getTitle()).isEqualTo(book2.getTitle());
-
-        client.delete("/books/" + book.getId());
     }
 
     @Test

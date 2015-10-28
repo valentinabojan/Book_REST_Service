@@ -1,12 +1,13 @@
 package unit_tests.repositories;
 
-import builders.BookBuilder;
-import entities.Book;
-import entities.BookCategory;
+import business_layer.entities.Book;
+import business_layer.entities.BookCategory;
 import org.junit.Before;
 import org.junit.Test;
-import repositories.BookRepository;
-import repositories.BookRepositoryStub;
+import data_access_layer.repositories.BookRepository;
+import data_access_layer.repositories.BookRepositoryStub;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -15,50 +16,50 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class BookRepositoryStubTest {
 
+    @Autowired
     private BookRepository bookRepository;
     private Book book1, book2, book3, book4;
 
     @Before
     public void setUp() {
-        bookRepository = BookRepositoryStub.getInstance();
+//        bookRepository = BookRepositoryStub.getInstance();
 
-        book1 = new BookBuilder().withTitle("Outlander")
-                                .withAuthors("Diana Gabalon")
-                                .withCategories(BookCategory.MYSTERY, BookCategory.DRAMA)
-                                .withDate(LocalDate.of(2015, Month.JUNE, 12))
-                                .withPrice(17.99)
-                                .withISBN("1-4028-9462-7")
-                                .withDescription("A very entertaining book.")
-                                .withCoverPath("book1.jpeg")
-                                .withPagesNumber(837)
-                                .withLanguage("Romanian")
-                                .withStars(4.5)
-                                .build();
+        book1 = Book.BookBuilder.book().withTitle("Outlander")
+                                        .withAuthors(Arrays.asList("Diana Gabalon"))
+                                        .withCategories(Arrays.asList(BookCategory.MYSTERY, BookCategory.DRAMA))
+                                        .withDate(LocalDate.of(2015, Month.JUNE, 12))
+                                        .withPrice(17.99)
+                                        .withIsbn("1-4028-9462-7")
+                                        .withDescription("A very entertaining book.")
+                                        .withCoverPath("book1.jpeg")
+                                        .withPagesNumber(837)
+                                        .withLanguage("Romanian")
+                                        .withStars(4.5)
+                                        .build();
 
-        book2 = new BookBuilder().withTitle("Design Patterns")
-                                .withAuthors("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides")
-                                .withCategories(BookCategory.SCIENCE)
-                                .withDate(LocalDate.of(2012, Month.MARCH, 1))
-                                .withPrice(59.99)
-                                .withISBN("0-201-63361-2")
-                                .withDescription("Design patterns for everyone.")
-                                .withCoverPath("book2.jpeg")
-                                .withPagesNumber(395)
-                                .withLanguage("English")
-                                .withStars(5)
-                                .build();
+        book2 = Book.BookBuilder.book().withTitle("Design Patterns")
+                                        .withAuthors(Arrays.asList("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides"))
+                                        .withCategories(Arrays.asList(BookCategory.SCIENCE))
+                                        .withDate(LocalDate.of(2012, Month.MARCH, 1))
+                                        .withPrice(59.99)
+                                        .withIsbn("0-201-63361-2")
+                                        .withDescription("Design patterns for everyone.")
+                                        .withCoverPath("book2.jpeg")
+                                        .withPagesNumber(395)
+                                        .withLanguage("English")
+                                        .withStars(5)
+                                        .build();
 
-        book3 = new BookBuilder().withTitle("Design Patterns")
-                                .withAuthors("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides")
-                                .withPrice(99.99)
-                                .build();
+        book3 = Book.BookBuilder.book().withTitle("Design Patterns")
+                                        .withAuthors(Arrays.asList("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides"))
+                                        .withPrice(99.99)
+                                        .build();
 
-        book4 = new BookBuilder().withTitle("Design Patterns")
-                                .withPrice(79.99)
-                                .build();
+        book4 = Book.BookBuilder.book().withTitle("Design Patterns")
+                                        .withPrice(79.99)
+                                        .build();
     }
 
     @Test

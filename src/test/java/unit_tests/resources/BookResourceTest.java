@@ -1,12 +1,12 @@
 package unit_tests.resources;
 
-import entities.Book;
-import entities.ErrorBean;
+import business_layer.entities.Book;
+import business_layer.value_objects.ErrorBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import resources.BookResource;
-import services.BookService;
+import application_layer.resources.BookResource;
+import business_layer.services.BookService;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -30,7 +30,7 @@ public class BookResourceTest {
     public void setUp() {
         mockBookService = Mockito.mock(BookService.class);
         bookResource = new BookResource();
-        bookResource.setBookService(mockBookService);
+//        bookResource.setBookService(mockBookService);
     }
 
     @Test
@@ -193,12 +193,12 @@ public class BookResourceTest {
         book.setId("1");
         UriInfo mockUriInfo = Mockito.mock(UriInfo.class);
         Mockito.when(mockBookService.createBook(book)).thenReturn(book);
-        Mockito.when(mockUriInfo.getBaseUri()).thenReturn(URI.create("http://localhost:8080/webapi/"));
+        Mockito.when(mockUriInfo.getAbsolutePath()).thenReturn(URI.create("http://localhost:8080/webapi/books"));
 
         Response response = bookResource.createBook(book, mockUriInfo);
 
         Mockito.verify(mockBookService, times(1)).createBook(book);
-        Mockito.verify(mockUriInfo, times(1)).getBaseUri();
+        Mockito.verify(mockUriInfo, times(1)).getAbsolutePath();
         assertThat(response.getLink("new_book").getUri()).isEqualTo(URI.create("http://localhost:8080/webapi/books/1"));
     }
 

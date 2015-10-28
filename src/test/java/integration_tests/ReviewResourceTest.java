@@ -1,7 +1,7 @@
 package integration_tests;
 
-import builders.ReviewBuilder;
-import entities.Review;
+import org.junit.After;
+import business_layer.entities.Review;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,22 +21,27 @@ public class ReviewResourceTest {
     private static String MAIN_PATH = "books" + "/" + BOOK_ID + "/reviews";
 
     @Before
-    public void setUpClass() {
+    public void setUp() {
         client = new BookServiceClient();
 
-        review1 = new ReviewBuilder().withTitle("I liked it very much.")
-                                    .withContent("I liked it very much.")
-                                    .withUser("Valentina")
-                                    .withDate(LocalDate.of(2015, Month.OCTOBER, 23))
-                                    .withBookId("1")
-                                    .build();
+        review1 = Review.ReviewBuilder.review().withTitle("I liked it very much.")
+                                                .withContent("I liked it very much.")
+                                                .withUser("Valentina")
+                                                .withDate(LocalDate.of(2015, Month.OCTOBER, 23))
+                                                .withBookId("1")
+                                                .build();
 
-        review2 = new ReviewBuilder().withTitle("I liked it very much.")
-                .withContent("I found some dark and controversial parts")
-                .withUser("Michaela")
-                .withDate(LocalDate.of(2015, Month.SEPTEMBER, 5))
-                .withBookId("1")
-                .build();
+        review2 = Review.ReviewBuilder.review().withTitle("I liked it very much.")
+                                                .withContent("I found some dark and controversial parts")
+                                                .withUser("Michaela")
+                                                .withDate(LocalDate.of(2015, Month.SEPTEMBER, 5))
+                                                .withBookId("1")
+                                                .build();
+    }
+
+    @After
+    public void tearDown() {
+        client.deleteAllReviews(MAIN_PATH);
     }
 
     @Test
@@ -44,9 +49,8 @@ public class ReviewResourceTest {
         Review review = client.post(MAIN_PATH, review1).readEntity(Review.class);
 
         Review foundReview= client.getEntity(MAIN_PATH + "/" + review.getId()).readEntity(Review.class);
-        assertThat(foundReview.getId()).isEqualTo(review.getId());
 
-        client.delete(MAIN_PATH + "/" + review.getId());
+        assertThat(foundReview.getId()).isEqualTo(review.getId());
     }
 
     @Test
@@ -55,11 +59,9 @@ public class ReviewResourceTest {
         Review newReview2 = client.post(MAIN_PATH, review2).readEntity(Review.class);
 
         List<Review> reviews = client.getAllReviews(MAIN_PATH).readEntity(new GenericType<List<Review>>() {});
+
         assertThat(reviews.get(0).getId()).isEqualTo(newReview1.getId());
         assertThat(reviews.get(1).getId()).isEqualTo(newReview2.getId());
-
-        client.delete(MAIN_PATH + "/" + newReview1.getId());
-        client.delete(MAIN_PATH + "/" + newReview2.getId());
     }
 
     @Test
@@ -67,8 +69,6 @@ public class ReviewResourceTest {
         Review review = client.post(MAIN_PATH, review1).readEntity(Review.class);
 
         assertThat(review.getTitle()).isEqualTo(review1.getTitle());
-
-        client.delete(MAIN_PATH + "/" + review.getId());
     }
 
     @Test
@@ -79,8 +79,6 @@ public class ReviewResourceTest {
 
         Review foundReview= client.getEntity(MAIN_PATH + "/" + review.getId()).readEntity(Review.class);
         assertThat(foundReview.getTitle()).isEqualTo(review2.getTitle());
-
-        client.delete(MAIN_PATH + "/" + review.getId());
     }
 
     @Test

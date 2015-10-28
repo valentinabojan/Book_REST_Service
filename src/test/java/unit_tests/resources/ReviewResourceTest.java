@@ -1,12 +1,12 @@
 package unit_tests.resources;
 
-import entities.ErrorBean;
-import entities.Review;
+import business_layer.value_objects.ErrorBean;
+import business_layer.entities.Review;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import resources.ReviewResource;
-import services.ReviewService;
+import application_layer.resources.ReviewResource;
+import business_layer.services.ReviewService;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
