@@ -17,9 +17,9 @@ public class ReviewResource {
     private ReviewService reviewService;
 //    = ReviewService.getInstance(BookRepositoryStub.getInstance());
 
-//    public void setReviewService(ReviewService reviewService) {
-//        this.reviewService = reviewService;
-//    }
+    public void setReviewService(ReviewService reviewService) {
+        this.reviewService = reviewService;
+    }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

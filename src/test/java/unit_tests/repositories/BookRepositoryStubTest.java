@@ -22,7 +22,7 @@ public class BookRepositoryStubTest {
 
     @Before
     public void setUp() {
-//        bookRepository = BookRepositoryStub.getInstance();
+        bookRepository = new BookRepositoryStub();
 
         book1 = Book.BookBuilder.book().withTitle("Outlander")
                                         .withAuthors(Arrays.asList("Diana Gabalon"))

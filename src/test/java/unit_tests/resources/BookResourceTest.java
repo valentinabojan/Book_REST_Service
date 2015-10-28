@@ -21,6 +21,7 @@ import static org.mockito.Mockito.times;
 
 public class BookResourceTest {
 
+//    @Autowired
     private BookResource bookResource;
     private BookService mockBookService;
     private final static String BOOK_ID = "1";
@@ -30,7 +31,7 @@ public class BookResourceTest {
     public void setUp() {
         mockBookService = Mockito.mock(BookService.class);
         bookResource = new BookResource();
-//        bookResource.setBookService(mockBookService);
+        bookResource.setBookService(mockBookService);
     }
 
     @Test
