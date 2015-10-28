@@ -2,12 +2,10 @@ package unit_tests.repositories;
 
 import business_layer.entities.Book;
 import business_layer.entities.BookCategory;
-import org.junit.Before;
-import org.junit.Test;
 import data_access_layer.repositories.BookRepository;
 import data_access_layer.repositories.BookRepositoryStub;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -18,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookRepositoryStubTest {
 
-    @Autowired
+//    @Autowired
     private BookRepository bookRepository;
     private Book book1, book2, book3, book4;
 

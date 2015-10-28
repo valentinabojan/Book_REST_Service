@@ -14,20 +14,20 @@ public class BookService {
 
 //    private static BookService bookServiceInstance;
 
-
+    @Autowired
     private BookRepository bookRepository;
 
-    private int x = 1;
-
-    public int getX() {
-        return x;
-    }
-
-    @Autowired
-    public BookService(BookRepository bookRepository) {
-        System.out.println("bookService ----> " + bookRepository);
-        this.bookRepository = bookRepository;
-    }
+//    private int x = 1;
+//
+//    public int getX() {
+//        return x;
+//    }
+//
+//    @Autowired
+//    public BookService(BookRepository bookRepository) {
+//        System.out.println("bookService ----> " + bookRepository);
+//        this.bookRepository = bookRepository;
+//    }
 
 //    public static BookService getInstance(BookRepository bookRepository) {
 //        if (bookServiceInstance == null)

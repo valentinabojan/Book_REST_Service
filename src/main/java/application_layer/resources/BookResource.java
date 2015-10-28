@@ -1,13 +1,10 @@
 package application_layer.resources;
 
 import business_layer.entities.Book;
-import business_layer.value_objects.ErrorBean;
 import business_layer.services.BookService;
+import business_layer.value_objects.ErrorBean;
+import data_access_layer.repositories.BookRepositoryStub;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Component;
-import spring.AppConfig;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -17,12 +14,11 @@ import java.net.URI;
 import java.util.List;
 
 @Path("books")
-@Component
+//@Component
 public class BookResource {
 
-//    @Autowired
+    @Autowired
     private BookService bookService;
-
 //    = BookService.getInstance(BookRepositoryStub.getInstance());
 
 //    public void setBookService(BookService bookService) {
@@ -30,14 +26,14 @@ public class BookResource {
 //    }
 
 
-    public BookResource() {
-    }
-
-    @Autowired
-    public BookResource(BookService bookService) {
-        System.out.println("efefefef" + bookService.getX());
-        this.bookService = bookService;
-    }
+//    public BookResource() {
+//    }
+//
+//    @Autowired
+//    public BookResource(BookService bookService) {
+//        System.out.println("efefefef" + bookService.getX());
+//        this.bookService = bookService;
+//    }
 
 
 

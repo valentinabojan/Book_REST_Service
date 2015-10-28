@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This web.xml file is not required when using Servlet 3.0 container,
-     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html -->
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
     <context-param>
-        <param-name>contextClass</param-name>
+        <param-name>contextConfigLocation</param-name>
         <param-value>
-            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+            classpath:spring/applicationContext.xml
         </param-value>
     </context-param>
 
-    <!-- Configuration locations must consist of one or more comma- or space-delimited
-    fully-qualified @Configuration classes. Fully-qualified packages may also
-    be specified for component-scanning -->
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>spring.AppConfig</param-value>
-    </context-param>
-
     <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
     </listener>
 
     <servlet>

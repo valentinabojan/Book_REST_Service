@@ -1,9 +1,9 @@
 package application_layer.resources;
 
-import business_layer.value_objects.ErrorBean;
 import business_layer.entities.Review;
-import data_access_layer.repositories.BookRepositoryStub;
 import business_layer.services.ReviewService;
+import business_layer.value_objects.ErrorBean;
+import data_access_layer.repositories.BookRepositoryStub;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -17,9 +17,9 @@ public class ReviewResource {
     private ReviewService reviewService;
 //    = ReviewService.getInstance(BookRepositoryStub.getInstance());
 
-    public void setReviewService(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
+//    public void setReviewService(ReviewService reviewService) {
+//        this.reviewService = reviewService;
+//    }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

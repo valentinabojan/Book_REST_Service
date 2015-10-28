@@ -2,7 +2,6 @@ package data_access_layer.repositories;
 
 import business_layer.entities.Book;
 import business_layer.entities.Review;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
