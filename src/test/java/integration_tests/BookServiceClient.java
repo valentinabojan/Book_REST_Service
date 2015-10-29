@@ -3,7 +3,6 @@ package integration_tests;
 import business_layer.entities.Book;
 import business_layer.entities.Review;
 
-import javax.net.ssl.SSLEngineResult;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;

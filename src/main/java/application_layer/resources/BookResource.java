@@ -5,6 +5,7 @@ import business_layer.services.BookService;
 import business_layer.value_objects.ErrorBean;
 import data_access_layer.repositories.BookRepositoryStub;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -14,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @Path("books")
-//@Component
+@Component
 public class BookResource {
 
     @Autowired
