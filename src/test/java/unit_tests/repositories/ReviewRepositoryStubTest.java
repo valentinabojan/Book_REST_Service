@@ -22,7 +22,7 @@ public class ReviewRepositoryStubTest {
 
     @Before
     public void setUp() {
-//        bookRepository = BookRepositoryStub.getInstance();
+        bookRepository = new BookRepositoryStub();
 
         review1 = Review.ReviewBuilder.review().withTitle("I liked it very much.")
                 .withContent("I liked it very much.")

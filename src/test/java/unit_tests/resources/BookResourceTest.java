@@ -30,7 +30,7 @@ public class BookResourceTest {
     public void setUp() {
         mockBookService = Mockito.mock(BookService.class);
         bookResource = new BookResource();
-//        bookResource.setBookService(mockBookService);
+        bookResource.setBookService(mockBookService);
     }
 
     @Test

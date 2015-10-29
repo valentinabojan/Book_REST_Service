@@ -28,7 +28,7 @@ public class ReviewResourceTest {
     public void setUp() {
         mockReviewService = Mockito.mock(ReviewService.class);
         reviewResource = new ReviewResource();
-//        reviewResource.setReviewService(mockReviewService);
+        reviewResource.setReviewService(mockReviewService);
     }
 
     @Test

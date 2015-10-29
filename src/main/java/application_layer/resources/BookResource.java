@@ -21,9 +21,9 @@ public class BookResource {
     private BookService bookService;
 //    = BookService.getInstance(BookRepositoryStub.getInstance());
 
-//    public void setBookService(BookService bookService) {
-//        this.bookService = bookService;
-//    }
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
 
 
 //    public BookResource() {
