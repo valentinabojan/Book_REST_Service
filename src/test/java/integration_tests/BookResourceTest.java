@@ -1,15 +1,21 @@
 package integration_tests;
 
-import org.junit.After;
+import application_layer.resources.BookResource;
 import business_layer.entities.Book;
 import business_layer.entities.BookCategory;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.spring.SpringLifecycleListener;
+import org.glassfish.jersey.test.JerseyTest;
+import org.glassfish.jersey.test.TestProperties;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.filter.RequestContextFilter;
+import spring.AppConfig;
 
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
@@ -17,14 +23,24 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BookResourceTest {
+public class BookResourceTest extends JerseyTest {
 
     private BookServiceClient client;
     private Book book1, book2, book3, book4;
 
+    @Override
+    protected Application configure() {
+        ResourceConfig rc = new ResourceConfig();
+        forceSet(TestProperties.CONTAINER_PORT, "0");
+        rc.register(SpringLifecycleListener.class).register(RequestContextFilter.class);
+        rc.registerClasses(BookResource.class);
+        rc.property("contextConfig", new AnnotationConfigApplicationContext(AppConfig.class));
+        return rc;
+    }
+
     @Before
-    public void setUpClass() {
-        client = new BookServiceClient();
+    public void setUpTests() {
+        client = new BookServiceClient(target());
 
         book1 = Book.BookBuilder.book().withTitle("Outlander")
                                         .withAuthors(Arrays.asList("Diana Gabalon"))
@@ -62,11 +78,6 @@ public class BookResourceTest {
                                         .build();
     }
 
-    @After
-    public void tearDown() {
-        client.deleteAllBooks("/books");
-    }
-
     @Test
     public void givenABook_GETById_returnsTheCorrectBook() {
         Book book = client.post("/books", book1).readEntity(Book.class);
@@ -87,7 +98,7 @@ public class BookResourceTest {
     }
 
     @Test
-    public void givenManyBooks_GET_returnsTheCorrectListOfBooks() throws UnsupportedEncodingException {
+    public void givenManyBooks_GET_returnsTheCorrectListOfBooks() {
         Book newBook1 = client.post("/books", book1).readEntity(Book.class);
         Book newBook2 = client.post("/books", book2).readEntity(Book.class);
         Book newBook3 = client.post("/books", book3).readEntity(Book.class);
@@ -124,6 +135,6 @@ public class BookResourceTest {
         client.delete("/books/" + book.getId());
 
         Response response = client.getEntity("/books/" + book.getId());
-        assertThat(response.getStatus()).isEqualTo(Status.NOT_FOUND.getStatusCode());
+        assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }
 }

@@ -7,6 +7,17 @@
           <element id="module-output" name="Book_REST_Service" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:3.0.1" />
+          <element id="library" level="project" name="Maven: org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:2.22.1" />
+          <element id="library" level="project" name="Maven: org.glassfish.jersey.test-framework:jersey-test-framework-core:2.22.1" />
+          <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.22.1" />
+          <element id="library" level="project" name="Maven: org.glassfish.hk2.external:javax.inject:2.4.0-b31" />
+          <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3.23" />
+          <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-http:2.3.23" />
+          <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3.23" />
+          <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-grizzly2-servlet:2.22.1" />
+          <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-http-servlet:2.3.23" />
+          <element id="library" level="project" name="Maven: org.ow2.asm:asm-debug-all:5.0.4" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:4.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
@@ -17,7 +28,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-servlet:2.22.1" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-servlet-core:2.22.1" />
-          <element id="library" level="project" name="Maven: org.glassfish.hk2.external:javax.inject:2.4.0-b31" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-common:2.22.1" />
           <element id="library" level="project" name="Maven: javax.annotation:javax.annotation-api:1.2" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.bundles.repackaged:jersey-guava:2.22.1" />
@@ -53,7 +63,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/book-rest-service/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="Book_REST_Service/web/Web" />
     </root>

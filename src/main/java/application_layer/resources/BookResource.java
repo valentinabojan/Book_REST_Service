@@ -14,29 +14,16 @@ import java.io.File;
 import java.net.URI;
 import java.util.List;
 
-@Path("books")
+@Path("/books")
 @Component
 public class BookResource {
 
     @Autowired
     private BookService bookService;
-//    = BookService.getInstance(BookRepositoryStub.getInstance());
 
     public void setBookService(BookService bookService) {
         this.bookService = bookService;
     }
-
-
-//    public BookResource() {
-//    }
-//
-//    @Autowired
-//    public BookResource(BookService bookService) {
-//        System.out.println("efefefef" + bookService.getX());
-//        this.bookService = bookService;
-//    }
-
-
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

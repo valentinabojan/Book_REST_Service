@@ -15,7 +15,6 @@ public class ReviewResource {
 
     @Autowired
     private ReviewService reviewService;
-//    = ReviewService.getInstance(BookRepositoryStub.getInstance());
 
     public void setReviewService(ReviewService reviewService) {
         this.reviewService = reviewService;

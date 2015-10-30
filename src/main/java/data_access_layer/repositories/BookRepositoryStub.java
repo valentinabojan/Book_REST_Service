@@ -16,18 +16,10 @@ public class BookRepositoryStub implements BookRepository {
     private List<Book> books;
     private List<Review> reviews;
 
-//    private static BookRepository bookRepositoryInstance;
-
     public BookRepositoryStub() {
         books = new ArrayList<>();
         reviews = new ArrayList<>();
     }
-
-//    public static BookRepository getInstance() {
-//        if (bookRepositoryInstance == null)
-//            bookRepositoryInstance = new BookRepositoryStub();
-//        return bookRepositoryInstance;
-//    }
 
     @Override
     public Book findBookById(String bookId) {

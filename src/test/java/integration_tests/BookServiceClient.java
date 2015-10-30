@@ -6,61 +6,60 @@ import business_layer.entities.Review;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class BookServiceClient {
+    private final WebTarget target;
 
-    private static String TARGET = "http://localhost:8080/webapi/";
-    private Client client;
-
-    public BookServiceClient () {
-        client = ClientBuilder.newClient();
+    public BookServiceClient(WebTarget target) {
+        this.target = target;
     }
 
     public Response getAllBooks(String start, String end, String author, String title, String priceRange, String sortCriteria) {
-        return client.target(TARGET).path("books")
-                                    .queryParam("start", start).queryParam("end", end).queryParam("author", author).queryParam("title", title)
-                                    .request(MediaType.APPLICATION_JSON)
-                                    .get(Response.class);
+        return target.path("books")
+                    .queryParam("start", start).queryParam("end", end).queryParam("author", author).queryParam("title", title)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Response.class);
     }
 
     public Response getAllReviews(String path) {
-        return client.target(TARGET).path(path)
-                                    .request(MediaType.APPLICATION_JSON)
-                                    .get(Response.class);
+        return target.path(path)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Response.class);
     }
 
     public Response getSize(String path) {
-        return client.target(TARGET).path(path)
-                                    .request(MediaType.TEXT_PLAIN)
-                                    .get(Response.class);
+        return target.path(path)
+                    .request(MediaType.TEXT_PLAIN)
+                    .get(Response.class);
     }
 
     public Response getEntity(String path) {
-        return client.target(TARGET).path(path)
-                                    .request(MediaType.APPLICATION_JSON)
-                                    .get(Response.class);
+        return target.path(path)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Response.class);
     }
 
     public <T> Response post(String path, T entity) {
-        return client.target(TARGET).path(path)
-                                    .request(MediaType.APPLICATION_JSON)
-                                    .post(Entity.entity(entity, MediaType.APPLICATION_JSON));
+        return target.path(path)
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(Entity.entity(entity, MediaType.APPLICATION_JSON));
     }
 
     public <T> Response put(String path, T entity) {
-        return client.target(TARGET).path(path)
-                                    .request(MediaType.APPLICATION_JSON)
-                                    .put(Entity.entity(entity, MediaType.APPLICATION_JSON));
+        return target.path(path)
+                    .request(MediaType.APPLICATION_JSON)
+                    .put(Entity.entity(entity, MediaType.APPLICATION_JSON));
     }
 
     public Response delete(String path) {
-        return client.target(TARGET).path(path)
-                                    .request(MediaType.APPLICATION_JSON)
-                                    .delete();
+        return target.path(path)
+                    .request(MediaType.APPLICATION_JSON)
+                    .delete();
     }
 
     public void deleteAllBooks(String target) {

@@ -1,10 +1,19 @@
 package integration_tests;
 
-import org.junit.After;
+import application_layer.resources.ReviewResource;
 import business_layer.entities.Review;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.spring.SpringLifecycleListener;
+import org.glassfish.jersey.test.JerseyTest;
+import org.glassfish.jersey.test.TestProperties;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.filter.RequestContextFilter;
+import spring.AppConfig;
 
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
@@ -13,16 +22,26 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReviewResourceTest {
+public class ReviewResourceTest extends JerseyTest {
 
     private BookServiceClient client;
     private Review review1, review2;
     private static String BOOK_ID = "1";
     private static String MAIN_PATH = "books" + "/" + BOOK_ID + "/reviews";
 
+    @Override
+    protected Application configure() {
+        ResourceConfig rc = new ResourceConfig();
+        forceSet(TestProperties.CONTAINER_PORT, "0");
+        rc.register(SpringLifecycleListener.class).register(RequestContextFilter.class);
+        rc.registerClasses(ReviewResource.class);
+        rc.property("contextConfig", new AnnotationConfigApplicationContext(AppConfig.class));
+        return rc;
+    }
+
     @Before
-    public void setUp() {
-        client = new BookServiceClient();
+    public void setUpTests() {
+        client = new BookServiceClient(target());
 
         review1 = Review.ReviewBuilder.review().withTitle("I liked it very much.")
                                                 .withContent("I liked it very much.")
