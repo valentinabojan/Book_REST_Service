@@ -5,7 +5,7 @@ import business_layer.value_objects.ErrorBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import application_layer.resources.BookResource;
+import application_layer.BookResource;
 import business_layer.services.BookService;
 
 import javax.ws.rs.core.Response;
@@ -21,7 +21,6 @@ import static org.mockito.Mockito.times;
 
 public class BookResourceTest {
 
-//    @Autowired
     private BookResource bookResource;
     private BookService mockBookService;
     private final static String BOOK_ID = "1";
@@ -200,7 +199,7 @@ public class BookResourceTest {
 
         Mockito.verify(mockBookService, times(1)).createBook(book);
         Mockito.verify(mockUriInfo, times(1)).getAbsolutePath();
-        assertThat(response.getLink("new_book").getUri()).isEqualTo(URI.create("http://localhost:8080/webapi/books/1"));
+        assertThat(response.getLocation()).isEqualTo(URI.create("http://localhost:8080/webapi/books/1"));
     }
 
     @Test

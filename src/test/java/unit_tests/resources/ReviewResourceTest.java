@@ -5,7 +5,7 @@ import business_layer.entities.Review;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import application_layer.resources.ReviewResource;
+import application_layer.ReviewResource;
 import business_layer.services.ReviewService;
 
 import javax.ws.rs.core.Response;

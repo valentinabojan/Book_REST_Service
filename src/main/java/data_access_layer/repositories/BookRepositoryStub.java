@@ -159,12 +159,10 @@ public class BookRepositoryStub implements BookRepository {
 
         Comparator<Book> bookComparator = Comparator.comparing(book -> 0);
 
-
-        Stream<Book> sortedBooks = books;
         for (String criteria : sortCriteria.split(","))
             bookComparator = bookComparator.thenComparing(getComparatorByCriteria(criteria));
 
-        return sortedBooks.sorted(bookComparator);
+        return books.sorted(bookComparator);
     }
 
     private Comparator<Book> getComparatorByCriteria(String criteria) {

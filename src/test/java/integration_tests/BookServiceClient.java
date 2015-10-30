@@ -3,8 +3,6 @@ package integration_tests;
 import business_layer.entities.Book;
 import business_layer.entities.Review;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
@@ -13,7 +11,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class BookServiceClient {
-    private final WebTarget target;
+    private WebTarget target;
 
     public BookServiceClient(WebTarget target) {
         this.target = target;

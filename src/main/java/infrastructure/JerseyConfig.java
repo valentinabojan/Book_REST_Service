@@ -5,8 +5,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 import javax.ws.rs.ApplicationPath;
 
 @ApplicationPath("")
-public class ApplicationJerseyConfig extends ResourceConfig {
-    public ApplicationJerseyConfig() {
-        packages("resources");
+public class JerseyConfig extends ResourceConfig {
+    public JerseyConfig() {
+        packages("application_layer");
     }
 }

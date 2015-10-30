@@ -1,6 +1,6 @@
 package integration_tests;
 
-import application_layer.resources.ReviewResource;
+import application_layer.ReviewResource;
 import business_layer.entities.Review;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.filter.RequestContextFilter;
-import infrastructure.ApplicationSpringConfig;
+import infrastructure.SpringConfig;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
@@ -35,7 +35,7 @@ public class ReviewResourceTest extends JerseyTest {
         forceSet(TestProperties.CONTAINER_PORT, "0");
         rc.register(SpringLifecycleListener.class).register(RequestContextFilter.class);
         rc.registerClasses(ReviewResource.class);
-        rc.property("contextConfig", new AnnotationConfigApplicationContext(ApplicationSpringConfig.class));
+        rc.property("contextConfig", new AnnotationConfigApplicationContext(SpringConfig.class));
         return rc;
     }
 

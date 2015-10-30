@@ -1,9 +1,8 @@
-package application_layer.resources;
+package application_layer;
 
 import business_layer.entities.Book;
 import business_layer.services.BookService;
 import business_layer.value_objects.ErrorBean;
-import data_access_layer.repositories.BookRepositoryStub;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -94,7 +93,7 @@ public class BookResource {
 
         String uri = uriInfo.getAbsolutePath() + "/" + newBook.getId();
 
-        return Response.ok().entity(newBook).link(URI.create(uri), "new_book").build();
+        return Response.ok().entity(newBook).location(URI.create(uri)).build();
     }
 
     @PUT

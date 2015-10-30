@@ -1,16 +1,17 @@
-package application_layer.resources;
+package application_layer;
 
 import business_layer.entities.Review;
 import business_layer.services.ReviewService;
 import business_layer.value_objects.ErrorBean;
-import data_access_layer.repositories.BookRepositoryStub;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
 
 @Path("books/{bookId}/reviews")
+@Component
 public class ReviewResource {
 
     @Autowired

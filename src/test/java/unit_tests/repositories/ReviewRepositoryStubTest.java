@@ -5,7 +5,6 @@ import data_access_layer.repositories.BookRepository;
 import data_access_layer.repositories.BookRepositoryStub;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -16,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReviewRepositoryStubTest {
 
-    @Autowired
     private BookRepository bookRepository;
     private Review review1, review2;
     private static String BOOK_ID = "1";
