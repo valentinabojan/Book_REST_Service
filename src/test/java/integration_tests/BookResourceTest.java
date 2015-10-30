@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.filter.RequestContextFilter;
-import spring.AppConfig;
+import infrastructure.ApplicationSpringConfig;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
@@ -34,7 +34,7 @@ public class BookResourceTest extends JerseyTest {
         forceSet(TestProperties.CONTAINER_PORT, "0");
         rc.register(SpringLifecycleListener.class).register(RequestContextFilter.class);
         rc.registerClasses(BookResource.class);
-        rc.property("contextConfig", new AnnotationConfigApplicationContext(AppConfig.class));
+        rc.property("contextConfig", new AnnotationConfigApplicationContext(ApplicationSpringConfig.class));
         return rc;
     }
 
