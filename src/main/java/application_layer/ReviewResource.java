@@ -1,6 +1,6 @@
 package application_layer;
 
-import business_layer.entities.Review;
+import business_layer.entity.Review;
 import business_layer.services.ReviewService;
 import business_layer.value_objects.ErrorBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ReviewResource {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getAllReviews(@PathParam("bookId") String bookId) {
+    public Response getAllReviews(@PathParam("bookId") Integer bookId) {
         List<Review> reviews = reviewService.getAllReviews(bookId);
 
         if (reviews == null || reviews.isEmpty())
@@ -35,7 +35,7 @@ public class ReviewResource {
     @GET
     @Path("{reviewId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getReview(@PathParam("bookId") String bookId, @PathParam("reviewId") String reviewId) {
+    public Response getReview(@PathParam("bookId") Integer bookId, @PathParam("reviewId") Integer reviewId) {
         Review review = reviewService.getReviewById(bookId, reviewId);
 
         if (review == null)
@@ -48,7 +48,7 @@ public class ReviewResource {
     @Path("{reviewId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response updateReview(@PathParam("bookId") String bookId, @PathParam("reviewId") String reviewId, Review review) {
+    public Response updateReview(@PathParam("bookId") Integer bookId, @PathParam("reviewId") Integer reviewId, Review review) {
         Review updatedReview = reviewService.updateReview(bookId, reviewId, review);
 
         if(updatedReview == null)
@@ -60,7 +60,7 @@ public class ReviewResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response createReview(@PathParam("bookId") String bookId, Review review, @Context UriInfo uriInfo) {
+    public Response createReview(@PathParam("bookId") Integer bookId, Review review, @Context UriInfo uriInfo) {
         if (review.getTitle() == null || review.getTitle().length() == 0) {
             ErrorBean error = new ErrorBean();
             error.setErrorCode("validation.missing.title");
@@ -78,7 +78,7 @@ public class ReviewResource {
     @Path("{reviewId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response deleteReview(@PathParam("bookId") String bookId, @PathParam("reviewId") String reviewId) {
+    public Response deleteReview(@PathParam("bookId") Integer bookId, @PathParam("reviewId") Integer reviewId) {
         boolean reviewWasDeleted = reviewService.deleteBookReview(bookId, reviewId);
 
         if(!reviewWasDeleted)

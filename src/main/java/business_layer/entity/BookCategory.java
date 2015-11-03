@@ -1,4 +1,4 @@
-package business_layer.entities;
+package business_layer.entity;
 
 public enum BookCategory {
 

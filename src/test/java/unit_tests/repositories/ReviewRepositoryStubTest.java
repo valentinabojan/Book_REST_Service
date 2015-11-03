@@ -1,6 +1,6 @@
 package unit_tests.repositories;
 
-import business_layer.entities.Review;
+import business_layer.entity.Review;
 import data_access_layer.repositories.BookRepository;
 import data_access_layer.repositories.BookRepositoryStub;
 import org.junit.Before;
@@ -17,7 +17,7 @@ public class ReviewRepositoryStubTest {
 
     private BookRepository bookRepository;
     private Review review1, review2;
-    private static String BOOK_ID = "1";
+    private static Integer BOOK_ID = 1;
 
     @Before
     public void setUp() {

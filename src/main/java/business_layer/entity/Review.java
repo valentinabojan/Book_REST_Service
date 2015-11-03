@@ -1,4 +1,4 @@
-package business_layer.entities;
+package business_layer.entity;
 
 import business_layer.value_objects.LocalDateAdapter;
 
@@ -8,18 +8,18 @@ import java.time.LocalDate;
 
 @XmlRootElement
 public class Review {
-    private String id;
+    private Integer id;
     private String user;
     private String title;
     private String content;
     private LocalDate date;
-    private String bookId;
+    private Integer bookId;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,11 +56,11 @@ public class Review {
         this.date = date;
     }
 
-    public String getBookId() {
+    public Integer getBookId() {
         return bookId;
     }
 
-    public void setBookId(String bookId) {
+    public void setBookId(Integer bookId) {
         this.bookId = bookId;
     }
 
@@ -71,7 +71,7 @@ public class Review {
             review = new Review();
         }
 
-        public ReviewBuilder withId(String id) {
+        public ReviewBuilder withId(Integer id) {
             review.id = id;
             return this;
         }
@@ -96,7 +96,7 @@ public class Review {
             return this;
         }
 
-        public ReviewBuilder withBookId(String bookId) {
+        public ReviewBuilder withBookId(Integer bookId) {
             review.bookId = bookId;
             return this;
         }

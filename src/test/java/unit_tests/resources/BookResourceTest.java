@@ -1,6 +1,6 @@
 package unit_tests.resources;
 
-import business_layer.entities.Book;
+import business_layer.entity.Book;
 import business_layer.value_objects.ErrorBean;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class BookResourceTest {
 
     private BookResource bookResource;
     private BookService mockBookService;
-    private final static String BOOK_ID = "1";
+    private final static Integer BOOK_ID = 1;
     private final static String BOOK_COVER_PATH = "book1";
 
     @Before
@@ -190,7 +190,7 @@ public class BookResourceTest {
     public void givenAValidBook_createBook_returnsLinkToTheNewBook() {
         Book book = new Book();
         book.setTitle("title");
-        book.setId("1");
+        book.setId(1);
         UriInfo mockUriInfo = Mockito.mock(UriInfo.class);
         Mockito.when(mockBookService.createBook(book)).thenReturn(book);
         Mockito.when(mockUriInfo.getAbsolutePath()).thenReturn(URI.create("http://localhost:8080/webapi/books"));

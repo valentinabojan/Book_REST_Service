@@ -1,6 +1,6 @@
 package business_layer.services;
 
-import business_layer.entities.Book;
+import business_layer.entity.Book;
 import data_access_layer.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,11 @@ public class BookService {
         return bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(start, end, author, title, price, sortCriteria);
     }
 
-    public Book getBook(String bookId) {
+    public Book getBook(Integer bookId) {
         return bookRepository.findBookById(bookId);
     }
 
-    public boolean deleteBook(String bookId) {
+    public boolean deleteBook(Integer bookId) {
         return bookRepository.deleteBook(bookId);
     }
 
@@ -34,11 +34,11 @@ public class BookService {
         return bookRepository.createBook(book);
     }
 
-    public Book updateBook(String bookId, Book book) {
+    public Book updateBook(Integer bookId, Book book) {
         return bookRepository.updateBook(bookId, book);
     }
 
-    public File getBookCover(String bookId) {
+    public File getBookCover(Integer bookId) {
         return bookRepository.findBookCover(bookId);
     }
 

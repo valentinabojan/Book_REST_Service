@@ -1,7 +1,7 @@
 package integration_tests;
 
-import business_layer.entities.Book;
-import business_layer.entities.Review;
+import business_layer.entity.Book;
+import business_layer.entity.Review;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;

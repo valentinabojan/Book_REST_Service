@@ -1,6 +1,6 @@
 package application_layer;
 
-import business_layer.entities.Book;
+import business_layer.entity.Book;
 import business_layer.services.BookService;
 import business_layer.value_objects.ErrorBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class BookResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path("{bookId}")
-    public Response getBook(@PathParam("bookId") String bookId) {
+    public Response getBook(@PathParam("bookId") Integer bookId) {
         Book book = bookService.getBook(bookId);
 
         if(book == null)
@@ -61,7 +61,7 @@ public class BookResource {
     @GET
     @Produces("image/jpeg")
     @Path("{bookId}")
-    public Response getBookCover(@PathParam("bookId") String bookId) {
+    public Response getBookCover(@PathParam("bookId") Integer bookId) {
         File bookCover = bookService.getBookCover(bookId);
 
         if (bookCover == null)
@@ -100,7 +100,7 @@ public class BookResource {
     @Path("{bookId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response updateBook(@PathParam("bookId") String bookId, Book book) {
+    public Response updateBook(@PathParam("bookId") Integer bookId, Book book) {
         Book updatedBook = bookService.updateBook(bookId, book);
 
         if(updatedBook == null)
@@ -113,7 +113,7 @@ public class BookResource {
     @Path("{bookId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response deleteBook (@PathParam ("bookId") String bookId) {
+    public Response deleteBook (@PathParam ("bookId") Integer bookId) {
         boolean bookWasDeleted = bookService.deleteBook(bookId);
 
         if(!bookWasDeleted)

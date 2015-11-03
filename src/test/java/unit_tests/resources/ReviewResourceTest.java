@@ -1,7 +1,7 @@
 package unit_tests.resources;
 
 import business_layer.value_objects.ErrorBean;
-import business_layer.entities.Review;
+import business_layer.entity.Review;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -21,8 +21,8 @@ public class ReviewResourceTest {
 
     private ReviewResource reviewResource;
     private ReviewService mockReviewService;
-    private final static String BOOK_ID = "1";
-    private final static String REVIEW_ID = "1";
+    private final static Integer BOOK_ID = 1;
+    private final static Integer REVIEW_ID = 1;
 
     @Before
     public void setUp() {
@@ -132,7 +132,7 @@ public class ReviewResourceTest {
     public void givenAValidBook_createBook_returnsLinkToTheNewBook() {
         Review review = new Review();
         review.setTitle("title");
-        review.setId("1");
+        review.setId(1);
         UriInfo mockUriInfo = Mockito.mock(UriInfo.class);
         Mockito.when(mockReviewService.createReview(BOOK_ID, review)).thenReturn(review);
         Mockito.when(mockUriInfo.getBaseUri()).thenReturn(URI.create("http://localhost:8080/webapi/"));

@@ -1,7 +1,7 @@
 package integration_tests;
 
 import application_layer.ReviewResource;
-import business_layer.entities.Review;
+import business_layer.entity.Review;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
@@ -47,14 +47,14 @@ public class ReviewResourceTest extends JerseyTest {
                                                 .withContent("I liked it very much.")
                                                 .withUser("Valentina")
                                                 .withDate(LocalDate.of(2015, Month.OCTOBER, 23))
-                                                .withBookId("1")
+                                                .withBookId(1)
                                                 .build();
 
         review2 = Review.ReviewBuilder.review().withTitle("I liked it very much.")
                                                 .withContent("I found some dark and controversial parts")
                                                 .withUser("Michaela")
                                                 .withDate(LocalDate.of(2015, Month.SEPTEMBER, 5))
-                                                .withBookId("1")
+                                                .withBookId(1)
                                                 .build();
     }
 

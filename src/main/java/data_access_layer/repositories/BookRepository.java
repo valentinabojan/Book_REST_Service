@@ -1,34 +1,34 @@
 package data_access_layer.repositories;
 
-import business_layer.entities.Book;
-import business_layer.entities.Review;
+import business_layer.entity.Book;
+import business_layer.entity.Review;
 
 import java.io.File;
 import java.util.List;
 
 public interface BookRepository {
 
-    Book findBookById(String bookId);
+    Book findBookById(Integer bookId);
 
-    boolean deleteBook(String bookId);
+    boolean deleteBook(Integer bookId);
 
     Book createBook(Book book);
 
-    Book updateBook(String bookId, Book book);
+    Book updateBook(Integer bookId, Book book);
 
     List<Book> findAllBooksWithPaginationAndFilteringAndSorting(String start, String end, String author, String title, String price, String sortCriteria);
 
-    File findBookCover(String bookId);
+    File findBookCover(Integer bookId);
 
-    List<Review> findAllBookReviews(String bookId);
+    List<Review> findAllBookReviews(Integer bookId);
 
-    Review findReviewById(String bookId, String reviewId);
+    Review findReviewById(Integer bookId, Integer reviewId);
 
-    boolean deleteBookReview(String bookId, String reviewId);
+    boolean deleteBookReview(Integer bookId, Integer reviewId);
 
-    Review updateReview(String bookId, String reviewId, Review review);
+    Review updateReview(Integer bookId, Integer reviewId, Review review);
 
-    Review createReview(String bookId, Review review);
+    Review createReview(Integer bookId, Review review);
 
     int getBooksCount();
 }

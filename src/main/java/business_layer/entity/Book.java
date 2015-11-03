@@ -1,34 +1,66 @@
-package business_layer.entities;
+package business_layer.entity;
 
 import business_layer.value_objects.LocalDateAdapter;
+import sun.nio.cs.Surrogate;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @XmlRootElement
+@Entity
 public class Book {
 
-    private String id;
-    private String title;
-    private List<String> authors;
-    private List<BookCategory> categories;
-    private LocalDate date;
-    private double price;
-    private String isbn;
-    private String description;
-    private String coverPath;
-    private int pagesNumber;
-    private String language;
-    private double stars;
+    @Id
+    @Column(name = "BOOK_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "books_app_seq")
+    @SequenceGenerator(name = "books_app_seq", sequenceName = "books_app_seq")
+    private Integer id;
 
-    public String getId() {
+    private String title;
+
+    @ManyToMany
+    @JoinTable(name="book_author",
+                joinColumns={@JoinColumn(name="BOOK_ID")},
+                inverseJoinColumns={@JoinColumn(name="AUTHOR_ID")})
+    private List<Author> authors;
+
+    @ElementCollection(targetClass = BookCategory.class)
+    @CollectionTable(name="book_category",
+            joinColumns=@JoinColumn(name="BOOK_ID"))
+    @Column(name = "CATEGORY")
+    @Enumerated(EnumType.STRING)
+    private List<BookCategory> categories;
+
+    @Transient
+    @Column(name = "RELEASE_DATE")
+    private LocalDate date;
+
+    private Double price;
+
+    private String isbn;
+
+    private String description;
+
+    @Column(name = "COVER_PATH")
+    private String coverPath;
+
+    @Column(name = "PAGE_NUMBER")
+    private Integer pagesNumber;
+
+    private String language;
+
+    private Double stars;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -40,11 +72,11 @@ public class Book {
         this.title = title;
     }
 
-    public List<String> getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 
@@ -130,7 +162,7 @@ public class Book {
             book.setCategories(new ArrayList<>());
         }
 
-        public BookBuilder withId(String id) {
+        public BookBuilder withId(Integer id) {
             book.id = id;
             return this;
         }
@@ -140,7 +172,7 @@ public class Book {
             return this;
         }
 
-        public BookBuilder withAuthors(List<String> authors) {
+        public BookBuilder withAuthors(List<Author> authors) {
             book.authors = authors;
             return this;
         }

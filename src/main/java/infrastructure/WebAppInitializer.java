@@ -9,7 +9,7 @@ import javax.annotation.Priority;
 import javax.servlet.ServletContext;
 
 @Priority(value = 1)
-public class WebAppInitializer implements WebApplicationInitializer{
+public class WebAppInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext container) {

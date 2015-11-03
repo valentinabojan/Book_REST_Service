@@ -1,7 +1,8 @@
 package data_access_layer.repositories;
 
-import business_layer.entities.Book;
-import business_layer.entities.Review;
+import business_layer.entity.Author;
+import business_layer.entity.Book;
+import business_layer.entity.Review;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -10,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Repository("bookRepository")
+//@Repository("bookRepository")
 public class BookRepositoryStub implements BookRepository {
 
     private List<Book> books;
@@ -22,12 +23,12 @@ public class BookRepositoryStub implements BookRepository {
     }
 
     @Override
-    public Book findBookById(String bookId) {
+    public Book findBookById(Integer bookId) {
         return books.stream().filter(book -> book.getId().equals(bookId)).findFirst().orElse(null);
     }
 
     @Override
-    public boolean deleteBook(String bookId) {
+    public boolean deleteBook(Integer bookId) {
         return books.removeIf(book -> book.getId().equals(bookId));
     }
 
@@ -38,14 +39,14 @@ public class BookRepositoryStub implements BookRepository {
         if (bookAlreadyExists)
             return null;
 
-        book.setId((books.size() + 1) + "");
+        book.setId(books.size() + 1);
         books.add(book);
 
         return book;
     }
 
     @Override
-    public Book updateBook(String bookId, Book book) {
+    public Book updateBook(Integer bookId, Book book) {
         Book updatedBook = findBookById(bookId);
 
         if (updatedBook == null)
@@ -72,7 +73,7 @@ public class BookRepositoryStub implements BookRepository {
     }
 
     @Override
-    public File findBookCover(String bookId) {
+    public File findBookCover(Integer bookId) {
         String coverPath = books.stream().filter(book -> book.getId().equals(bookId)).findFirst().map(Book::getCoverPath).orElse(null);
 
         if (coverPath != null)
@@ -82,24 +83,24 @@ public class BookRepositoryStub implements BookRepository {
     }
 
     @Override
-    public List<Review> findAllBookReviews(String bookId) {
+    public List<Review> findAllBookReviews(Integer bookId) {
         return reviews.stream().filter(review -> review.getBookId().equals(bookId)).collect(Collectors.toList());
     }
 
     @Override
-    public Review findReviewById(String bookId, String reviewId) {
+    public Review findReviewById(Integer bookId, Integer reviewId) {
         return reviews.stream()
                 .filter(review -> review.getBookId().equals(bookId) && review.getId().equals(reviewId))
                 .findFirst().orElse(null);
     }
 
     @Override
-    public boolean deleteBookReview(String bookId, String reviewId) {
+    public boolean deleteBookReview(Integer bookId, Integer reviewId) {
         return reviews.removeIf(review -> review.getBookId().equals(bookId) && review.getId().equals(reviewId));
     }
 
     @Override
-    public Review updateReview(String bookId, String reviewId, Review review) {
+    public Review updateReview(Integer bookId, Integer reviewId, Review review) {
         Review updatedReview = findReviewById(bookId, reviewId);
 
         if (updatedReview == null)
@@ -114,9 +115,9 @@ public class BookRepositoryStub implements BookRepository {
     }
 
     @Override
-    public Review createReview(String bookId, Review review) {
+    public Review createReview(Integer bookId, Review review) {
         review.setBookId(bookId);
-        review.setId((reviews.size() + 1) + "");
+        review.setId(reviews.size() + 1);
         reviews.add(review);
 
         return review;
@@ -138,7 +139,7 @@ public class BookRepositoryStub implements BookRepository {
     private Stream<Book> filterBooks(Stream<Book> books, String author, String title, String price) {
         if (author != null)
             books = books.filter(book -> book.getAuthors().stream()
-                                                         .anyMatch(bookAuthor -> bookAuthor.toLowerCase().contains(author.toLowerCase())));
+                                                         .anyMatch(bookAuthor -> bookAuthor.getName().toLowerCase().contains(author.toLowerCase())));
 
         if (title != null)
             books = books.filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase()));
@@ -202,8 +203,8 @@ public class BookRepositoryStub implements BookRepository {
 
     private Comparator<Book> getComparatorByBookAuthors() {
         return (book1, book2) -> {
-            List<String> book1Authors = book1.getAuthors();
-            List<String> book2Authors = book2.getAuthors();
+            List<Author> book1Authors = book1.getAuthors();
+            List<Author> book2Authors = book2.getAuthors();
 
             if (book1Authors.isEmpty() && book2Authors.isEmpty())
                 return 0;
@@ -214,8 +215,8 @@ public class BookRepositoryStub implements BookRepository {
             if (book2Authors.isEmpty())
                 return 1;
 
-            String book1FirstAuthor = book1Authors.get(0);
-            String book2FirstAuthor = book2Authors.get(0);
+            String book1FirstAuthor = book1Authors.get(0).getName();
+            String book2FirstAuthor = book2Authors.get(0).getName();
             return book1FirstAuthor.compareTo(book2FirstAuthor);
         };
     }

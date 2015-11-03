@@ -1,8 +1,12 @@
 package integration_tests;
 
 import application_layer.BookResource;
-import business_layer.entities.Book;
-import business_layer.entities.BookCategory;
+import business_layer.entity.Author;
+import business_layer.entity.Book;
+import business_layer.entity.BookCategory;
+import infrastructure.JerseyConfig;
+import infrastructure.SpringConfig;
+import infrastructure.WebAppInitializer;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
@@ -11,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.filter.RequestContextFilter;
-import infrastructure.SpringConfig;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
@@ -30,6 +33,7 @@ public class BookResourceTest extends JerseyTest {
 
     @Override
     protected Application configure() {
+        System.out.println("test");
         ResourceConfig rc = new ResourceConfig();
         forceSet(TestProperties.CONTAINER_PORT, "0");
         rc.register(SpringLifecycleListener.class).register(RequestContextFilter.class);
@@ -42,8 +46,17 @@ public class BookResourceTest extends JerseyTest {
     public void setUpTests() {
         client = new BookServiceClient(target());
 
+        Author author1 = new Author();
+        author1.setId(1);   author1.setName("Diana Gabalon");
+        Author author2 = new Author();
+        author2.setId(2);   author2.setName("Erich Gamma");
+        Author author3 = new Author();
+        author3.setId(3);   author3.setName("Richard Helm");
+        Author author4 = new Author();
+        author4.setId(4);   author4.setName("John Vlissides");
+
         book1 = Book.BookBuilder.book().withTitle("Outlander")
-                                        .withAuthors(Arrays.asList("Diana Gabalon"))
+                                        .withAuthors(Arrays.asList(author1))
                                         .withCategories(Arrays.asList(BookCategory.MYSTERY, BookCategory.DRAMA))
                                         .withDate(LocalDate.of(2015, Month.JUNE, 12))
                                         .withPrice(17.99)
@@ -56,7 +69,7 @@ public class BookResourceTest extends JerseyTest {
                                         .build();
 
         book2 =  Book.BookBuilder.book().withTitle("Design Patterns")
-                                        .withAuthors(Arrays.asList("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides"))
+                                        .withAuthors(Arrays.asList(author2, author3, author4))
                                         .withCategories(Arrays.asList(BookCategory.SCIENCE))
                                         .withDate(LocalDate.of(2012, Month.MARCH, 1))
                                         .withPrice(59.99)
@@ -69,7 +82,7 @@ public class BookResourceTest extends JerseyTest {
                                         .build();
 
         book3 =  Book.BookBuilder.book().withTitle("Design Patterns")
-                                        .withAuthors(Arrays.asList("Erich Gamma", "Richard Helm", "Ralph Johnson", "John Vlissides"))
+                                        .withAuthors(Arrays.asList(author2, author3, author4))
                                         .withPrice(99.99)
                                         .build();
 
