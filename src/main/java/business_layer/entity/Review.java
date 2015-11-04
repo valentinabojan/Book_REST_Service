@@ -1,19 +1,33 @@
 package business_layer.entity;
 
 import business_layer.value_objects.LocalDateAdapter;
+import data_access_layer.repositories.LocalDateAttributeConverter;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 @XmlRootElement
+@Entity
 public class Review {
+
+    @Id
+    @Column(name = "REVIEW_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "books_app_seq")
+    @SequenceGenerator(name = "books_app_seq", sequenceName = "books_app_seq", allocationSize = 1)
     private Integer id;
+
+    @Column(name = "USERNAME")
     private String user;
+
     private String title;
+
     private String content;
+
+    @Column(name = "REVIEW_DATE")
+    @Convert(converter = LocalDateAttributeConverter.class)
     private LocalDate date;
-    private Integer bookId;
 
     public Integer getId() {
         return id;
@@ -56,14 +70,6 @@ public class Review {
         this.date = date;
     }
 
-    public Integer getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Integer bookId) {
-        this.bookId = bookId;
-    }
-
     public static class ReviewBuilder {
         private Review review;
 
@@ -93,11 +99,6 @@ public class Review {
 
         public ReviewBuilder withDate(LocalDate date) {
             review.date = date;
-            return this;
-        }
-
-        public ReviewBuilder withBookId(Integer bookId) {
-            review.bookId = bookId;
             return this;
         }
 

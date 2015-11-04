@@ -30,5 +30,5 @@ public interface BookRepository {
 
     Review createReview(Integer bookId, Review review);
 
-    int getBooksCount();
+    Long getBooksCount();
 }

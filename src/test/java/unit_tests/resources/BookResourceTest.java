@@ -122,7 +122,7 @@ public class BookResourceTest {
 
     @Test
     public void getBooksSize_returns200OK() {
-        int bookSize = 25;
+        long bookSize = 25;
         Mockito.when(mockBookService.getBooksCount()).thenReturn(bookSize);
 
         Response response = bookResource.getBooksCount();
@@ -133,7 +133,7 @@ public class BookResourceTest {
 
     @Test
     public void getBooksSize_returnsCorrectSize() {
-        int bookSize = 25;
+        long bookSize = 25;
         Mockito.when(mockBookService.getBooksCount()).thenReturn(bookSize);
 
         Response response = bookResource.getBooksCount();

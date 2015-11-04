@@ -74,7 +74,7 @@ public class BookResource {
     @Produces({MediaType.TEXT_PLAIN})
     @Path("size")
     public Response getBooksCount() {
-        Integer booksCount = bookService.getBooksCount();
+        Long booksCount = bookService.getBooksCount();
 
         return Response.ok().entity(booksCount).build();
     }

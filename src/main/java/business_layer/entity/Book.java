@@ -2,22 +2,23 @@ package business_layer.entity;
 
 import business_layer.value_objects.LocalDateAdapter;
 import data_access_layer.repositories.LocalDateAttributeConverter;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import sun.nio.cs.Surrogate;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @XmlRootElement
 @Entity
-//@NamedQuery(name="deleteBookById", query="DELETE FROM Book b WHERE b.book_id = :bookId")
+@NamedQueries({
+        @NamedQuery(name="countAll", query = "SELECT COUNT(b) FROM Book b"),
+        @NamedQuery(name="findCoverPath", query = "SELECT b.coverPath FROM Book b WHERE b.id = :bookId"),
+        @NamedQuery(name="findReviewById", query = "SELECT r FROM Book b JOIN b.reviews r WHERE b.id = :bookId AND r.id = :reviewId")
+})
 public class Book {
 
     @Id
@@ -32,7 +33,6 @@ public class Book {
     @JoinTable(name="book_author",
                 joinColumns={@JoinColumn(name="BOOK_ID")},
                 inverseJoinColumns={@JoinColumn(name="AUTHOR_ID")})
-//    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
     @Cascade(CascadeType.ALL)
     private List<Author> authors;
 
@@ -43,7 +43,6 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private List<BookCategory> categories;
 
-//    @Transient
     @Column(name = "RELEASE_DATE")
     @Convert(converter = LocalDateAttributeConverter.class)
     private LocalDate date;
@@ -63,6 +62,19 @@ public class Book {
     private String language;
 
     private Double stars;
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "BOOK_ID")
+    @Cascade(CascadeType.ALL)
+    private List<Review> reviews;
 
     public Integer getId() {
         return id;

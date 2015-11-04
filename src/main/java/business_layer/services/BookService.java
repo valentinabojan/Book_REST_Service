@@ -4,11 +4,13 @@ import business_layer.entity.Book;
 import data_access_layer.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.List;
 
 @Service("bookService")
+@Transactional
 public class BookService {
 
     @Autowired
@@ -26,7 +28,7 @@ public class BookService {
         return bookRepository.deleteBook(bookId);
     }
 
-    public int getBooksCount() {
+    public Long getBooksCount() {
         return bookRepository.getBooksCount();
     }
 
