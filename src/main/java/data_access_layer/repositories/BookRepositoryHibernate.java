@@ -1,11 +1,11 @@
 package data_access_layer.repositories;
 
+import business_layer.entity.Author;
 import business_layer.entity.Book;
 import business_layer.entity.Review;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,9 +18,9 @@ public class BookRepositoryHibernate implements BookRepository {
     @Autowired
     SessionFactory sessionFactory;
 
-    public BookRepositoryHibernate() {
-        sessionFactory = new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
-    }
+//    public BookRepositoryHibernate() {
+//        sessionFactory = new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
+//    }
 
     @Override
     public Book findBookById(Integer bookId) {
@@ -33,16 +33,25 @@ public class BookRepositoryHibernate implements BookRepository {
 
     @Override
     public boolean deleteBook(Integer bookId) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+
+        transaction.begin();
+        Book book = (Book)session.get(Book.class, bookId);
+        session.delete(book);
+        transaction.commit();
+
         return false;
     }
 
     @Override
     public Book createBook(Book book) {
         Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
 
+        transaction.begin();
         session.persist(book);
-
-        System.out.println(book);
+        transaction.commit();
 
         return book;
     }

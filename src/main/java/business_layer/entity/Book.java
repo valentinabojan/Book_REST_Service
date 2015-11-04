@@ -1,9 +1,13 @@
 package business_layer.entity;
 
 import business_layer.value_objects.LocalDateAdapter;
+import data_access_layer.repositories.LocalDateAttributeConverter;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import sun.nio.cs.Surrogate;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
@@ -13,12 +17,13 @@ import java.util.List;
 
 @XmlRootElement
 @Entity
+//@NamedQuery(name="deleteBookById", query="DELETE FROM Book b WHERE b.book_id = :bookId")
 public class Book {
 
     @Id
     @Column(name = "BOOK_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "books_app_seq")
-    @SequenceGenerator(name = "books_app_seq", sequenceName = "books_app_seq")
+    @SequenceGenerator(name = "books_app_seq", sequenceName = "books_app_seq", allocationSize = 1)
     private Integer id;
 
     private String title;
@@ -27,6 +32,8 @@ public class Book {
     @JoinTable(name="book_author",
                 joinColumns={@JoinColumn(name="BOOK_ID")},
                 inverseJoinColumns={@JoinColumn(name="AUTHOR_ID")})
+//    @Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+    @Cascade(CascadeType.ALL)
     private List<Author> authors;
 
     @ElementCollection(targetClass = BookCategory.class)
@@ -36,8 +43,9 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private List<BookCategory> categories;
 
-    @Transient
+//    @Transient
     @Column(name = "RELEASE_DATE")
+    @Convert(converter = LocalDateAttributeConverter.class)
     private LocalDate date;
 
     private Double price;
@@ -151,6 +159,26 @@ public class Book {
 
     public void setStars(double stars) {
         this.stars = stars;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (!id.equals(book.id)) return false;
+        if (!isbn.equals(book.isbn)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + isbn.hashCode();
+        return result;
     }
 
     public static class BookBuilder {

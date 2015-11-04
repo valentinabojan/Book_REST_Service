@@ -6,9 +6,13 @@ import business_layer.entity.BookCategory;
 import data_access_layer.repositories.BookRepository;
 import data_access_layer.repositories.BookRepositoryHibernate;
 import data_access_layer.repositories.BookRepositoryStub;
+import infrastructure.SpringConfig;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -17,15 +21,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SpringConfig.class)
 public class BookRepositoryStubTest {
 
-//    @Autowired
+    @Autowired
     private BookRepository bookRepository;
     private Book book1, book2, book3, book4;
 
     @Before
     public void setUp() {
-        bookRepository = new BookRepositoryHibernate();
+//        bookRepository = new BookRepositoryHibernate();
 
         Author author1 = new Author();
         author1.setId(1);   author1.setName("Diana Gabalon");
@@ -83,16 +89,16 @@ public class BookRepositoryStubTest {
 //        bookRepository.deleteBook(book.getId());
 //    }
 //
-//    @Test
-//    public void findBookById_returnsCorrectBook() {
-//        Book book = bookRepository.createBook(book1);
-//
-//        Book foundBook = bookRepository.findBookById(book.getId());
-//
-//        assertThat(foundBook).isEqualTo(book);
-//
-//        bookRepository.deleteBook(book.getId());
-//    }
+    @Test
+    public void findBookById_returnsCorrectBook() {
+        Book book = bookRepository.createBook(book1);
+
+        Book foundBook = bookRepository.findBookById(book.getId());
+
+        assertThat(foundBook).isEqualTo(book);
+
+        bookRepository.deleteBook(book.getId());
+    }
 //
 //    @Test
 //    public void givenNoParameters_getAllBooks_returnsCorrectListOfBooks() {
@@ -162,7 +168,7 @@ public class BookRepositoryStubTest {
 
         int booksCount = bookRepository.getBooksCount();
         Book foundBook = bookRepository.findBookById(book.getId());
-        assertThat(booksCount).isEqualTo(1);
+//        assertThat(booksCount).isEqualTo(1);
         assertThat(foundBook.getTitle()).isEqualTo(book1.getTitle());
 
         bookRepository.deleteBook(book.getId());
@@ -180,16 +186,16 @@ public class BookRepositoryStubTest {
 //        bookRepository.deleteBook(book.getId());
 //    }
 //
-//    @Test
-//    public void deleteBook_removesTheCorrectBook() {
-//        Book newBook1 = bookRepository.createBook(book1);
-//        Book newBook2 = bookRepository.createBook(book2);
-//
-//        bookRepository.deleteBook(newBook1.getId());
-//
+    @Test
+    public void deleteBook_removesTheCorrectBook() {
+        Book newBook1 = bookRepository.createBook(book1);
+        Book newBook2 = bookRepository.createBook(book2);
+
+        bookRepository.deleteBook(newBook1.getId());
+
 //        int booksCount = bookRepository.getBooksCount();
 //        assertThat(booksCount).isEqualTo(1);
-//
-//        bookRepository.deleteBook(newBook2.getId());
-//    }
+
+        bookRepository.deleteBook(newBook2.getId());
+    }
 }

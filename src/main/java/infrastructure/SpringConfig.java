@@ -6,12 +6,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan({"application_layer", "business_layer", "data_access_layer"})
+@ComponentScan({"application_layer", "business_layer", "data_access_layer", "infrastructure"})
 public class SpringConfig {
 
     @Bean(name = "sessionFactory")
-    public SessionFactory getSessionFactory() {
-        System.out.println("ceva");
+    public SessionFactory sessionFactory() {
         return new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
     }
 
