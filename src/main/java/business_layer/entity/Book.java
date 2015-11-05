@@ -63,6 +63,11 @@ public class Book {
 
     private Double stars;
 
+    @OneToMany
+    @JoinColumn(name = "BOOK_ID")
+    @Cascade(CascadeType.ALL)
+    private List<Review> reviews;
+
     public List<Review> getReviews() {
         return reviews;
     }
@@ -71,10 +76,7 @@ public class Book {
         this.reviews = reviews;
     }
 
-    @OneToMany
-    @JoinColumn(name = "BOOK_ID")
-    @Cascade(CascadeType.ALL)
-    private List<Review> reviews;
+
 
     public Integer getId() {
         return id;

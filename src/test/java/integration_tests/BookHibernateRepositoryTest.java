@@ -29,14 +29,13 @@ public class BookHibernateRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
-    private Book book, book1, book2, book3, book4;
+    private Book book1, book2, book3, book4;
     private Review review1, review2;
-    private static Integer BOOK_ID = 1;
 
     @Before
     public void setUp() {
         Author author1 = new Author();
-        author1.setId(1);   author1.setName("Diana Gaba@Transactionallon");
+        author1.setId(1);   author1.setName("Diana Gabalon");
         Author author2 = new Author();
         author2.setId(2);   author2.setName("Erich Gamma");
         Author author3 = new Author();
@@ -44,9 +43,22 @@ public class BookHibernateRepositoryTest {
         Author author4 = new Author();
         author4.setId(4);   author4.setName("John Vlissides");
 
+        List<Author> authors1 = new ArrayList<>();
+        authors1.add(author1);
+        List<Author> authors2 = new ArrayList<>();
+        authors2.add(author2);
+        authors2.add(author3);
+        authors2.add(author4);
+
+        List<BookCategory> categories1 = new ArrayList<>();
+        categories1.add(BookCategory.MYSTERY);
+        categories1.add(BookCategory.DRAMA);
+        List<BookCategory> categories2 = new ArrayList<>();
+        categories2.add(BookCategory.SCIENCE);
+
         book1 = Book.BookBuilder.book().withTitle("Outlander")
-                .withAuthors(Arrays.asList(author1))
-                .withCategories(Arrays.asList(BookCategory.MYSTERY, BookCategory.DRAMA))
+                .withAuthors(authors1)
+                .withCategories(categories1)
                 .withDate(LocalDate.of(2015, Month.JUNE, 12))
                 .withPrice(17.99)
                 .withIsbn("1-4028-9462-7")
@@ -58,8 +70,8 @@ public class BookHibernateRepositoryTest {
                 .build();
 
         book2 = Book.BookBuilder.book().withTitle("Design Patterns")
-                .withAuthors(Arrays.asList(author2, author3, author4))
-                .withCategories(Arrays.asList(BookCategory.SCIENCE))
+                .withAuthors(authors2)
+                .withCategories(categories2)
                 .withDate(LocalDate.of(2012, Month.MARCH, 1))
                 .withPrice(59.99)
                 .withIsbn("0-201-63361-2")
@@ -71,7 +83,7 @@ public class BookHibernateRepositoryTest {
                 .build();
 
         book3 = Book.BookBuilder.book().withTitle("Design Patterns")
-                .withAuthors(Arrays.asList(author2, author3, author4))
+                .withAuthors(authors2)
                 .withPrice(99.99)
                 .withDate(LocalDate.of(2012, Month.MARCH, 2))
                 .withIsbn("0-201-63361-0")
@@ -126,20 +138,17 @@ public class BookHibernateRepositoryTest {
         assertThat(books).contains(newBook2);
     }
 
-//    @Test
-//    public void givenPaginationParameters_getAllBooks_returnsCorrectListOfBooks() {
-//        Book newBook1 = bookRepository.createBook(book1);
-//        Book newBook2 = bookRepository.createBook(book2);
-//        Book newBook3 = bookRepository.createBook(book3);
-//
-//        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting("0", "1", null, null, null, null);
-//
-//        assertThat(books).isEqualTo(Arrays.asList(newBook1, newBook2));
-//
-//        bookRepository.deleteBook(newBook1.getId());
-//        bookRepository.deleteBook(newBook2.getId());
-//        bookRepository.deleteBook(newBook3.getId());
-//    }
+    @Test
+    public void givenPaginationParameters_getAllBooks_returnsCorrectListOfBooks() {
+        Book newBook1 = bookRepository.createBook(book1);
+        Book newBook2 = bookRepository.createBook(book2);
+        Book newBook3 = bookRepository.createBook(book3);
+
+        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting("0", "1", null, null, null, null);
+
+        assertThat(books).contains(newBook1);
+        assertThat(books).contains(newBook2);
+    }
 
     @Test
     public void givenFilteringParameters_getAllBooks_returnsCorrectListOfBooks() {
@@ -164,11 +173,6 @@ public class BookHibernateRepositoryTest {
         List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(null, null, null, null, null, "title,author,price,year");
 
         assertThat(books).isEqualTo(Arrays.asList(newBook4, newBook2, newBook3, newBook1));
-
-        bookRepository.deleteBook(newBook1.getId());
-        bookRepository.deleteBook(newBook2.getId());
-        bookRepository.deleteBook(newBook3.getId());
-        bookRepository.deleteBook(newBook4.getId());
     }
 
     @Test
@@ -185,8 +189,9 @@ public class BookHibernateRepositoryTest {
     public void updateBook_updatesTheBook() {
         Book book = bookRepository.createBook(book1);
 
-        Book foundBook = bookRepository.updateBook(book.getId(), book2);
+        bookRepository.updateBook(book.getId(), book2);
 
+        Book foundBook = bookRepository.findBookById(book.getId());
         assertThat(foundBook.getTitle()).isEqualTo(book2.getTitle());
     }
 
@@ -210,20 +215,19 @@ public class BookHibernateRepositoryTest {
 
         assertThat(foundReview).isEqualTo(review);
     }
-//
-//    @Test
-//    public void getAllReviews_returnsCorrectListOfReviews() {
-//        Review newReview1 = bookRepository.createReview(BOOK_ID, review1);
-//        Review newReview2 = bookRepository.createReview(BOOK_ID, review2);
-//
-//        List<Review> reviews = bookRepository.findAllBookReviews(BOOK_ID);
-//
-//        assertThat(reviews).isEqualTo(Arrays.asList(newReview1, newReview2));
-//
-//        bookRepository.deleteBook(newReview1.getId());
-//        bookRepository.deleteBook(newReview2.getId());
-//    }
-//
+
+    @Test
+    public void getAllReviews_returnsCorrectListOfReviews() {
+        Book book = bookRepository.createBook(book1);
+        Review newReview1 = bookRepository.createReview(book.getId(), review1);
+        Review newReview2 = bookRepository.createReview(book.getId(), review2);
+
+        List<Review> reviews = bookRepository.findAllBookReviews(book.getId());
+
+        assertThat(reviews).contains(newReview1);
+        assertThat(reviews).contains(newReview2);
+    }
+
     @Test
     public void createReview_createsNewReview() {
         Book book = bookRepository.createBook(book1);
@@ -232,30 +236,28 @@ public class BookHibernateRepositoryTest {
 
         assertThat(review.getId()).isNotNull();
     }
-//
-//    @Test
-//    public void updateReview_updatesTheReview() {
-//        Review review = bookRepository.createReview(BOOK_ID, review1);
-//
-//        bookRepository.updateReview(BOOK_ID, review.getId(), review2);
-//
-//        Review foundReview = bookRepository.findReviewById(BOOK_ID, review.getId());
-//        assertThat(foundReview.getTitle()).isEqualTo(review2.getTitle());
-//
-//        bookRepository.deleteBook(review.getId());
-//    }
-//
-//    @Test
-//    public void deleteReview_removesTheCorrectReview() {
-//        Review newReview1 = bookRepository.createReview(BOOK_ID, review1);
-//        Review newReview2 = bookRepository.createReview(BOOK_ID, review2);
-//
-//        bookRepository.deleteBookReview(BOOK_ID, newReview1.getId());
-//
-//        Review foundReview = bookRepository.findReviewById(BOOK_ID, newReview1.getId());
-//        assertThat(foundReview).isNull();
-//
-//        bookRepository.deleteBookReview(BOOK_ID, newReview2.getId());
-//    }
+
+    @Test
+    public void updateReview_updatesTheReview() {
+        Book book = bookRepository.createBook(book1);
+        Review review = bookRepository.createReview(book.getId(), review1);
+
+        bookRepository.updateReview(book.getId(), review.getId(), review2);
+
+        Review foundReview = bookRepository.findReviewById(book.getId(), review.getId());
+        assertThat(foundReview.getTitle()).isEqualTo(review2.getTitle());
+    }
+
+    @Test
+    public void deleteReview_removesTheCorrectReview() {
+        Book book = bookRepository.createBook(book1);
+        Review newReview1 = bookRepository.createReview(book.getId(), review1);
+        Review newReview2 = bookRepository.createReview(book.getId(), review2);
+
+        bookRepository.deleteBookReview(book.getId(), newReview1.getId());
+
+        Review foundReview = bookRepository.findReviewById(book.getId(), newReview1.getId());
+        assertThat(foundReview).isNull();
+    }
 }
 

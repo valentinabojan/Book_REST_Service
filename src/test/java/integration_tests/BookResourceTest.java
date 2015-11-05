@@ -11,6 +11,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -89,6 +90,11 @@ public class BookResourceTest extends JerseyTest {
         book4 =  Book.BookBuilder.book().withTitle("Design Patterns")
                                         .withPrice(79.99)
                                         .build();
+    }
+
+    @After
+    public void tearDown() {
+        client.deleteAllBooks("/books");
     }
 
     @Test

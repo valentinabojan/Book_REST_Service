@@ -77,11 +77,6 @@ public class Review {
             review = new Review();
         }
 
-        public ReviewBuilder withId(Integer id) {
-            review.id = id;
-            return this;
-        }
-
         public ReviewBuilder withUser(String user) {
             review.user = user;
             return this;

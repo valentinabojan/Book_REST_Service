@@ -6,6 +6,7 @@ import business_layer.entity.Review;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.io.File;
@@ -51,6 +52,7 @@ public class BookRepositoryHibernate implements BookRepository {
 
     @Override
     public Book updateBook(Integer bookId, Book book) {
+        book.setId(bookId);
         entityManager.merge(book);
 
         return book;
@@ -72,6 +74,8 @@ public class BookRepositoryHibernate implements BookRepository {
             int highPriceBound = Integer.valueOf(priceRange[1]);
             conditionalClause += " AND b.price >= " + lowPriceBound + " AND b.price <= " + highPriceBound;
         }
+
+        conditionalClause += " ORDER BY b.id";
 
         TypedQuery<Book> query = entityManager.createQuery(statement + conditionalClause, Book.class);
 
@@ -122,7 +126,9 @@ public class BookRepositoryHibernate implements BookRepository {
 
     @Override
     public List<Review> findAllBookReviews(Integer bookId) {
-        return null;
+        Book book = entityManager.find(Book.class, bookId);
+
+        return book.getReviews();
     }
 
     @Override
@@ -131,19 +137,32 @@ public class BookRepositoryHibernate implements BookRepository {
         query.setParameter("bookId", bookId);
         query.setParameter("reviewId", reviewId);
 
-        Review review = query.getSingleResult();
-
-        return review;
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
     public boolean deleteBookReview(Integer bookId, Integer reviewId) {
-        return false;
+        Book book = entityManager.find(Book.class, bookId);
+        Review review = findReviewById(bookId, reviewId);
+
+        if (review != null) {
+            book.getReviews().remove(review);
+            entityManager.persist(book);
+        }
+
+        return true;
     }
 
     @Override
     public Review updateReview(Integer bookId, Integer reviewId, Review review) {
-        return null;
+        review.setId(reviewId);
+        entityManager.merge(review);
+
+        return review;
     }
 
     @Override
