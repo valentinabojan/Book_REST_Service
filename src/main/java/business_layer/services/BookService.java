@@ -33,6 +33,7 @@ public class BookService {
     }
 
     public Book createBook(Book book) {
+        System.out.println("inainte in service");
         return bookRepository.createBook(book);
     }
 

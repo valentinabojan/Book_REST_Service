@@ -22,6 +22,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,49 +48,63 @@ public class BookResourceTest extends JerseyTest {
     public void setUpTests() {
         client = new BookServiceClient(target());
 
-        Author author1 = new Author();
-        author1.setId(1);   author1.setName("Diana Gabalon");
-        Author author2 = new Author();
-        author2.setId(2);   author2.setName("Erich Gamma");
-        Author author3 = new Author();
-        author3.setId(3);   author3.setName("Richard Helm");
-        Author author4 = new Author();
-        author4.setId(4);   author4.setName("John Vlissides");
+        String author1 = "Diana Gabalon";
+        String author2 = "Erich Gamma";
+        String author3 = "Richard Helm";
+        String author4 = "John Vlissides";
+
+        List<String> authors1 = new ArrayList<>();
+        authors1.add(author1);
+        List<String> authors2 = new ArrayList<>();
+        authors2.add(author2);
+        authors2.add(author3);
+        authors2.add(author4);
+
+        List<BookCategory> categories1 = new ArrayList<>();
+        categories1.add(BookCategory.MYSTERY);
+        categories1.add(BookCategory.DRAMA);
+        List<BookCategory> categories2 = new ArrayList<>();
+        categories2.add(BookCategory.SCIENCE);
 
         book1 = Book.BookBuilder.book().withTitle("Outlander")
-                                        .withAuthors(Arrays.asList(author1))
-                                        .withCategories(Arrays.asList(BookCategory.MYSTERY, BookCategory.DRAMA))
-                                        .withDate(LocalDate.of(2015, Month.JUNE, 12))
-                                        .withPrice(17.99)
-                                        .withIsbn("1-4028-9462-7")
-                                        .withDescription("A very entertaining book.")
-                                        .withCoverPath("book1.jpeg")
-                                        .withPagesNumber(837)
-                                        .withLanguage("Romanian")
-                                        .withStars(4.5)
-                                        .build();
+                .withAuthors(authors1)
+                .withCategories(categories1)
+                .withDate(LocalDate.of(2015, Month.JUNE, 12))
+                .withPrice(17.99)
+                .withIsbn("1-4028-9462-7")
+                .withDescription("A very entertaining book.")
+                .withCoverPath("book1.jpeg")
+                .withPagesNumber(837)
+                .withLanguage("Romanian")
+                .withStars(4.5)
+                .build();
 
-        book2 =  Book.BookBuilder.book().withTitle("Design Patterns")
-                                        .withAuthors(Arrays.asList(author2, author3, author4))
-                                        .withCategories(Arrays.asList(BookCategory.SCIENCE))
-                                        .withDate(LocalDate.of(2012, Month.MARCH, 1))
-                                        .withPrice(59.99)
-                                        .withIsbn("0-201-63361-2")
-                                        .withDescription("Design patterns for everyone.")
-                                        .withCoverPath("book2.jpeg")
-                                        .withPagesNumber(395)
-                                        .withLanguage("English")
-                                        .withStars(5)
-                                        .build();
+        book2 = Book.BookBuilder.book().withTitle("Design Patterns")
+                .withAuthors(authors2)
+                .withCategories(categories2)
+                .withDate(LocalDate.of(2012, Month.MARCH, 1))
+                .withPrice(59.99)
+                .withIsbn("0-201-63361-2")
+                .withDescription("Design patterns for everyone.")
+                .withCoverPath("book2.jpeg")
+                .withPagesNumber(395)
+                .withLanguage("English")
+                .withStars(5)
+                .build();
 
-        book3 =  Book.BookBuilder.book().withTitle("Design Patterns")
-                                        .withAuthors(Arrays.asList(author2, author3, author4))
-                                        .withPrice(99.99)
-                                        .build();
+        book3 = Book.BookBuilder.book().withTitle("Design Patterns")
+                .withAuthors(authors2)
+                .withPrice(99.99)
+                .withDate(LocalDate.of(2012, Month.MARCH, 2))
+                .withIsbn("0-201-63361-0")
+                .build();
 
-        book4 =  Book.BookBuilder.book().withTitle("Design Patterns")
-                                        .withPrice(79.99)
-                                        .build();
+        book4 = Book.BookBuilder.book().withTitle("Design Patterns")
+                .withAuthors(new ArrayList<>())
+                .withIsbn("0-201-63361-8")
+                .withPrice(59.99)
+                .withDate(LocalDate.of(2010, Month.MARCH, 3))
+                .build();
     }
 
     @After
@@ -123,7 +138,7 @@ public class BookResourceTest extends JerseyTest {
         Book newBook3 = client.post("/books", book3).readEntity(Book.class);
         Book newBook4 = client.post("/books", book4).readEntity(Book.class);
 
-        List<Book> books = client.getAllBooks("0", "10", "Gamma", "Design", "0,200", "title,author,price,year")
+        List<Book> books = client.getAllBooks("0", "10", "Erich Gamma", "Design Patterns", "0,200", "title,author,price,year")
                                 .readEntity(new GenericType<List<Book>>() {});
 
         assertThat(books.get(0).getId()).isEqualTo(newBook2.getId());

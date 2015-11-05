@@ -4,11 +4,9 @@ import business_layer.entity.Author;
 import business_layer.entity.Book;
 import business_layer.entity.Review;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -67,7 +65,7 @@ public class BookRepositoryHibernate implements BookRepository {
         if (title != null)
             conditionalClause += " AND b.title = '" + title + "'";
         if (author != null)
-            conditionalClause += " AND a.name = '" + author + "'";
+            conditionalClause += " AND a = '" + author + "'";
         if (price != null) {
             String[] priceRange = price.split(",");
             int lowPriceBound = Integer.valueOf(priceRange[0]);
@@ -166,6 +164,7 @@ public class BookRepositoryHibernate implements BookRepository {
     }
 
     @Override
+    @Transactional
     public Review createReview(Integer bookId, Review review) {
         Book book = entityManager.find(Book.class, bookId);
 
@@ -173,11 +172,11 @@ public class BookRepositoryHibernate implements BookRepository {
         if (reviews == null)
             reviews = new ArrayList<>();
         reviews.add(review);
-
         book.setReviews(reviews);
-        entityManager.persist(book);
 
-        return review;
+        entityManager.merge(book);
+
+        return reviews.get(reviews.size() - 1);
     }
 
     private Stream<Book> sortBooks(Stream<Book> books, String sortCriteria) {
@@ -229,8 +228,8 @@ public class BookRepositoryHibernate implements BookRepository {
 
     private Comparator<Book> getComparatorByBookAuthors() {
         return (book1, book2) -> {
-            List<Author> book1Authors = book1.getAuthors();
-            List<Author> book2Authors = book2.getAuthors();
+            List<String> book1Authors = book1.getAuthors();
+            List<String> book2Authors = book2.getAuthors();
 
             if (book1Authors.isEmpty() && book2Authors.isEmpty())
                 return 0;
@@ -241,8 +240,8 @@ public class BookRepositoryHibernate implements BookRepository {
             if (book2Authors.isEmpty())
                 return 1;
 
-            String book1FirstAuthor = book1Authors.get(0).getName();
-            String book2FirstAuthor = book2Authors.get(0).getName();
+            String book1FirstAuthor = book1Authors.get(0);
+            String book2FirstAuthor = book2Authors.get(0);
             return book1FirstAuthor.compareTo(book2FirstAuthor);
         };
     }

@@ -4,6 +4,8 @@ import business_layer.value_objects.LocalDateAdapter;
 import data_access_layer.repositories.LocalDateAttributeConverter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,18 +31,27 @@ public class Book {
 
     private String title;
 
-    @ManyToMany
-    @JoinTable(name="book_author",
-                joinColumns={@JoinColumn(name="BOOK_ID")},
-                inverseJoinColumns={@JoinColumn(name="AUTHOR_ID")})
-    @Cascade(CascadeType.ALL)
-    private List<Author> authors;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name="book_author",
+//                joinColumns={@JoinColumn(name="BOOK_ID")},
+//                inverseJoinColumns={@JoinColumn(name="AUTHOR_ID")})
+//    @Cascade(CascadeType.ALL)
 
-    @ElementCollection(targetClass = BookCategory.class)
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name="book_author",
+            joinColumns=@JoinColumn(name="book_id"))
+    @Column(name="author_name")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<String> authors;
+
+    @ElementCollection(targetClass = BookCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name="book_category",
-            joinColumns=@JoinColumn(name="BOOK_ID"))
+                    joinColumns=@JoinColumn(name="BOOK_ID"))
     @Column(name = "CATEGORY")
     @Enumerated(EnumType.STRING)
+    @Fetch(FetchMode.SUBSELECT)
     private List<BookCategory> categories;
 
     @Column(name = "RELEASE_DATE")
@@ -63,7 +74,7 @@ public class Book {
 
     private Double stars;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "BOOK_ID")
     @Cascade(CascadeType.ALL)
     private List<Review> reviews;
@@ -75,8 +86,6 @@ public class Book {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
-
-
 
     public Integer getId() {
         return id;
@@ -94,11 +103,11 @@ public class Book {
         this.title = title;
     }
 
-    public List<Author> getAuthors() {
+    public List<String> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(List<String> authors) {
         this.authors = authors;
     }
 
@@ -119,11 +128,11 @@ public class Book {
         this.date = date;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -151,11 +160,11 @@ public class Book {
         this.coverPath = coverPath;
     }
 
-    public int getPagesNumber() {
+    public Integer getPagesNumber() {
         return pagesNumber;
     }
 
-    public void setPagesNumber(int pagesNumber) {
+    public void setPagesNumber(Integer pagesNumber) {
         this.pagesNumber = pagesNumber;
     }
 
@@ -167,11 +176,11 @@ public class Book {
         this.language = language;
     }
 
-    public double getStars() {
+    public Double getStars() {
         return stars;
     }
 
-    public void setStars(double stars) {
+    public void setStars(Double stars) {
         this.stars = stars;
     }
 
@@ -214,7 +223,7 @@ public class Book {
             return this;
         }
 
-        public BookBuilder withAuthors(List<Author> authors) {
+        public BookBuilder withAuthors(List<String> authors) {
             book.authors = authors;
             return this;
         }

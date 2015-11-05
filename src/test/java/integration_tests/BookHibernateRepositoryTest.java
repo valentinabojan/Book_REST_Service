@@ -34,18 +34,14 @@ public class BookHibernateRepositoryTest {
 
     @Before
     public void setUp() {
-        Author author1 = new Author();
-        author1.setId(1);   author1.setName("Diana Gabalon");
-        Author author2 = new Author();
-        author2.setId(2);   author2.setName("Erich Gamma");
-        Author author3 = new Author();
-        author3.setId(3);   author3.setName("Richard Helm");
-        Author author4 = new Author();
-        author4.setId(4);   author4.setName("John Vlissides");
+        String author1 = "Diana Gabalon";
+        String author2 = "Erich Gamma";
+        String author3 = "Richard Helm";
+        String author4 = "John Vlissides";
 
-        List<Author> authors1 = new ArrayList<>();
+        List<String> authors1 = new ArrayList<>();
         authors1.add(author1);
-        List<Author> authors2 = new ArrayList<>();
+        List<String> authors2 = new ArrayList<>();
         authors2.add(author2);
         authors2.add(author3);
         authors2.add(author4);
