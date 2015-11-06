@@ -73,13 +73,4 @@ public class BookServiceClient {
             books.stream().forEach(book -> delete(target + "/" + book.getId()));
         }
     }
-
-    public void deleteAllReviews(String target) {
-        Response response = getAllReviews(target);
-
-        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-            List<Review> reviews = response.readEntity(new GenericType<List<Review>>() {});
-            reviews.stream().forEach(review -> delete(target + "/" + review.getId()));
-        }
-    }
 }

@@ -1,11 +1,5 @@
 package integration_tests;
 
-import org.library.application_layer.resource.BookResource;
-import org.library.application_layer.resource.ReviewResource;
-import org.library.business_layer.entity.Book;
-import org.library.business_layer.entity.BookCategory;
-import org.library.business_layer.entity.Review;
-import org.library.infrastructure.SpringConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
@@ -13,6 +7,11 @@ import org.glassfish.jersey.test.TestProperties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.library.application_layer.resource.BookResource;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.entity.BookCategory;
+import org.library.business_layer.entity.Review;
+import org.library.infrastructure.SpringConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.filter.RequestContextFilter;
 
@@ -30,9 +29,8 @@ public class ReviewResourceTest extends JerseyTest {
 
     private BookServiceClient client;
     private Review review1, review2;
-    private static String BOOK_ID = "1";
-    private static String MAIN_PATH = "books" + "/" + BOOK_ID + "/reviews";
-    private Book book1;
+    private Book book;
+    private static String PATH;
 
     @Override
     protected Application configure() {
@@ -40,7 +38,6 @@ public class ReviewResourceTest extends JerseyTest {
         forceSet(TestProperties.CONTAINER_PORT, "0");
         rc.register(SpringLifecycleListener.class).register(RequestContextFilter.class);
         rc.registerClasses(BookResource.class);
-        rc.registerClasses(ReviewResource.class);
         rc.property("contextConfig", new AnnotationConfigApplicationContext(SpringConfig.class));
         return rc;
     }
@@ -49,40 +46,13 @@ public class ReviewResourceTest extends JerseyTest {
     public void setUpTests() {
         client = new BookServiceClient(target());
 
-        String author1 = "Diana Gabalon";
-        List<String> authors1 = new ArrayList<>();
-        authors1.add(author1);
+        book = UtilsTestSetup.createBook1();
+        review1 = UtilsTestSetup.createReview1();
+        review2 = UtilsTestSetup.createReview2();
 
-        List<BookCategory> categories1 = new ArrayList<>();
-        categories1.add(BookCategory.MYSTERY);
-        categories1.add(BookCategory.DRAMA);
+        book = client.post("/books", book).readEntity(Book.class);
 
-        book1 = Book.BookBuilder.book().withTitle("Outlander")
-                .withAuthors(authors1)
-                .withCategories(categories1)
-                .withDate(LocalDate.of(2015, Month.JUNE, 12))
-                .withPrice(17.99)
-                .withIsbn("1-4028-9462-7")
-                .withDescription("A very entertaining book.")
-                .withCoverPath("images/book1.jpeg")
-                .withPagesNumber(837)
-                .withLanguage("Romanian")
-                .withStars(4.5)
-                .build();
-
-        review1 = Review.ReviewBuilder.review().withTitle("I liked it very much.")
-                .withContent("I liked it very much.")
-                .withUser("Valentina")
-                .withDate(LocalDate.of(2015, Month.OCTOBER, 23))
-                .build();
-
-        review2 = Review.ReviewBuilder.review().withTitle("A little dark")
-                .withContent("I found some dark and controversial parts")
-                .withUser("Michaela")
-                .withDate(LocalDate.of(2015, Month.SEPTEMBER, 5))
-                .build();
-
-
+        PATH = "books" + "/" + book.getId() + "/reviews";
     }
 
     @After
@@ -92,23 +62,19 @@ public class ReviewResourceTest extends JerseyTest {
 
     @Test
     public void givenAReview_GETById_returnsTheCorrectReview() {
-        Book book = client.post("/books", book1).readEntity(Book.class);
+        Review review = client.post(PATH, review1).readEntity(Review.class);
 
-        Review review = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
-
-        Review foundReview= client.getEntity("books" + "/" + book.getId() + "/reviews" + "/" + review.getId()).readEntity(Review.class);
+        Review foundReview= client.getEntity(PATH + "/" + review.getId()).readEntity(Review.class);
 
         assertThat(foundReview.getId()).isEqualTo(review.getId());
     }
 
     @Test
     public void givenManyReviews_GET_returnsTheCorrectListOfReviews() {
-        Book book = client.post("/books", book1).readEntity(Book.class);
+        Review newReview1 = client.post(PATH, review1).readEntity(Review.class);
+        Review newReview2 = client.post(PATH, review2).readEntity(Review.class);
 
-        Review newReview1 = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
-        Review newReview2 = client.post("books" + "/" + book.getId() + "/reviews", review2).readEntity(Review.class);
-
-        List<Review> reviews = client.getAllReviews("books" + "/" + book.getId() + "/reviews").readEntity(new GenericType<List<Review>>() {});
+        List<Review> reviews = client.getAllReviews(PATH).readEntity(new GenericType<List<Review>>() {});
 
         assertThat(reviews).contains(newReview1);
         assertThat(reviews).contains(newReview2);
@@ -116,33 +82,28 @@ public class ReviewResourceTest extends JerseyTest {
 
     @Test
     public void givenAReview_POST_createsANewReview() {
-        Book book = client.post("/books", book1).readEntity(Book.class);
-
-        Review review = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
+        Review review = client.post(PATH, review1).readEntity(Review.class);
 
         assertThat(review.getTitle()).isEqualTo(review1.getTitle());
     }
 
     @Test
     public void givenAReviewIdAndAReview_PUT_updatesTheReview() {
-        Book book = client.post("/books", book1).readEntity(Book.class);
-        Review review = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
+        Review review = client.post(PATH, review1).readEntity(Review.class);
 
-        client.put("books" + "/" + book.getId() + "/reviews" + "/" + review.getId(), review2);
+        client.put(PATH + "/" + review.getId(), review2);
 
-        Review foundReview= client.getEntity("books" + "/" + book.getId() + "/reviews" + "/" + review.getId()).readEntity(Review.class);
+        Review foundReview= client.getEntity(PATH + "/" + review.getId()).readEntity(Review.class);
         assertThat(foundReview.getTitle()).isEqualTo(review2.getTitle());
     }
 
     @Test
     public void givenAReview_DELETE_deletesTheCorrectReview() {
-        Book book = client.post("/books", book1).readEntity(Book.class);
+        Review review = client.post(PATH, review1).readEntity(Review.class);
 
-        Review review = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
+        client.delete(PATH + "/" + review.getId());
 
-        client.delete("books" + "/" + book.getId() + "/reviews" + "/" + review.getId());
-
-        Response response = client.getEntity("books" + "/" + book.getId() + "/reviews" + "/" + review.getId());
+        Response response = client.getEntity(PATH + "/" + review.getId());
         assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }
 }

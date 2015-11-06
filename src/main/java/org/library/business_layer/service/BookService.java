@@ -16,10 +16,12 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
+    @Transactional(readOnly = true)
     public List<Book> getAllBooks(String start, String end, String author, String title, String price, String sortCriteria) {
         return bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(start, end, author, title, price, sortCriteria);
     }
 
+    @Transactional(readOnly = true)
     public Book getBook(Integer bookId) {
         return bookRepository.findBookById(bookId);
     }
@@ -28,12 +30,12 @@ public class BookService {
         return bookRepository.deleteBook(bookId);
     }
 
+    @Transactional(readOnly = true)
     public Long getBooksCount() {
         return bookRepository.getBooksCount();
     }
 
     public Book createBook(Book book) {
-        System.out.println("inainte in service");
         return bookRepository.createBook(book);
     }
 
@@ -41,6 +43,7 @@ public class BookService {
         return bookRepository.updateBook(bookId, book);
     }
 
+    @Transactional(readOnly = true)
     public File getBookCover(Integer bookId) {
         return bookRepository.findBookCover(bookId);
     }

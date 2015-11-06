@@ -1,21 +1,17 @@
 package integration_tests;
 
-import org.library.business_layer.entity.Book;
-import org.library.business_layer.entity.BookCategory;
-import org.library.business_layer.entity.Review;
-import org.library.data_access_layer.repository.BookRepository;
-import org.library.infrastructure.SpringConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.entity.Review;
+import org.library.data_access_layer.repository.BookRepository;
+import org.library.infrastructure.SpringConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,75 +29,13 @@ public class BookHibernateRepositoryTest {
 
     @Before
     public void setUp() {
-        String author1 = "Diana Gabalon";
-        String author2 = "Erich Gamma";
-        String author3 = "Richard Helm";
-        String author4 = "John Vlissides";
+        book1 = UtilsTestSetup.createBook1();
+        book2 = UtilsTestSetup.createBook2();
+        book3 = UtilsTestSetup.createBook3();
+        book4 = UtilsTestSetup.createBook4();
 
-        List<String> authors1 = new ArrayList<>();
-        authors1.add(author1);
-        List<String> authors2 = new ArrayList<>();
-        authors2.add(author2);
-        authors2.add(author3);
-        authors2.add(author4);
-
-        List<BookCategory> categories1 = new ArrayList<>();
-        categories1.add(BookCategory.MYSTERY);
-        categories1.add(BookCategory.DRAMA);
-        List<BookCategory> categories2 = new ArrayList<>();
-        categories2.add(BookCategory.SCIENCE);
-
-        book1 = Book.BookBuilder.book().withTitle("Outlander")
-                .withAuthors(authors1)
-                .withCategories(categories1)
-                .withDate(LocalDate.of(2015, Month.JUNE, 12))
-                .withPrice(17.99)
-                .withIsbn("1-4028-9462-7")
-                .withDescription("A very entertaining book.")
-                .withCoverPath("images/book1.jpeg")
-                .withPagesNumber(837)
-                .withLanguage("Romanian")
-                .withStars(4.5)
-                .build();
-
-        book2 = Book.BookBuilder.book().withTitle("Design Patterns")
-                .withAuthors(authors2)
-                .withCategories(categories2)
-                .withDate(LocalDate.of(2012, Month.MARCH, 1))
-                .withPrice(59.99)
-                .withIsbn("0-201-63361-2")
-                .withDescription("Design patterns for everyone.")
-                .withCoverPath("images/book2.jpeg")
-                .withPagesNumber(395)
-                .withLanguage("English")
-                .withStars(5)
-                .build();
-
-        book3 = Book.BookBuilder.book().withTitle("Design Patterns")
-                .withAuthors(authors2)
-                .withPrice(99.99)
-                .withDate(LocalDate.of(2012, Month.MARCH, 2))
-                .withIsbn("0-201-63361-0")
-                .build();
-
-        book4 = Book.BookBuilder.book().withTitle("Design Patterns")
-                .withAuthors(new ArrayList<>())
-                .withIsbn("0-201-63361-8")
-                .withPrice(59.99)
-                .withDate(LocalDate.of(2010, Month.MARCH, 3))
-                .build();
-
-        review1 = Review.ReviewBuilder.review().withTitle("I liked it very much.")
-                .withContent("I liked it very much.")
-                .withUser("Valentina")
-                .withDate(LocalDate.of(2015, Month.OCTOBER, 23))
-                .build();
-
-        review2 = Review.ReviewBuilder.review().withTitle("A little dark")
-                .withContent("I found some dark and controversial parts")
-                .withUser("Michaela")
-                .withDate(LocalDate.of(2015, Month.SEPTEMBER, 5))
-                .build();
+        review1 = UtilsTestSetup.createReview1();
+        review2 = UtilsTestSetup.createReview2();
     }
 
     @Test

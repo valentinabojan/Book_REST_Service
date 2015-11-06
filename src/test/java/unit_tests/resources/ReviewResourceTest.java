@@ -1,11 +1,11 @@
 package unit_tests.resources;
 
+import org.library.application_layer.resource.BookResource;
 import org.library.business_layer.value_object.ErrorBean;
 import org.library.business_layer.entity.Review;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.library.application_layer.resource.ReviewResource;
 import org.library.business_layer.service.ReviewService;
 
 import javax.ws.rs.core.Response;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.times;
 
 public class ReviewResourceTest {
 
-    private ReviewResource reviewResource;
+    private BookResource bookResource;
     private ReviewService mockReviewService;
     private final static Integer BOOK_ID = 1;
     private final static Integer REVIEW_ID = 1;
@@ -27,15 +27,15 @@ public class ReviewResourceTest {
     @Before
     public void setUp() {
         mockReviewService = Mockito.mock(ReviewService.class);
-        reviewResource = new ReviewResource();
-        reviewResource.setReviewService(mockReviewService);
+        bookResource = new BookResource();
+        bookResource.setReviewService(mockReviewService);
     }
 
     @Test
     public void givenAWrongBookIdOrAWrongReviewId_getReviewById_returns404NOTFOUNFD() {
         Mockito.when(mockReviewService.getReviewById(BOOK_ID, REVIEW_ID)).thenReturn(null);
 
-        Response response = reviewResource.getReview(BOOK_ID, REVIEW_ID);
+        Response response = bookResource.getReview(BOOK_ID, REVIEW_ID);
 
         Mockito.verify(mockReviewService, times(1)).getReviewById(BOOK_ID, REVIEW_ID);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
@@ -46,7 +46,7 @@ public class ReviewResourceTest {
         Review expectedReview = new Review();
         Mockito.when(mockReviewService.getReviewById(BOOK_ID, REVIEW_ID)).thenReturn(expectedReview);
 
-        Response response = reviewResource.getReview(BOOK_ID, REVIEW_ID);
+        Response response = bookResource.getReview(BOOK_ID, REVIEW_ID);
 
         Mockito.verify(mockReviewService, times(1)).getReviewById(BOOK_ID, REVIEW_ID);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -57,7 +57,7 @@ public class ReviewResourceTest {
         Review expectedReview = new Review();
         Mockito.when(mockReviewService.getReviewById(BOOK_ID, REVIEW_ID)).thenReturn(expectedReview);
 
-        Response response = reviewResource.getReview(BOOK_ID, REVIEW_ID);
+        Response response = bookResource.getReview(BOOK_ID, REVIEW_ID);
 
         Mockito.verify(mockReviewService, times(1)).getReviewById(BOOK_ID, REVIEW_ID);
         assertThat(response.getEntity()).isEqualTo(expectedReview);
@@ -67,7 +67,7 @@ public class ReviewResourceTest {
     public void givenAValidBookIdAndAValidReviewId_deleteBookReview_returns200OK() {
         Mockito.when(mockReviewService.deleteBookReview(BOOK_ID, REVIEW_ID)).thenReturn(true);
 
-        Response response = reviewResource.deleteReview(BOOK_ID, REVIEW_ID);
+        Response response = bookResource.deleteReview(BOOK_ID, REVIEW_ID);
 
         Mockito.verify(mockReviewService, times(1)).deleteBookReview(BOOK_ID, REVIEW_ID);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -77,7 +77,7 @@ public class ReviewResourceTest {
     public void givenAWrongBookIdOrAWrongReviewId_deleteBook_returns404NOTFOUND() {
         Mockito.when(mockReviewService.deleteBookReview(BOOK_ID, REVIEW_ID)).thenReturn(false);
 
-        Response response = reviewResource.deleteReview(BOOK_ID, REVIEW_ID);
+        Response response = bookResource.deleteReview(BOOK_ID, REVIEW_ID);
 
         Mockito.verify(mockReviewService, times(1)).deleteBookReview(BOOK_ID, REVIEW_ID);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
@@ -88,7 +88,7 @@ public class ReviewResourceTest {
     public void givenAReviewWithoutTitle_createBookReview_returns400BADREQUEST() {
         Review review = new Review();
 
-        Response response = reviewResource.createReview(BOOK_ID, review, null);
+        Response response = bookResource.createReview(BOOK_ID, review, null);
 
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.BAD_REQUEST);
     }
@@ -97,7 +97,7 @@ public class ReviewResourceTest {
     public void givenAReviewWithoutTitle_createBookReview_returnsCorrectErrorMessage() {
         Review review = new Review();
 
-        Response response = reviewResource.createReview(BOOK_ID, review, null);
+        Response response = bookResource.createReview(BOOK_ID, review, null);
 
         assertThat(((ErrorBean)response.getEntity()).getErrorCode()).isEqualTo("validation.missing.title");
     }
@@ -109,7 +109,7 @@ public class ReviewResourceTest {
         UriInfo mockUriInfo = Mockito.mock(UriInfo.class);
         Mockito.when(mockReviewService.createReview(BOOK_ID, review)).thenReturn(review);
 
-        Response response = reviewResource.createReview(BOOK_ID, review, mockUriInfo);
+        Response response = bookResource.createReview(BOOK_ID, review, mockUriInfo);
 
         Mockito.verify(mockReviewService, times(1)).createReview(BOOK_ID, review);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -122,7 +122,7 @@ public class ReviewResourceTest {
         UriInfo mockUriInfo = Mockito.mock(UriInfo.class);
         Mockito.when(mockReviewService.createReview(BOOK_ID, review)).thenReturn(review);
 
-        Response response = reviewResource.createReview(BOOK_ID, review, mockUriInfo);
+        Response response = bookResource.createReview(BOOK_ID, review, mockUriInfo);
 
         Mockito.verify(mockReviewService, times(1)).createReview(BOOK_ID, review);
         assertThat(response.getEntity()).isEqualTo(review);
@@ -137,7 +137,7 @@ public class ReviewResourceTest {
         Mockito.when(mockReviewService.createReview(BOOK_ID, review)).thenReturn(review);
         Mockito.when(mockUriInfo.getBaseUri()).thenReturn(URI.create("http://localhost:8080/webapi/"));
 
-        Response response = reviewResource.createReview(BOOK_ID, review, mockUriInfo);
+        Response response = bookResource.createReview(BOOK_ID, review, mockUriInfo);
 
         Mockito.verify(mockReviewService, times(1)).createReview(BOOK_ID, review);
         Mockito.verify(mockUriInfo, times(1)).getBaseUri();
@@ -149,7 +149,7 @@ public class ReviewResourceTest {
         Review review = new Review();
         Mockito.when(mockReviewService.updateReview(BOOK_ID, REVIEW_ID, review)).thenReturn(null);
 
-        Response response = reviewResource.updateReview(BOOK_ID, REVIEW_ID, review);
+        Response response = bookResource.updateReview(BOOK_ID, REVIEW_ID, review);
 
         Mockito.verify(mockReviewService, times(1)).updateReview(BOOK_ID, REVIEW_ID, review);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
@@ -161,7 +161,7 @@ public class ReviewResourceTest {
         Review review = new Review();
         Mockito.when(mockReviewService.updateReview(BOOK_ID, REVIEW_ID, review)).thenReturn(review);
 
-        Response response = reviewResource.updateReview(BOOK_ID, REVIEW_ID, review);
+        Response response = bookResource.updateReview(BOOK_ID, REVIEW_ID, review);
 
         Mockito.verify(mockReviewService, times(1)).updateReview(BOOK_ID, REVIEW_ID, review);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -172,7 +172,7 @@ public class ReviewResourceTest {
         Review review = new Review();
         Mockito.when(mockReviewService.updateReview(BOOK_ID, REVIEW_ID, review)).thenReturn(review);
 
-        Response response = reviewResource.updateReview(BOOK_ID, REVIEW_ID, review);
+        Response response = bookResource.updateReview(BOOK_ID, REVIEW_ID, review);
 
         Mockito.verify(mockReviewService, times(1)).updateReview(BOOK_ID, REVIEW_ID, review);
         assertThat(response.getEntity()).isEqualTo(review);
@@ -182,7 +182,7 @@ public class ReviewResourceTest {
     public void givenABookIdAndNoReviewsForThatBookInDB_getAllBookReview_returns404NOTFOUND() {
         Mockito.when(mockReviewService.getAllReviews(BOOK_ID)).thenReturn(null);
 
-        Response response = reviewResource.getAllReviews(BOOK_ID);
+        Response response = bookResource.getAllReviews(BOOK_ID);
 
         Mockito.verify(mockReviewService, times(1)).getAllReviews(BOOK_ID);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
@@ -193,7 +193,7 @@ public class ReviewResourceTest {
         List<Review> reviews = Arrays.asList(new Review());
         Mockito.when(mockReviewService.getAllReviews(BOOK_ID)).thenReturn(reviews);
 
-        Response response = reviewResource.getAllReviews(BOOK_ID);
+        Response response = bookResource.getAllReviews(BOOK_ID);
 
         Mockito.verify(mockReviewService, times(1)).getAllReviews(BOOK_ID);
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
@@ -204,7 +204,7 @@ public class ReviewResourceTest {
         List<Review> reviews = Arrays.asList(new Review());
         Mockito.when(mockReviewService.getAllReviews(BOOK_ID)).thenReturn(reviews);
 
-        Response response = reviewResource.getAllReviews(BOOK_ID);
+        Response response = bookResource.getAllReviews(BOOK_ID);
 
         Mockito.verify(mockReviewService, times(1)).getAllReviews(BOOK_ID);
         assertThat(response.getEntity()).isEqualTo(reviews);
