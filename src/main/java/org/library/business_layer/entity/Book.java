@@ -1,7 +1,7 @@
-package business_layer.entity;
+package org.library.business_layer.entity;
 
-import business_layer.value_objects.LocalDateAdapter;
-import data_access_layer.repositories.LocalDateAttributeConverter;
+import org.library.data_access_layer.data_converter.LocalDateAdapter;
+import org.library.data_access_layer.data_converter.LocalDateAttributeConverter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
@@ -29,14 +29,8 @@ public class Book {
     @SequenceGenerator(name = "books_app_seq", sequenceName = "books_app_seq", allocationSize = 1)
     private Integer id;
 
+    @Column(name = "TITLE")
     private String title;
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name="book_author",
-//                joinColumns={@JoinColumn(name="BOOK_ID")},
-//                inverseJoinColumns={@JoinColumn(name="AUTHOR_ID")})
-//    @Cascade(CascadeType.ALL)
-
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -44,6 +38,7 @@ public class Book {
             joinColumns=@JoinColumn(name="book_id"))
     @Column(name="author_name")
     @Fetch(FetchMode.SUBSELECT)
+    @OrderColumn(name = "author_seq")
     private List<String> authors;
 
     @ElementCollection(targetClass = BookCategory.class, fetch = FetchType.EAGER)
@@ -58,10 +53,13 @@ public class Book {
     @Convert(converter = LocalDateAttributeConverter.class)
     private LocalDate date;
 
+    @Column(name = "PRICE")
     private Double price;
 
+    @Column(name = "ISBN")
     private String isbn;
 
+    @Column(name = "DESCRIPTION")
     private String description;
 
     @Column(name = "COVER_PATH")
@@ -70,8 +68,10 @@ public class Book {
     @Column(name = "PAGE_NUMBER")
     private Integer pagesNumber;
 
+    @Column(name = "LANGUAGE")
     private String language;
 
+    @Column(name = "STARS")
     private Double stars;
 
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)

@@ -1,7 +1,7 @@
-package business_layer.entity;
+package org.library.business_layer.entity;
 
-import business_layer.value_objects.LocalDateAdapter;
-import data_access_layer.repositories.LocalDateAttributeConverter;
+import org.library.data_access_layer.data_converter.LocalDateAdapter;
+import org.library.data_access_layer.data_converter.LocalDateAttributeConverter;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,8 +21,10 @@ public class Review {
     @Column(name = "USERNAME")
     private String user;
 
+    @Column(name = "TITLE")
     private String title;
 
+    @Column(name = "CONTENT")
     private String content;
 
     @Column(name = "REVIEW_DATE")

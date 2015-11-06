@@ -1,7 +1,7 @@
 package integration_tests;
 
-import business_layer.entity.Book;
-import business_layer.entity.Review;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.entity.Review;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -19,7 +19,12 @@ public class BookServiceClient {
 
     public Response getAllBooks(String start, String end, String author, String title, String priceRange, String sortCriteria) {
         return target.path("books")
-                    .queryParam("start", start).queryParam("end", end).queryParam("author", author).queryParam("title", title)
+                    .queryParam("start", start)
+                    .queryParam("end", end)
+                    .queryParam("author", author)
+                    .queryParam("title", title)
+                    .queryParam("price", priceRange)
+                    .queryParam("sortBy", sortCriteria)
                     .request(MediaType.APPLICATION_JSON)
                     .get(Response.class);
     }

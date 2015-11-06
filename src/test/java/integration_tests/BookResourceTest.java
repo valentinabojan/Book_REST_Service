@@ -1,12 +1,9 @@
 package integration_tests;
 
-import application_layer.BookResource;
-import business_layer.entity.Author;
-import business_layer.entity.Book;
-import business_layer.entity.BookCategory;
-import infrastructure.JerseyConfig;
-import infrastructure.SpringConfig;
-import infrastructure.WebAppInitializer;
+import org.library.application_layer.resource.BookResource;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.entity.BookCategory;
+import org.library.infrastructure.SpringConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
@@ -23,7 +20,6 @@ import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,7 +69,7 @@ public class BookResourceTest extends JerseyTest {
                 .withPrice(17.99)
                 .withIsbn("1-4028-9462-7")
                 .withDescription("A very entertaining book.")
-                .withCoverPath("book1.jpeg")
+                .withCoverPath("images/book1.jpeg")
                 .withPagesNumber(837)
                 .withLanguage("Romanian")
                 .withStars(4.5)
@@ -86,7 +82,7 @@ public class BookResourceTest extends JerseyTest {
                 .withPrice(59.99)
                 .withIsbn("0-201-63361-2")
                 .withDescription("Design patterns for everyone.")
-                .withCoverPath("book2.jpeg")
+                .withCoverPath("images/book2.jpeg")
                 .withPagesNumber(395)
                 .withLanguage("English")
                 .withStars(5)
@@ -100,7 +96,7 @@ public class BookResourceTest extends JerseyTest {
                 .build();
 
         book4 = Book.BookBuilder.book().withTitle("Design Patterns")
-                .withAuthors(new ArrayList<>())
+                .withAuthors(authors2)
                 .withIsbn("0-201-63361-8")
                 .withPrice(59.99)
                 .withDate(LocalDate.of(2010, Month.MARCH, 3))
@@ -138,7 +134,7 @@ public class BookResourceTest extends JerseyTest {
         Book newBook3 = client.post("/books", book3).readEntity(Book.class);
         Book newBook4 = client.post("/books", book4).readEntity(Book.class);
 
-        List<Book> books = client.getAllBooks("0", "10", "Erich Gamma", "Design Patterns", "0,200", "title,author,price,year")
+        List<Book> books = client.getAllBooks("1", "2", "Erich Gamma", "Design Patterns", "0,200", "title,author,price,year")
                                 .readEntity(new GenericType<List<Book>>() {});
 
         assertThat(books.get(0).getId()).isEqualTo(newBook2.getId());

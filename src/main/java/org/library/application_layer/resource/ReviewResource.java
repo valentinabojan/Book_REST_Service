@@ -1,8 +1,8 @@
-package application_layer;
+package org.library.application_layer.resource;
 
-import business_layer.entity.Review;
-import business_layer.services.ReviewService;
-import business_layer.value_objects.ErrorBean;
+import org.library.business_layer.entity.Review;
+import org.library.business_layer.service.ReviewService;
+import org.library.business_layer.value_object.ErrorBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
-package application_layer;
+package org.library.application_layer.resource;
 
-import business_layer.entity.Book;
-import business_layer.services.BookService;
-import business_layer.value_objects.ErrorBean;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.service.BookService;
+import org.library.business_layer.value_object.ErrorBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

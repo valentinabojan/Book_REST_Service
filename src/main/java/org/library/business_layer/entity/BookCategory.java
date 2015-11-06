@@ -1,4 +1,4 @@
-package business_layer.entity;
+package org.library.business_layer.entity;
 
 public enum BookCategory {
 

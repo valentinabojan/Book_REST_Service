@@ -1,18 +1,19 @@
-package data_access_layer.repositories;
+package org.library.data_access_layer.repository;
 
-import business_layer.entity.Author;
-import business_layer.entity.Book;
-import business_layer.entity.Review;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.entity.Review;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Repository("bookRepository")
@@ -62,14 +63,14 @@ public class BookRepositoryHibernate implements BookRepository {
 
     @Override
     public List<Book> findAllBooksWithPaginationAndFilteringAndSorting(String start, String end, String author, String title, String price, String sortCriteria) {
-        String statement = "SELECT DISTINCT b FROM Book b LEFT JOIN b.authors a WHERE";
+        String statement = "SELECT b FROM Book b WHERE";
 
         String conditionalClause = " 1 = 1";
 
         if (title != null)
             conditionalClause += " AND b.title = '" + title + "'";
         if (author != null)
-            conditionalClause += " AND a = '" + author + "'";
+            conditionalClause += " AND '" + author + "' MEMBER OF b.authors";
         if (price != null) {
             String[] priceRange = price.split(",");
             int lowPriceBound = Integer.valueOf(priceRange[0]);
@@ -77,40 +78,42 @@ public class BookRepositoryHibernate implements BookRepository {
             conditionalClause += " AND b.price >= " + lowPriceBound + " AND b.price <= " + highPriceBound;
         }
 
-        conditionalClause += " ORDER BY b.id";
+        conditionalClause += " ORDER BY ";
+
+
+        if (sortCriteria != null) {
+            List<String> s = new ArrayList<>();
+            for (String criteria : sortCriteria.split(",")) {
+                if (criteria.equals("title"))
+                    s.add("b.title");
+                if (criteria.equals("price"))
+                    s.add("b.price");
+//                if (criteria.equals("author"))    // TODO Sort books by first author in the list of authors
+//                    s.add(" b.authors(0)");
+                if (criteria.equals("year"))
+                    s.add("year(b.date)");
+            }
+
+            for (int i = 0; i < s.size(); i++) {
+                if (i == 0)
+                    conditionalClause += s.get(i);
+                else
+                    conditionalClause += ", " + s.get(i);
+            }
+        } else {
+            conditionalClause += "b.id";
+        }
+
 
         TypedQuery<Book> query = entityManager.createQuery(statement + conditionalClause, Book.class);
 
-        Stream<Book> filteredBooks = query.getResultList().stream();
-        Stream<Book> sortedBooks = sortBooks(filteredBooks, sortCriteria);
-        Stream<Book> paginatedBooks = paginateBooks(sortedBooks, start, end);
-
-        return paginatedBooks.collect(Collectors.toList());
-
+        int firstBook = start == null ? 0 : Integer.valueOf(start);
+        query.setFirstResult(firstBook);
+        if (end != null)
+            query.setMaxResults(Integer.parseInt(end) - firstBook + 1);
 
 
-//
-//        if (sortCriteria != null) {
-//            List<String> s = new ArrayList<>();
-//            for (String criteria : sortCriteria.split(",")) {
-//                if (criteria.equals("title"))
-//                    s.add("b.title");
-//                if (criteria.equals("price"))
-//                    s.add("b.price");
-//                if (criteria.equals("author"))
-//                    s.add("b.authors");
-//                if (criteria.equals("year"))
-//                    s.add("year(b.date)");
-//            }
-//
-//            conditionalClause += " ORDER BY";
-//            for (int i = 0; i < s.size(); i++)
-//                if (i == 0)
-//                    conditionalClause += " " + s.get(i);
-//                else
-//                    conditionalClause += ", " + s.get(i);
-//        }
-
+        return query.getResultList();
     }
 
     @Override
@@ -118,12 +121,13 @@ public class BookRepositoryHibernate implements BookRepository {
         TypedQuery<String> query = entityManager.createNamedQuery("findCoverPath", String.class);
         query.setParameter("bookId", bookId);
 
-        String coverPath = query.getSingleResult();
+        try {
+            String coverPath = "images/" + query.getSingleResult();
 
-        if (coverPath != null)
             return new File(getClass().getClassLoader().getResource(coverPath).getFile());
-
-        return null;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -147,7 +151,6 @@ public class BookRepositoryHibernate implements BookRepository {
     }
 
     @Override
-//    @Transactional
     public boolean deleteBookReview(Integer bookId, Integer reviewId) {
         Book book = entityManager.find(Book.class, bookId);
         Review review = findReviewById(bookId, reviewId);
@@ -169,7 +172,6 @@ public class BookRepositoryHibernate implements BookRepository {
     }
 
     @Override
-//    @Transactional
     public Review createReview(Integer bookId, Review review) {
         Book book = entityManager.find(Book.class, bookId);
 

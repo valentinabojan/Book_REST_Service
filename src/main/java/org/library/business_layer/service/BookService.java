@@ -1,7 +1,7 @@
-package business_layer.services;
+package org.library.business_layer.service;
 
-import business_layer.entity.Book;
-import data_access_layer.repositories.BookRepository;
+import org.library.business_layer.entity.Book;
+import org.library.data_access_layer.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

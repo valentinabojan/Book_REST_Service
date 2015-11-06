@@ -1,11 +1,10 @@
 package integration_tests;
 
-import business_layer.entity.Author;
-import business_layer.entity.Book;
-import business_layer.entity.BookCategory;
-import business_layer.entity.Review;
-import data_access_layer.repositories.BookRepository;
-import infrastructure.SpringConfig;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.entity.BookCategory;
+import org.library.business_layer.entity.Review;
+import org.library.data_access_layer.repository.BookRepository;
+import org.library.infrastructure.SpringConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +58,7 @@ public class BookHibernateRepositoryTest {
                 .withPrice(17.99)
                 .withIsbn("1-4028-9462-7")
                 .withDescription("A very entertaining book.")
-                .withCoverPath("book1.jpeg")
+                .withCoverPath("images/book1.jpeg")
                 .withPagesNumber(837)
                 .withLanguage("Romanian")
                 .withStars(4.5)
@@ -72,7 +71,7 @@ public class BookHibernateRepositoryTest {
                 .withPrice(59.99)
                 .withIsbn("0-201-63361-2")
                 .withDescription("Design patterns for everyone.")
-                .withCoverPath("book2.jpeg")
+                .withCoverPath("images/book2.jpeg")
                 .withPagesNumber(395)
                 .withLanguage("English")
                 .withStars(5)

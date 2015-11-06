@@ -1,4 +1,4 @@
-package business_layer.value_objects;
+package org.library.business_layer.value_object;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

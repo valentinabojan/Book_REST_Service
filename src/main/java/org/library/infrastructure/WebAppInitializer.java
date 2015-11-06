@@ -1,4 +1,4 @@
-package infrastructure;
+package org.library.infrastructure;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;

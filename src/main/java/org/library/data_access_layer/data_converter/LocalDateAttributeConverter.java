@@ -1,4 +1,4 @@
-package data_access_layer.repositories;
+package org.library.data_access_layer.data_converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

@@ -1,4 +1,4 @@
-package infrastructure;
+package org.library.infrastructure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,14 +16,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan({"application_layer", "business_layer", "data_access_layer", "infrastructure"})
+@ComponentScan({"org.library"})
 @EnableTransactionManagement
 public class SpringConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "application_layer", "business_layer", "data_access_layer"});
+        em.setPackagesToScan(new String[] {"org.library"});
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

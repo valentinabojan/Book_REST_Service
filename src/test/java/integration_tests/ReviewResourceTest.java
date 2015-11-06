@@ -1,11 +1,11 @@
 package integration_tests;
 
-import application_layer.BookResource;
-import application_layer.ReviewResource;
-import business_layer.entity.Author;
-import business_layer.entity.Book;
-import business_layer.entity.BookCategory;
-import business_layer.entity.Review;
+import org.library.application_layer.resource.BookResource;
+import org.library.application_layer.resource.ReviewResource;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.entity.BookCategory;
+import org.library.business_layer.entity.Review;
+import org.library.infrastructure.SpringConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.filter.RequestContextFilter;
-import infrastructure.SpringConfig;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
@@ -23,7 +22,6 @@ import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,7 +64,7 @@ public class ReviewResourceTest extends JerseyTest {
                 .withPrice(17.99)
                 .withIsbn("1-4028-9462-7")
                 .withDescription("A very entertaining book.")
-                .withCoverPath("book1.jpeg")
+                .withCoverPath("images/book1.jpeg")
                 .withPagesNumber(837)
                 .withLanguage("Romanian")
                 .withStars(4.5)

@@ -1,4 +1,4 @@
-package infrastructure;
+package org.library.infrastructure;
 
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -7,6 +7,6 @@ import javax.ws.rs.ApplicationPath;
 @ApplicationPath("")
 public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
-        packages("application_layer");
+        packages("org/library/application_layer");
     }
 }

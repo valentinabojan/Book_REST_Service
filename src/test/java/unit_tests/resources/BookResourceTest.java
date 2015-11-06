@@ -1,12 +1,12 @@
 package unit_tests.resources;
 
-import business_layer.entity.Book;
-import business_layer.value_objects.ErrorBean;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.value_object.ErrorBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import application_layer.BookResource;
-import business_layer.services.BookService;
+import org.library.application_layer.resource.BookResource;
+import org.library.business_layer.service.BookService;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;

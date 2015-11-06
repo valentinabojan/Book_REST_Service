@@ -1,7 +1,7 @@
-package data_access_layer.repositories;
+package org.library.data_access_layer.repository;
 
-import business_layer.entity.Book;
-import business_layer.entity.Review;
+import org.library.business_layer.entity.Book;
+import org.library.business_layer.entity.Review;
 
 import java.io.File;
 import java.util.List;
