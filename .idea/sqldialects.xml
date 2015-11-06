@@ -2,7 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/Initial_configuration.sql" dialect="Oracle" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/Insert_Books.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1__Create_Tables.sql" dialect="Oracle" />
   </component>
 </project>

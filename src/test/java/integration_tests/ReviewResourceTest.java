@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.library.application_layer.resource.BookResource;
 import org.library.business_layer.entity.Book;
-import org.library.business_layer.entity.BookCategory;
 import org.library.business_layer.entity.Review;
 import org.library.infrastructure.SpringConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -18,9 +17,6 @@ import org.springframework.web.filter.RequestContextFilter;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +25,6 @@ public class ReviewResourceTest extends JerseyTest {
 
     private BookServiceClient client;
     private Review review1, review2;
-    private Book book;
     private static String PATH;
 
     @Override
@@ -46,7 +41,7 @@ public class ReviewResourceTest extends JerseyTest {
     public void setUpTests() {
         client = new BookServiceClient(target());
 
-        book = UtilsTestSetup.createBook1();
+        Book book = UtilsTestSetup.createBook1();
         review1 = UtilsTestSetup.createReview1();
         review2 = UtilsTestSetup.createReview2();
 

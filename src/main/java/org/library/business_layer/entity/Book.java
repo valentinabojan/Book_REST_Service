@@ -17,11 +17,15 @@ import java.util.List;
 @XmlRootElement
 @Entity
 @NamedQueries({
-        @NamedQuery(name="countAll", query = "SELECT COUNT(b) FROM Book b"),
-        @NamedQuery(name="findCoverPath", query = "SELECT b.coverPath FROM Book b WHERE b.id = :bookId"),
-        @NamedQuery(name="findReviewById", query = "SELECT r FROM Book b JOIN b.reviews r WHERE b.id = :bookId AND r.id = :reviewId")
+        @NamedQuery(name=Book.COUNT_ALL_QUERY, query = "SELECT COUNT(b) FROM Book b"),
+        @NamedQuery(name=Book.FIND_BOOK_COVER_QUERY, query = "SELECT b.coverPath FROM Book b WHERE b.id = :bookId"),
+        @NamedQuery(name=Book.FIND_REVIEW_BY_ID_QUERY, query = "SELECT r FROM Book b JOIN b.reviews r WHERE b.id = :bookId AND r.id = :reviewId")
 })
 public class Book {
+
+    public static final String COUNT_ALL_QUERY = "countAll";
+    public static final String FIND_BOOK_COVER_QUERY = "findCoverPath";
+    public static final String FIND_REVIEW_BY_ID_QUERY = "findReviewById";
 
     @Id
     @Column(name = "BOOK_ID")
