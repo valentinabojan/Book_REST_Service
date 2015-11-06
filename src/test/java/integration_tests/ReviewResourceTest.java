@@ -105,39 +105,46 @@ public class ReviewResourceTest extends JerseyTest {
 
     @Test
     public void givenManyReviews_GET_returnsTheCorrectListOfReviews() {
-        Review newReview1 = client.post(MAIN_PATH, review1).readEntity(Review.class);
-        Review newReview2 = client.post(MAIN_PATH, review2).readEntity(Review.class);
+        Book book = client.post("/books", book1).readEntity(Book.class);
 
-        List<Review> reviews = client.getAllReviews(MAIN_PATH).readEntity(new GenericType<List<Review>>() {});
+        Review newReview1 = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
+        Review newReview2 = client.post("books" + "/" + book.getId() + "/reviews", review2).readEntity(Review.class);
 
-        assertThat(reviews.get(0).getId()).isEqualTo(newReview1.getId());
-        assertThat(reviews.get(1).getId()).isEqualTo(newReview2.getId());
+        List<Review> reviews = client.getAllReviews("books" + "/" + book.getId() + "/reviews").readEntity(new GenericType<List<Review>>() {});
+
+        assertThat(reviews).contains(newReview1);
+        assertThat(reviews).contains(newReview2);
     }
 
     @Test
     public void givenAReview_POST_createsANewReview() {
-        Review review = client.post(MAIN_PATH, review1).readEntity(Review.class);
+        Book book = client.post("/books", book1).readEntity(Book.class);
+
+        Review review = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
 
         assertThat(review.getTitle()).isEqualTo(review1.getTitle());
     }
 
     @Test
     public void givenAReviewIdAndAReview_PUT_updatesTheReview() {
-        Review review = client.post(MAIN_PATH, review1).readEntity(Review.class);
+        Book book = client.post("/books", book1).readEntity(Book.class);
+        Review review = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
 
-        client.put(MAIN_PATH + "/" + review.getId(), review2);
+        client.put("books" + "/" + book.getId() + "/reviews" + "/" + review.getId(), review2);
 
-        Review foundReview= client.getEntity(MAIN_PATH + "/" + review.getId()).readEntity(Review.class);
+        Review foundReview= client.getEntity("books" + "/" + book.getId() + "/reviews" + "/" + review.getId()).readEntity(Review.class);
         assertThat(foundReview.getTitle()).isEqualTo(review2.getTitle());
     }
 
     @Test
     public void givenAReview_DELETE_deletesTheCorrectReview() {
-        Review review = client.post(MAIN_PATH, review1).readEntity(Review.class);
+        Book book = client.post("/books", book1).readEntity(Book.class);
 
-        client.delete(MAIN_PATH + "/" + review.getId());
+        Review review = client.post("books" + "/" + book.getId() + "/reviews", review1).readEntity(Review.class);
 
-        Response response = client.getEntity(MAIN_PATH + "/" + review.getId());
+        client.delete("books" + "/" + book.getId() + "/reviews" + "/" + review.getId());
+
+        Response response = client.getEntity("books" + "/" + book.getId() + "/reviews" + "/" + review.getId());
         assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }
 }

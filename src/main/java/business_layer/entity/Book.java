@@ -74,7 +74,7 @@ public class Book {
 
     private Double stars;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "BOOK_ID")
     @Cascade(CascadeType.ALL)
     private List<Review> reviews;

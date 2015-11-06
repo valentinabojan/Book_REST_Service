@@ -49,7 +49,11 @@ public class BookRepositoryHibernate implements BookRepository {
     }
 
     @Override
+    @Transactional
     public Book updateBook(Integer bookId, Book book) {
+        if (book.getReviews() == null)
+            book.setReviews(new ArrayList<>());
+
         book.setId(bookId);
         entityManager.merge(book);
 
@@ -143,13 +147,14 @@ public class BookRepositoryHibernate implements BookRepository {
     }
 
     @Override
+//    @Transactional
     public boolean deleteBookReview(Integer bookId, Integer reviewId) {
         Book book = entityManager.find(Book.class, bookId);
         Review review = findReviewById(bookId, reviewId);
 
         if (review != null) {
             book.getReviews().remove(review);
-            entityManager.persist(book);
+            entityManager.merge(book);
         }
 
         return true;
@@ -164,7 +169,7 @@ public class BookRepositoryHibernate implements BookRepository {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public Review createReview(Integer bookId, Review review) {
         Book book = entityManager.find(Book.class, bookId);
 
