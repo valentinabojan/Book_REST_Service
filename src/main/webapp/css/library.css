@@ -1,0 +1,12 @@
+.no-round-border .list-group-item:first-child {
+    border-top: none;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.panel-special  {
+    border-top: none;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    box-shadow: none;
+}

@@ -10,7 +10,6 @@
     <div class="row" style="display: flex; align-items: center;">
         <div class="col-md-8">
 
-
             <table class="table">
                 <col width="35%"/>
                 <col/>
@@ -54,13 +53,20 @@
 
     <uib-tabset justified="true">
         <uib-tab heading="Description">
-            <div style="margin-top: 10px">
-                {{book.description}}
+            <div class="panel panel-default panel-special">
+                <div class="panel-body">
+                    {{book.description}}
+                </div>
             </div>
         </uib-tab>
+
         <uib-tab heading="Reviews">
-            <div style="margin-top: 10px">
-                TODO
+            <div class="list-group no-round-border">
+                <div class="list-group-item" ng-repeat="review in book.reviews">
+                    <h4 class="list-group-item-heading">{{review.title}}</h4>
+                    <p style="text-align: justify" class="list-group-item-text">{{review.content}}</p>
+                    <p style="text-align: right; font-style: italic">by {{review.user}}, on {{review.date}}</p>
+                </div>
             </div>
         </uib-tab>
     </uib-tabset>
