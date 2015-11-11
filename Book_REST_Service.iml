@@ -8,9 +8,9 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+          <root url="file://$MODULE_DIR$/bower_components" relative="/bower_components" />
         </webroots>
         <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
           <root url="file://$MODULE_DIR$/src/test/resources" />
         </sourceRoots>
@@ -32,6 +32,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/bower_components" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -111,5 +112,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:4.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc6:6.0" level="project" />
+    <orderEntry type="library" name="bower_components" level="project" />
   </component>
 </module>

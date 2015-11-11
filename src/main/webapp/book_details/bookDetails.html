@@ -1,0 +1,67 @@
+<div class="well span9">
+    <h3>{{book.title}}</h3>
+
+    <hr>
+
+    <p style="margin-top:-10px" >
+        by <span style="font-style: italic">{{book.authors.join(", ")}}</span>
+    </p>
+
+    <div class="row" style="display: flex; align-items: center;">
+        <div class="col-md-8">
+
+
+            <table class="table">
+                <col width="35%"/>
+                <col/>
+
+                <tbody>
+                <tr>
+                    <th>Category</th>
+                    <td>{{book.categories.join(", ")}}</td>
+                </tr>
+                <tr>
+                    <th>Language</th>
+                    <td>{{book.language}}</td>
+                </tr>
+                <tr>
+                    <th>Rating</th>
+                    <td><uib-rating ng-model="book.stars" readonly="true"/></td>
+                </tr>
+                <tr>
+                    <th>Number of pages</th>
+                    <td>{{book.pagesNumber}}</td>
+                </tr>
+                <tr>
+                    <th>Publish date</th>
+                    <td>{{book.date}}</td>
+                </tr>
+                <tr>
+                    <th>ISBN</th>
+                    <td>{{book.isbn}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4" style="text-align: center">
+            <img ng-src="{{book.coverUrl}}"/>
+            <h4><span class="label label-primary">{{book.price | currency}}</span></h4>
+        </div>
+    </div>
+
+    <br/>
+
+    <uib-tabset justified="true">
+        <uib-tab heading="Description">
+            <div style="margin-top: 10px">
+                {{book.description}}
+            </div>
+        </uib-tab>
+        <uib-tab heading="Reviews">
+            <div style="margin-top: 10px">
+                TODO
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>

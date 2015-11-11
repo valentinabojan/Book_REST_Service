@@ -6,6 +6,7 @@ import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import javax.annotation.Priority;
+import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 
 @Priority(value = 1)
@@ -20,5 +21,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
         container.addListener(new RequestContextListener());
 
         container.setInitParameter("contextConfigLocation", "");
+
+//        FilterRegistration.Dynamic routeFilter = container.addFilter("routeFilter", new RouteFilter());
+//        routeFilter.addMappingForUrlPatterns(null, true, "/*");
+//        routeFilter.setAsyncSupported(true);
     }
  }
