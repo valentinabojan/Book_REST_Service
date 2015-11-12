@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h3 class="modal-title">Delete book</h3>
+</div>
+
+<div class="modal-body text-center">
+    Are you sure you want to delete <b>{{ book.title }}</b> by <b>{{book.authors.join(", ")}}</b> from library?
+</div>
+
+<div class="modal-footer">
+    <div style="width: 50%" class="text-center center-block">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="ok()">Yes</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="cancel()">No</button>
+            </div>
+        </div>
+    </div>
+</div>

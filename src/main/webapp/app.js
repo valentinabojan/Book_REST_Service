@@ -3,15 +3,19 @@
         .module("BookApp", ["ngRoute", "ui.bootstrap"])
         .config(function($routeProvider, $locationProvider){
             $routeProvider
-                .when("/", {
-                    templateUrl: "book_details/bookDetails.html",
-                    controller: "BookDetailsController"
+                .when("/books", {
+                    templateUrl: "book_listing/bookListing.html",
+                    controller: "BookListingController"
                 })
                 .when("/books/:bookId", {
                     templateUrl: "book_details/bookDetails.html",
                     controller: "BookDetailsController"
                 })
-                .otherwise({redirectTo:"/"});
+                .when("/books/:bookId/edit", {
+                    templateUrl: "edit_book/editBook.html",
+                    controller: "EditBookController"
+                })
+                .otherwise({redirectTo:"/books"});
 
             //$locationProvider.html5Mode(true);
         });

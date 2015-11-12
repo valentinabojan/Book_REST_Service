@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class BookRepositoryHibernate implements BookRepository {
             String coverPath = "images/" + query.getSingleResult();
 
             return new File(getClass().getClassLoader().getResource(coverPath).getFile());
-        } catch (NoResultException e) {
+        } catch (NoResultException | NullPointerException e) {
             return null;
         }
     }

@@ -1,5 +1,15 @@
 <div class="well span9">
-    <h3>{{book.title}}</h3>
+
+    <div class="row" style="display: flex; align-items: center;">
+        <div class="col-md-8">
+            <h3>{{book.title}}</h3>
+        </div>
+
+        <div class="col-md-4" style="text-align: right;">
+            <button class="glyphicon glyphicon-pencil" ng-click="edit()"></button>
+            <button class="glyphicon glyphicon-trash" ng-click="delete()"></button>
+        </div>
+    </div>
 
     <hr>
 
@@ -43,9 +53,11 @@
             </table>
         </div>
 
-        <div class="col-md-4" style="text-align: center">
-            <img ng-src="{{book.coverUrl}}"/>
-            <h4><span class="label label-primary">{{book.price | currency}}</span></h4>
+        <div class="col-md-4" >
+            <div class="center-block text-center" style="width: 50%;">
+                <img ng-src="{{book.coverUrl}}" error-src="resources/icons/default_book.png" class="img-responsive"/>
+                <h4><span class="label label-primary">{{book.price | currency}}</span></h4>
+            </div>
         </div>
     </div>
 
@@ -63,7 +75,7 @@
         <uib-tab heading="Reviews">
             <div class="list-group no-round-border">
                 <div class="list-group-item" ng-repeat="review in book.reviews">
-                    <h4 class="list-group-item-heading">{{review.title}}</h4>
+                    <h5 class="list-group-item-heading"><strong>{{review.title}}</strong></h5>
                     <p style="text-align: justify" class="list-group-item-text">{{review.content}}</p>
                     <p style="text-align: right; font-style: italic">by {{review.user}}, on {{review.date}}</p>
                 </div>
