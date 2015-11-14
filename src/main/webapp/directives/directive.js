@@ -14,5 +14,17 @@
                 }
             }
         })
-
+    //
+    //
+    //.directive('nationpicker', function ($parse) {
+    //        return {
+    //            restrict: 'A',
+    //            replace: false,
+    //            transclude: false,
+    //            link: function (scope, element, attrs) {
+    //                element.append('<select id="language" class="form-control bfh-languages" data-language="English"></select>');
+    //                $('#language').bfhlanguages()
+    //            }
+    //        }
+    //    })
 })();

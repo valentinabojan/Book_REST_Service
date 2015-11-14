@@ -14,3 +14,8 @@
 .glyphicon-star, .glyphicon-star-empty {
     color:darkred;
 }
+
+.form-group.required .control-label:after {
+    content:" *";
+    color:darkred;
+}

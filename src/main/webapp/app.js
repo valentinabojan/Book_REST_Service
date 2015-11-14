@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module("BookApp", ["ngRoute", "ui.bootstrap"])
+        .module("BookApp", ["ngRoute", "ui.bootstrap", "ngMessages"])
         .config(function($routeProvider, $locationProvider){
             $routeProvider
                 .when("/books", {
@@ -12,6 +12,10 @@
                     controller: "BookDetailsController"
                 })
                 .when("/books/:bookId/edit", {
+                    templateUrl: "edit_book/editBook.html",
+                    controller: "EditBookController"
+                })
+                .when("/new_book", {
                     templateUrl: "edit_book/editBook.html",
                     controller: "EditBookController"
                 })

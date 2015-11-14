@@ -14,7 +14,7 @@
             });
 
         $scope.edit = function () {
-            console.log("edit");
+            $location.path($location.url() + "/edit");
         };
 
         $scope.delete = function () {
