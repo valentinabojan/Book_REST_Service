@@ -73,11 +73,76 @@
         </uib-tab>
 
         <uib-tab heading="Reviews">
-            <div class="list-group no-round-border">
-                <div class="list-group-item" ng-repeat="review in book.reviews">
-                    <h5 class="list-group-item-heading"><strong>{{review.title}}</strong></h5>
-                    <p style="text-align: justify" class="list-group-item-text">{{review.content}}</p>
-                    <p style="text-align: right; font-style: italic">by {{review.user}}, on {{review.date}}</p>
+            <div class="panel panel-default panel-special">
+                <div style="padding:2em">
+                    <button class="btn btn-default" type="button" ng-click="review.collapsed = !review.collapsed">
+                        <i class="glyphicon glyphicon-bullhorn"></i>
+                        Add review
+                    </button>
+                </div>
+
+                <div uib-collapse="review.collapsed" style="margin-left: 2em; margin-right: 2em; margin-bottom: 2em">
+                    <form class="form-horizontal" name="reviewForm" novalidate ng-submit="addReview(reviewForm)">
+                        <div class="form-group required" ng-class="{'has-error': reviewForm.title.$invalid && (reviewForm.title.$dirty || reviewForm.$submitted)}">
+                            <label for="title" class="col-sm-2 control-label">Title</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="title" name="title" ng-model="review.title" placeholder="Title" required>
+                                <ng-messages class="has-error" for="reviewForm.title.$error"  ng-if='reviewForm.title.$dirty || reviewForm.$submitted'>
+                                    <ng-message class="has-error help-block" when="required">You did not enter a title</ng-message>
+                                </ng-messages>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content" class="col-sm-2 control-label">Review</label>
+                            <div class="col-sm-10" >
+                                <textarea class="form-control" id="content" ng-model="review.content" maxlength="1000"></textarea>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Rating</label>
+                            <div class="col-sm-10" >
+                                <div style="padding: 6px">
+                                    <uib-rating  ng-model="review.rating" ></uib-rating>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group required" ng-class="{'has-error': reviewForm.username.$invalid && (reviewForm.username.$dirty || reviewForm.$submitted)}">
+                            <label for="username" class="col-sm-2 control-label">Username</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="username" name="username" ng-model="review.user" required>
+                                <ng-messages class="has-error" for="reviewForm.username.$error"  ng-if='reviewForm.username.$dirty || reviewForm.$submitted'>
+                                    <ng-message class="has-error help-block" when="required">You did not enter a username</ng-message>
+                                </ng-messages>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-6">
+                                <div class="btn-group btn-group-justified">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-default">Save</button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default" ng-click="reset()">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="list-group">
+                    <div class="list-group-item" ng-repeat="review in book.reviews | orderBy:'-date'">
+                        <h5 class="list-group-item-heading"><strong>{{review.title}}</strong></h5>
+                        <p style="text-align: justify" class="list-group-item-text">{{review.content}}</p>
+                        <p style="text-align: right; font-style: italic">by {{review.user}}, on {{review.date}}</p>
+                    </div>
                 </div>
             </div>
         </uib-tab>
