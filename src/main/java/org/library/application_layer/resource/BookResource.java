@@ -50,8 +50,8 @@ public class BookResource {
 
         BookList bookList = bookService.getAllBooks(start, end, author, title, price, sortCriteria);
 
-        if (bookList.getBooks() == null || bookList.getBooks().isEmpty())
-            return Response.status(Status.NOT_FOUND).build();
+//        if (bookList.getBooks() == null || bookList.getBooks().isEmpty())
+//            return Response.status(Status.NOT_FOUND).build();
 
         return Response.ok().entity(bookList).build();
     }

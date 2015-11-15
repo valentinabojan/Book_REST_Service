@@ -1,17 +1,20 @@
 <div>
 
+    <form class="form-inline">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Search by</label>
+                <input class="form-control" placeholder="Title" ng-model="searchedTitle">
+                <input class="form-control" placeholder="Author" ng-model="searchedAuthor">
+                <button class="btn btn-default" ng-click="filterBooks()"><i class="glyphicon glyphicon-search"></i></button>
 
-
-    <div class="row">
-        <div class="col-sm-offset-9 col-sm-2 text-right">
-            <label for="booksPerPage">Books per page</label>
+            </div>
+            <div class="col-sm-6 text-right">
+                <label for="booksPerPage">Books per page</label>
+                <select id="booksPerPage" class="form-control" ng-model="booksPerPage" ng-options="pageLimit for pageLimit in pageLimits"></select>
+            </div>
         </div>
-
-        <div class=" col-sm-1">
-            <select id="booksPerPage" class="form-control" ng-model="booksPerPage" ng-options="pageLimit for pageLimit in pageLimits">
-            </select>
-        </div>
-    </div>
+    </form>
 
     <br/>
 
