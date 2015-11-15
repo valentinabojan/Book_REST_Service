@@ -1,6 +1,7 @@
 package unit_tests.resources;
 
 import org.library.business_layer.entity.Book;
+import org.library.business_layer.value_object.BookList;
 import org.library.business_layer.value_object.ErrorBean;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -237,20 +239,11 @@ public class BookResourceTest {
     }
 
     @Test
-    public void givenNoParametersAndNoBooksInDB_getAllBooks_returns404NOTFOUND() {
-        Mockito.when(mockBookService.getAllBooks(null, null, null, null, null, null)).thenReturn(null);
-
-        Response response = bookResource.getAllBooks(null, null, null, null, null, null);
-
-        Mockito.verify(mockBookService, times(1)).getAllBooks(null, null, null, null, null, null);
-        assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
-    }
-
-    @Test
     public void givenNoParameters_getAllBooks_returns200OK() {
         Book book = new Book();
-        List<Book> books = Arrays.asList(book);
-        Mockito.when(mockBookService.getAllBooks(null, null, null, null, null, null)).thenReturn(books);
+        BookList bookList = new BookList();
+        bookList.setBooks(Arrays.asList(book));
+        Mockito.when(mockBookService.getAllBooks(null, null, null, null, null, null)).thenReturn(bookList);
 
         Response response = bookResource.getAllBooks(null, null, null, null, null, null);
 
@@ -261,13 +254,14 @@ public class BookResourceTest {
     @Test
     public void givenNoParameters_getAllBooks_returnsCorrectBooksList() {
         Book book = new Book();
-        List<Book> books = Arrays.asList(book);
-        Mockito.when(mockBookService.getAllBooks(null, null, null, null, null, null)).thenReturn(books);
+        BookList bookList = new BookList();
+        bookList.setBooks(Arrays.asList(book));
+        Mockito.when(mockBookService.getAllBooks(null, null, null, null, null, null)).thenReturn(bookList);
 
         Response response = bookResource.getAllBooks(null, null, null, null, null, null);
 
         Mockito.verify(mockBookService, times(1)).getAllBooks(null, null, null, null, null, null);
-        assertThat(response.getEntity()).isEqualTo(books);
+        assertThat(response.getEntity()).isEqualTo(bookList);
     }
 
     @Test
@@ -308,8 +302,9 @@ public class BookResourceTest {
         String price = "100,200";
         String sortCriteria = "author,title,year,price";
         Book book = new Book();
-        List<Book> books = Arrays.asList(book);
-        Mockito.when(mockBookService.getAllBooks(start, end, author, title, price, sortCriteria)).thenReturn(books);
+        BookList bookList = new BookList();
+        bookList.setBooks(Arrays.asList(book));
+        Mockito.when(mockBookService.getAllBooks(start, end, author, title, price, sortCriteria)).thenReturn(bookList);
 
         Response response = bookResource.getAllBooks(start, end, author, title, price, sortCriteria);
 
@@ -326,13 +321,14 @@ public class BookResourceTest {
         String price = "100,200";
         String sortCriteria = "author,title,year,price";
         Book book = new Book();
-        List<Book> books = Arrays.asList(book);
-        Mockito.when(mockBookService.getAllBooks(start, end, author, title, price, sortCriteria)).thenReturn(books);
+        BookList bookList = new BookList();
+        bookList.setBooks(Arrays.asList(book));
+        Mockito.when(mockBookService.getAllBooks(start, end, author, title, price, sortCriteria)).thenReturn(bookList);
 
         Response response = bookResource.getAllBooks(start, end, author, title, price, sortCriteria);
 
         Mockito.verify(mockBookService, times(1)).getAllBooks(start, end, author, title, price, sortCriteria);
-        assertThat(response.getEntity()).isEqualTo(books);
+        assertThat(response.getEntity()).isEqualTo(bookList);
     }
 
 

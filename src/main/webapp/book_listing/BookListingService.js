@@ -5,13 +5,15 @@
 
     function BookListingService($http) {
         return {
-            getAllBooks: function() {
+            getAllBooks: function(start, end, sortCriteria) {
+                console.log("/api/books" + "?" + "start=" + start + "&" + "end=" + end + "&" + "sortBy=" + sortCriteria);
                 return $http
-                    .get("/api/books")
+                    .get("/api/books" + "?" + "start=" + start + "&" + "end=" + end + "&" + "sortBy=" + sortCriteria)
                     .then(function(response){
                         return response.data;
                     });
             }
+
         };
     }
 })();

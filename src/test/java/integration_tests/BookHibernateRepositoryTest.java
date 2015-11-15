@@ -61,7 +61,7 @@ public class BookHibernateRepositoryTest {
         Book newBook1 = bookRepository.createBook(book1);
         Book newBook2 = bookRepository.createBook(book2);
 
-        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(null, null, null, null, null, null);
+        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(null, null, null, null, null, null).getBooks();
 
         assertThat(books).contains(newBook1);
         assertThat(books).contains(newBook2);
@@ -73,7 +73,7 @@ public class BookHibernateRepositoryTest {
         Book newBook2 = bookRepository.createBook(book2);
         Book newBook3 = bookRepository.createBook(book3);
 
-        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting("0", "1", null, null, null, null);
+        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting("0", "1", null, null, null, null).getBooks();
 
         assertThat(books).contains(newBook1);
         assertThat(books).contains(newBook2);
@@ -86,7 +86,7 @@ public class BookHibernateRepositoryTest {
         Book newBook3 = bookRepository.createBook(book3);
         Book newBook4 = bookRepository.createBook(book4);
 
-        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(null, null, "Erich Gamma", "Design Patterns", "0,200", null);
+        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(null, null, "Erich Gamma", "Design Patterns", "0,200", null).getBooks();
 
         assertThat(books).contains(newBook2);
         assertThat(books).contains(newBook3);
@@ -99,7 +99,7 @@ public class BookHibernateRepositoryTest {
         Book newBook3 = bookRepository.createBook(book3);
         Book newBook4 = bookRepository.createBook(book4);
 
-        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(null, null, null, null, null, "title,author,price,year");
+        List<Book> books = bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(null, null, null, null, null, "title,author,price,year").getBooks();
 
         assertThat(books).isEqualTo(Arrays.asList(newBook4, newBook2, newBook3, newBook1));
     }

@@ -1,6 +1,7 @@
 package org.library.business_layer.service;
 
 import org.library.business_layer.entity.Book;
+import org.library.business_layer.value_object.BookList;
 import org.library.data_access_layer.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Transactional(readOnly = true)
-    public List<Book> getAllBooks(String start, String end, String author, String title, String price, String sortCriteria) {
+    public BookList getAllBooks(String start, String end, String author, String title, String price, String sortCriteria) {
         return bookRepository.findAllBooksWithPaginationAndFilteringAndSorting(start, end, author, title, price, sortCriteria);
     }
 

@@ -5,28 +5,65 @@
 
     function BookListingController($scope, bookListingService, $location) {
         $scope.books = {};
+        $scope.pageLimits = [5, 10, 15, 20, 50];
+        $scope.booksPerPage = 10;
+        $scope.maxPagesInFooter = 5;
+        $scope.sortCriteria = 'title';
 
-        bookListingService
-            .getAllBooks()
-            .then(function(data){
-
-                data.forEach(function(book){
-                    book.coverUrl = "api" + $location.url() + "/" + book.id;
-                    console.log(book.coverUrl);
-                });
-                console.log(data);
-                $scope.books = data;
-            });
 
         $scope.showBook = function(bookId) {
             $location.path($location.url() + "/" + bookId);
         };
 
-        $scope.sortOrder = function() {
-            return $scope.sortReverse ? '-' + $scope.sortType : $scope.sortType;
+
+        $scope.$watch('booksPerPage', function(newValue, oldValue) {
+            $scope.currentPage = 1;
+
+            $scope.pageChanged();
+        });
+
+
+
+
+        $scope.pageChanged = function() {
+            start = $scope.booksPerPage * ($scope.currentPage - 1);
+            end = $scope.booksPerPage * $scope.currentPage - 1;
+
+            getBooks();
         };
 
-        $scope.sortReverse = false;
-        $scope.sortType = 'title';
+        function getBooks() {
+            bookListingService
+                .getAllBooks(start, end, $scope.sortCriteria)
+                .then(function(data){
+                    data.books.forEach(function(book){
+                        book.coverUrl = "api" + $location.url() + "/" + book.id;
+                    });
+                    $scope.books = data.books;
+                    $scope.totalBooks = data.booksCount;
+                });
+        }
+
+
+
+
+        $scope.sortBy = function (criteria){
+            $scope.sortCriteria = criteria;
+
+            $scope.currentPage = 1;
+
+            $scope.pageChanged();
+        }
+
+
+        //
+        //$scope.sortOrder = function() {
+        //    console.log($scope.booksPerPage);
+        //
+        //    return $scope.sortReverse ? '-' + $scope.sortType : $scope.sortType;
+        //};
+        //
+        //$scope.sortReverse = false;
+        //$scope.sortType = 'title';
     }
 })();

@@ -2,6 +2,7 @@ package org.library.data_access_layer.repository;
 
 import org.library.business_layer.entity.Book;
 import org.library.business_layer.entity.Review;
+import org.library.business_layer.value_object.BookList;
 
 import java.io.File;
 import java.util.List;
@@ -16,7 +17,7 @@ public interface BookRepository {
 
     Book updateBook(Integer bookId, Book book);
 
-    List<Book> findAllBooksWithPaginationAndFilteringAndSorting(String start, String end, String author, String title, String price, String sortCriteria);
+    BookList findAllBooksWithPaginationAndFilteringAndSorting(String start, String end, String author, String title, String price, String sortCriteria);
 
     File findBookCover(Integer bookId);
 

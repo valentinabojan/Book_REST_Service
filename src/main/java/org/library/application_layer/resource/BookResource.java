@@ -4,6 +4,7 @@ import org.library.business_layer.entity.Book;
 import org.library.business_layer.entity.Review;
 import org.library.business_layer.service.BookService;
 import org.library.business_layer.service.ReviewService;
+import org.library.business_layer.value_object.BookList;
 import org.library.business_layer.value_object.ErrorBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,12 +48,12 @@ public class BookResource {
         if (!isValidPriceRange(price))
             return buildErrorResponse(Status.BAD_REQUEST, "validation.incorrect.price.range");
 
-        List<Book> books = bookService.getAllBooks(start, end, author, title, price, sortCriteria);
+        BookList bookList = bookService.getAllBooks(start, end, author, title, price, sortCriteria);
 
-        if (books == null || books.isEmpty())
+        if (bookList.getBooks() == null || bookList.getBooks().isEmpty())
             return Response.status(Status.NOT_FOUND).build();
 
-        return Response.ok().entity(new GenericEntity<List<Book>>(books) {}).build();
+        return Response.ok().entity(bookList).build();
     }
 
     @GET

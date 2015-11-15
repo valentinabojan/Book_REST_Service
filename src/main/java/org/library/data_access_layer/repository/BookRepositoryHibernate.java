@@ -2,6 +2,7 @@ package org.library.data_access_layer.repository;
 
 import org.library.business_layer.entity.Book;
 import org.library.business_layer.entity.Review;
+import org.library.business_layer.value_object.BookList;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -58,7 +59,7 @@ public class BookRepositoryHibernate implements BookRepository {
     }
 
     @Override
-    public List<Book> findAllBooksWithPaginationAndFilteringAndSorting(String start, String end, String author, String title, String price, String sortCriteria) {
+    public BookList findAllBooksWithPaginationAndFilteringAndSorting(String start, String end, String author, String title, String price, String sortCriteria) {
         String statement = "SELECT b FROM Book b";
 
         String filterClause = generateFilterQueryClause(author, title, price);
@@ -66,12 +67,20 @@ public class BookRepositoryHibernate implements BookRepository {
 
         TypedQuery<Book> query = entityManager.createQuery(statement + " " + filterClause + " " + sortClause, Book.class);
 
-        int firstBook = start == null ? 0 : Integer.valueOf(start);
-        query.setFirstResult(firstBook);
-        if (end != null)
-            query.setMaxResults(Integer.parseInt(end) - firstBook + 1);
+        List<Book> books = query.getResultList();
 
-        return query.getResultList();
+        BookList result = new BookList();
+        result.setBooksCount(books.size());
+
+        int firstBook = start == null ? 0 : Integer.valueOf(start);
+        if (end == null)
+            result.setBooks(books.subList(firstBook, books.size()));
+        else {
+            int lastBook = Math.min(Integer.parseInt(end) + 1, books.size());
+            result.setBooks(books.subList(firstBook, lastBook));
+        }
+
+        return result;
     }
 
     @Override
@@ -153,7 +162,7 @@ public class BookRepositoryHibernate implements BookRepository {
         List<String> s = new ArrayList<>();
         for (String criteria : sortCriteria.split(",")) {
             if (criteria.equals("title"))
-                s.add("b.title");
+                s.add("lower(b.title)");
             if (criteria.equals("price"))
                 s.add("b.price");
 //                if (criteria.equals("author"))    // TODO Sort books by first author in the list of authors
