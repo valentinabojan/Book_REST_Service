@@ -1,6 +1,7 @@
 package integration_tests;
 
 import org.library.business_layer.entity.Book;
+import org.library.business_layer.value_object.BookList;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -68,7 +69,7 @@ public class BookServiceClient {
         Response response = getAllBooks(null, null, null, null, null, null);
 
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-            List<Book> books = response.readEntity(new GenericType<List<Book>>() {});
+            List<Book> books = response.readEntity(BookList.class).getBooks();
             books.stream().forEach(book -> delete(target + "/" + book.getId()));
         }
     }

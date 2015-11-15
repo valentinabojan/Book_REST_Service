@@ -3,5 +3,9 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/Initial_configuration.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1__Create_Tables.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V2__Create_sequence.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V3__Insert_Books.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V4__Insert_Authors.sql" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V5__Insert_Categories.sql" dialect="Oracle" />
   </component>
 </project>

@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.library.application_layer.resource.BookResource;
 import org.library.business_layer.entity.Book;
+import org.library.business_layer.value_object.BookList;
 import org.library.infrastructure.SpringConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.filter.RequestContextFilter;
@@ -79,7 +80,7 @@ public class BookResourceTest extends JerseyTest {
         Book newBook4 = client.post(PATH, book4).readEntity(Book.class);
 
         List<Book> books = client.getAllBooks("1", "2", "Erich Gamma", "Design Patterns", "0,200", "title,author,price,year")
-                                .readEntity(new GenericType<List<Book>>() {});
+                                .readEntity(BookList.class).getBooks();
 
         assertThat(books.get(0).getId()).isEqualTo(newBook2.getId());
         assertThat(books.get(1).getId()).isEqualTo(newBook3.getId());

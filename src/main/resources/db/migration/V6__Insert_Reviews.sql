@@ -1,0 +1,19 @@
+INSERT INTO REVIEW VALUES(books_app_seq.nextVal, 'Valentina', 'Beautiful',
+                      'A special note to those who say my review stopped them from reading this book: No no no! Read it! I actually reread the whole series last summer and enjoyed it immensely. Just read it for what it is: ludicrous, well-written, humorous, delicious TRASH. Just don''t expect it to be the most brilliant novel ever written and you''ll be fine.',
+                      '01-JUN-2014', 1);
+
+INSERT INTO REVIEW VALUES(books_app_seq.nextVal, 'Jane Smith', 'Unexpected Direction, but Perfection (Potential spoilers, but pretty vague)',
+                      'This was a brilliant conclusion to the trilogy. I can only compare it to "Ender''s Game" - and that is extremely high praise, indeed. When I first closed the book last night, I felt shattered, empty, and drained. And that was the point, I think. I''m glad I waited to review the book because I''m not sure what my review would have been. For the first two books, I think most of us readers have all been laboring under the assumption that Katniss Everdeen would eventually choose one of the two terrific men in her life: Gale, her childhood companion or Peeta, the one who accompanied her to the Hunger Games twice. She''d pick one of them and live happily ever after with him, surrounded by friends and family. Somehow, along the way, Katniss would get rid of the awful President Snow and stop the evil Hunger Games. How one teenage girl would do all that, we weren''t too sure, but we all had faith and hope that she would.',
+                      '27-MAY-2015', 13);
+
+INSERT INTO REVIEW VALUES(books_app_seq.nextVal, 'W.Westphal', 'The detractors of this book wanted a fairytale',
+                      'To start I am a 47 year old Veteran. I have read a lot of the bad reviews for this last book and I see a theme running through them all. They didn''t get their fairytale ending and the people they liked didn''t end up the way they wanted. Well If you are looking for a fairytale read Harry Potter. If you want a realistic book on how war really is and how people will sacrifice themselves to save their country, then this is for you. The love triangle between the three main characters resolves itself in the best way that I could see possible. The way each one would react to the horrors of war were obvious from book one. I don''t want to include spoilers so Ill just say, read this with an expectation of a realistic portrayal of the characters and how the war would change them. The ending on a personal level, is not necessarily a happy one, but it is a realistic one.',
+                      '28-OCT-2015', 13);
+
+INSERT INTO REVIEW VALUES(books_app_seq.nextVal, 'Lorryl', 'Just plain sloppy and apathetic.',
+                      'I love how the 5 star reviewers accuse the lower star reviewers of whining because they didn''t get their fairytale ending. Sadly, it is not the case with me. I really should have trusted my instincts and stopped at a 1/3rd of the book.',
+                      '15-NOV-2015', 13);
+
+INSERT INTO REVIEW VALUES(books_app_seq.nextVal, 'A. R. Bovey', 'Disappointed',
+                      'I absolutely love the first books and I was totally certain the third would be just as great but I have to say it was overall really disappointing. The worst part for me was the lack of character development, I was expecting anything tragic to happen to any character including Katniss but I never thought she would completely ignore their relationships which were the foundation of the first books. Maybe success ruined it for the author, she started believing she had to write "Literature", send a big message and somehow forgot to be loyal to her story.',
+                      '16-NOV-2015', 13);

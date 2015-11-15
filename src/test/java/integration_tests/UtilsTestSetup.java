@@ -28,7 +28,6 @@ public class UtilsTestSetup {
     public static List<BookCategory> createTwoCategories() {
         List<BookCategory> categories = new ArrayList<>();
         categories.add(BookCategory.MYSTERY);
-        categories.add(BookCategory.DRAMA);
         return categories;
     }
 
