@@ -4,14 +4,14 @@
         <div class="row">
             <div class="col-sm-6">
                 <label>Search by</label>
-                <input class="form-control" placeholder="Title" ng-model="searchedTitle">
-                <input class="form-control" placeholder="Author" ng-model="searchedAuthor">
-                <button class="btn btn-default" ng-click="filterBooks()"><i class="glyphicon glyphicon-search"></i></button>
+                <input class="form-control" placeholder="Title" ng-model="vm.searchedTitle">
+                <input class="form-control" placeholder="Author" ng-model="vm.searchedAuthor">
+                <button class="btn btn-default" ng-click="vm.filterBooks()"><i class="glyphicon glyphicon-search"></i></button>
 
             </div>
             <div class="col-sm-6 text-right">
                 <label for="booksPerPage">Books per page</label>
-                <select id="booksPerPage" class="form-control" ng-model="booksPerPage" ng-options="pageLimit for pageLimit in pageLimits"></select>
+                <select id="booksPerPage" class="form-control" ng-model="vm.booksPerPage" ng-options="pageLimit for pageLimit in vm.pageLimits"></select>
             </div>
         </div>
     </form>
@@ -24,20 +24,20 @@
             <thead>
             <tr>
                 <th></th>
-                <th ng-click="sortBy('title')" style="cursor: pointer">
+                <th ng-click="vm.sortBy('title')" style="cursor: pointer">
                     Title
-                    <i ng-show="sortCriteria == 'title'" class="glyphicon glyphicon-sort-by-attributes" ></i>
+                    <i ng-show="vm.sortCriteria == 'title'" class="glyphicon glyphicon-sort-by-attributes" ></i>
                 </th>
                 <th>Authors</th>
-                <th ng-click="sortBy('price')" style="cursor: pointer">
+                <th ng-click="vm.sortBy('price')" style="cursor: pointer">
                     Price
-                    <i ng-show="sortCriteria == 'price'" class="glyphicon glyphicon-sort-by-attributes" ></i>
+                    <i ng-show="vm.sortCriteria == 'price'" class="glyphicon glyphicon-sort-by-attributes" ></i>
                 </th>
                 <th>Rating</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="book in books" ng-click="showBook(book.id)" style="cursor: pointer;">
+            <tr ng-repeat="book in vm.books" ng-click="vm.showBook(book.id)" style="cursor: pointer;">
                 <td>
                     <div style="height: 4em" >
                         <img ng-src="{{book.coverUrl}}" style="max-height: 100%"  error-src="resources/icons/default_book.png" class="img-responsive center-block"/>
@@ -58,8 +58,8 @@
 
     <div class="panel-footer text-center">
         <uib-pagination style="margin: 0; padding: 0" class="pagination-sm"
-                        boundary-links="true" total-items="totalBooks" max-size="maxPagesInFooter" items-per-page="booksPerPage"
-                        ng-model="currentPage" ng-change="pageChanged()"
+                        boundary-links="true" total-items="vm.totalBooks" max-size="vm.maxPagesInFooter" items-per-page="vm.booksPerPage"
+                        ng-model="vm.currentPage" ng-change="vm.pageChanged()"
                         previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
         </uib-pagination>
     </div>

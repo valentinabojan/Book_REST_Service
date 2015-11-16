@@ -2,19 +2,19 @@
 
     <div class="row" >
         <div class="col-md-6">
-            <h3>{{book.title}}</h3>
+            <h3>{{vm.book.title}}</h3>
         </div>
 
         <div class="col-md-6 text-right">
-            <button class="btn btn-default" ng-click="edit()"><i class="glyphicon glyphicon-pencil"></i></button>
-            <button class="btn btn-default" ng-click="delete()"><i class="glyphicon glyphicon-trash"></i></button>
+            <button class="btn btn-default" ng-click="vm.editBook()"><i class="glyphicon glyphicon-pencil"></i></button>
+            <button class="btn btn-default" ng-click="vm.deleteBook()"><i class="glyphicon glyphicon-trash"></i></button>
         </div>
     </div>
 
     <hr>
 
     <p style="margin-top:-10px" >
-        by <span style="font-style: italic">{{book.authors.join(", ")}}</span>
+        by <span style="font-style: italic">{{vm.book.authors.join(", ")}}</span>
     </p>
 
     <div class="row" style="display: flex; align-items: center;">
@@ -27,31 +27,31 @@
                 <tbody>
                 <tr>
                     <th>Category</th>
-                    <td>{{book.categories.join(", ")}}</td>
+                    <td>{{vm.book.categories.join(", ")}}</td>
                 </tr>
                 <tr>
                     <th>Language</th>
-                    <td>{{book.language}}</td>
+                    <td>{{vm.book.language}}</td>
                 </tr>
                 <tr>
                     <th>Rating</th>
-                    <td><uib-rating ng-model="book.stars" readonly="true"/></td>
+                    <td><uib-rating ng-model="vm.book.stars" readonly="true"/></td>
                 </tr>
                 <tr>
                     <th>Number of pages</th>
-                    <td>{{book.pagesNumber}}</td>
+                    <td>{{vm.book.pagesNumber}}</td>
                 </tr>
                 <tr>
                     <th>Publish date</th>
-                    <td>{{book.date}}</td>
+                    <td>{{vm.book.date}}</td>
                 </tr>
                 <tr>
                     <th>ISBN</th>
-                    <td>{{book.isbn}}</td>
+                    <td>{{vm.book.isbn}}</td>
                 </tr>
                 <tr class="visible-xs visible-sm">
                     <th>Price</th>
-                    <td>{{book.price | currency}}</td>
+                    <td>{{vm.book.price | currency}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -59,8 +59,8 @@
 
         <div class="col-md-4 hidden-sm hidden-xs" >
             <div class="center-block text-center" style="width: 50%;">
-                <img ng-src="{{book.coverUrl}}" error-src="resources/icons/default_book.png" class="img-responsive"/>
-                <h4><span class="label label-primary">{{book.price | currency}}</span></h4>
+                <img ng-src="{{vm.book.coverUrl}}" error-src="resources/icons/default_book.png" class="img-responsive"/>
+                <h4><span class="label label-primary">{{vm.book.price | currency}}</span></h4>
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@
         <uib-tab heading="Description">
             <div class="panel panel-default panel-special">
                 <div class="panel-body text-justify">
-                    {{book.description}}
+                    {{vm.book.description}}
                 </div>
             </div>
         </uib-tab>
@@ -79,18 +79,18 @@
         <uib-tab heading="Reviews">
             <div class="panel panel-default panel-special">
                 <div style="padding:2em">
-                    <button class="btn btn-default" type="button" ng-click="review.collapsed = !review.collapsed">
+                    <button class="btn btn-default" type="button" ng-click="vm.review.collapsed = !vm.review.collapsed">
                         <i class="glyphicon glyphicon-bullhorn"></i>
                         Add review
                     </button>
                 </div>
 
-                <div uib-collapse="review.collapsed" style="margin-left: 2em; margin-right: 2em; margin-bottom: 2em">
-                    <form class="form-horizontal" name="reviewForm" novalidate ng-submit="addReview(reviewForm)">
+                <div uib-collapse="vm.review.collapsed" style="margin-left: 2em; margin-right: 2em; margin-bottom: 2em">
+                    <form class="form-horizontal" name="reviewForm" novalidate ng-submit="vm.addReview(reviewForm)">
                         <div class="form-group required" ng-class="{'has-error': reviewForm.title.$invalid && (reviewForm.title.$dirty || reviewForm.$submitted)}">
                             <label for="title" class="col-sm-2 control-label">Title</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="title" name="title" ng-model="review.title" placeholder="Title" required>
+                                <input type="text" class="form-control" id="title" name="title" ng-model="vm.review.title" placeholder="Title" required>
                                 <ng-messages class="has-error" for="reviewForm.title.$error"  ng-if='reviewForm.title.$dirty || reviewForm.$submitted'>
                                     <ng-message class="has-error help-block" when="required">You did not enter a title</ng-message>
                                 </ng-messages>
@@ -100,7 +100,7 @@
                         <div class="form-group">
                             <label for="content" class="col-sm-2 control-label">Review</label>
                             <div class="col-sm-10" >
-                                <textarea class="form-control" id="content" rows="5" ng-model="review.content" maxlength="1000"></textarea>
+                                <textarea class="form-control" id="content" rows="5" ng-model="vm.review.content" maxlength="1000"></textarea>
                             </div>
                         </div>
 
@@ -108,7 +108,7 @@
                             <label class="col-sm-2 control-label">Rating</label>
                             <div class="col-sm-10" >
                                 <div style="padding: 6px">
-                                    <uib-rating  ng-model="review.rating" ></uib-rating>
+                                    <uib-rating  ng-model="vm.review.rating" ></uib-rating>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                         <div class="form-group required" ng-class="{'has-error': reviewForm.username.$invalid && (reviewForm.username.$dirty || reviewForm.$submitted)}">
                             <label for="username" class="col-sm-2 control-label">Username</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="username" name="username" ng-model="review.user" required>
+                                <input type="text" class="form-control" id="username" name="username" ng-model="vm.review.user" required>
                                 <ng-messages class="has-error" for="reviewForm.username.$error"  ng-if='reviewForm.username.$dirty || reviewForm.$submitted'>
                                     <ng-message class="has-error help-block" when="required">You did not enter a username</ng-message>
                                 </ng-messages>
@@ -130,7 +130,7 @@
                                         <button type="submit" class="btn btn-default">Save</button>
                                     </div>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" ng-click="reset(reviewForm)">Cancel</button>
+                                        <button type="button" class="btn btn-default" ng-click="vm.reset(reviewForm)">Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                 </div>
 
                 <div class="list-group">
-                    <div class="list-group-item" ng-repeat="review in book.reviews | orderBy:'-date'">
+                    <div class="list-group-item" ng-repeat="review in vm.book.reviews | orderBy:'-date'">
                         <h5 class="list-group-item-heading"><strong>{{review.title}}</strong></h5>
                         <p class="list-group-item-text text-justify">{{review.content}}</p>
                         <p class="text-right" style="font-style: italic">by {{review.user}}, on {{review.date}}</p>

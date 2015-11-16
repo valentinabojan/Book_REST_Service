@@ -3,65 +3,79 @@
         .module("BookApp")
         .controller("BookDetailsController", BookDetailsController);
 
-    function BookDetailsController($scope, bookDetailsService, editBookService, $routeParams, $location, $uibModal) {
-        $scope.book = {};
-        $scope.review = {
-            rating:0,
-            collapsed: true
-        };
+    function BookDetailsController(bookDetailsService, editBookService, $routeParams, $location, $uibModal) {
+        var vm = this;
+        var cleanReview = {};
 
-        bookDetailsService
-            .getBookDetails($routeParams.bookId)
-            .then(function(data){
-                data.coverUrl = "api" + $location.url();
-                $scope.book = data;
-                console.log($scope.book);
-            });
+        vm.book = {};
+        vm.review = {};
 
-        $scope.edit = function () {
-            $location.path($location.url() + "/edit");
-        };
+        vm.editBook = editBook;
+        vm.deleteBook = deleteBook;
+        vm.addReview = addReview;
+        vm.reset = reset;
 
-        $scope.delete = function () {
-           $uibModal.open({
-                templateUrl: 'delete_book/deleteBook.html',
-                controller: 'BookDeleteController',
-                resolve: {
-                   book: function () {
-                       return $scope.book;
-                   }
-               }
-            });
-        };
+        activate();
 
+        function activate() {
+            cleanReview = {
+                rating: 0,
+                collapsed: true
+            };
 
-
-
-        $scope.addReview = function (reviewForm) {
-            if(reviewForm.$invalid)
-                return;
-
-            $scope.review.date = moment().format("YYYY-MM-DD");
-
-            $scope.book.stars = ($scope.book.stars * $scope.book.reviews.length + $scope.review.rating) / ($scope.book.reviews.length + 1);
-
-            editBookService
-                .updateBook($routeParams.bookId, $scope.book);
+            vm.review = angular.copy(cleanReview);
 
             bookDetailsService
-                .addReview($routeParams.bookId, $scope.review)
+                .getBookDetails($routeParams.bookId)
                 .then(function(data){
-                    $scope.book.reviews.unshift(data);
-                    $scope.review.collapsed = true;
+                    data.coverUrl = "api" + $location.url();
+                    vm.book = data;
                 });
         }
 
-
-        $scope.reset = function (reviewForm) {
-            $scope.review = {collapsed: true};
-            $scope.rating = 0;
-            reviewForm.$setPristine();
+        function editBook() {
+            $location.path($location.url() + "/edit");
         }
 
+        function deleteBook(){
+           $uibModal.open({
+                templateUrl: 'delete_book/deleteBook.html',
+                controller: 'BookDeleteController',
+                controllerAs: 'vm',
+                resolve: {
+                   book: function () {
+                       return vm.book;
+                   }
+               }
+            });
+        }
+
+        function addReview(reviewForm) {
+            if(reviewForm.$invalid)
+                return;
+
+            vm.review.date = moment().format("YYYY-MM-DD");
+
+            if (!vm.book.stars)
+                vm.book.stars = 0;
+            vm.book.stars = (vm.book.stars * vm.book.reviews.length + vm.review.rating) / (vm.book.reviews.length + 1);
+
+            editBookService
+                .updateBook($routeParams.bookId, vm.book);
+
+            bookDetailsService
+                .addReview($routeParams.bookId, vm.review)
+                .then(function(data){
+                    vm.book.reviews.unshift(data);
+                    vm.review.collapsed = true;
+                });
+
+            reset(reviewForm);
+        }
+
+        function reset(reviewForm) {
+            vm.review = angular.copy(cleanReview);
+            reviewForm.$setPristine();
+        }
     }
 })();

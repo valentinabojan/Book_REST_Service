@@ -1,27 +1,25 @@
 <div class="panel panel-default">
-
     <div class="panel-body table-responsive">
-
-        <form class="form-horizontal" name="bookForm" novalidate ng-submit="updateBook(bookForm)">
+        <form class="form-horizontal" name="bookForm" novalidate ng-submit="vm.updateBook(bookForm)">
 
             <div class="form-group required" ng-class="{'has-error': bookForm.title.$invalid && (bookForm.title.$dirty || bookForm.$submitted)}">
                 <label for="title" class="col-sm-2 control-label">Title</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="title" name="title" ng-model="book.title" placeholder="Title" required>
+                    <input type="text" class="form-control" id="title" name="title" ng-model="vm.book.title" placeholder="Title" required>
                     <ng-messages class="has-error" for="bookForm.title.$error"  ng-if='bookForm.title.$dirty || bookForm.$submitted'>
                         <ng-message class="has-error help-block" when="required">You did not enter a title</ng-message>
                     </ng-messages>
                 </div>
             </div>
 
-            <div class="form-group required" ng-repeat="author in book.authors track by $index" ng-init="inputFieldName = $index"
+            <div class="form-group required" ng-repeat="author in vm.book.authors track by $index" ng-init="inputFieldName = $index"
                  ng-class="{'has-error': bookForm[inputFieldName].$invalid && (bookForm[inputFieldName].$dirty || bookForm.$submitted)}">
                 <label for="authors" class="col-sm-2 control-label" ng-show="$index == 0">Authors</label>
                 <div class="col-sm-10" ng-class="{'col-sm-push-2':$index!=0}">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="authors" name="{{inputFieldName}}" ng-model="book.authors[$index]" placeholder="Author {{$index}}" required>
+                        <input type="text" class="form-control" id="authors" name="{{inputFieldName}}" ng-model="vm.book.authors[$index]" placeholder="Author {{$index}}" required>
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" ng-click="deleteAuthor($index)">
+                            <button class="btn btn-default" type="button" ng-click="vm.deleteAuthor($index)">
                                 <i class="glyphicon glyphicon-trash"></i>
                             </button>
                         </span>
@@ -34,7 +32,7 @@
 
             <div class="form-group">
                 <div class="col-sm-offset-11 col-sm-1">
-                    <button type="button" style="width: 100%" class="btn btn-default" ng-click="addFormField()">
+                    <button type="button" style="width: 100%" class="btn btn-default" ng-click="vm.addFormField()">
                         <i class="glyphicon glyphicon-plus"></i>
                     </button>
                 </div>
@@ -43,7 +41,7 @@
             <div class="form-group" ng-class="{'has-error': bookForm.pagesNumber.$invalid && bookForm.pagesNumber.$dirty}">
                 <label for="pagesNumber" class="col-sm-2 control-label">Number of pages</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="pagesNumber" name="pagesNumber" ng-model="book.pagesNumber" placeholder="0" min="0" ng-pattern="/^[0-9]+$/">
+                    <input type="number" class="form-control" id="pagesNumber" name="pagesNumber" ng-model="vm.book.pagesNumber" placeholder="0" min="0" ng-pattern="/^[0-9]+$/">
                     <ng-messages class="has-error" for="bookForm.pagesNumber.$error"  ng-if='bookForm.pagesNumber.$dirty  || bookForm.$submitted'>
                         <ng-message class="has-error help-block" when="number">You did not enter a number</ng-message>
                         <ng-message class="has-error help-block" when="min">You did not enter a positive number</ng-message>
@@ -57,10 +55,10 @@
                 <div class="col-md-10">
                     <p class="input-group" id="date">
                         <input type="text" class="form-control"
-                               uib-datepicker-popup="dd-MMMM-yyyy" show-button-bar="false" on-open-focus="false" is-open="date_popup_opened"
-                               ng-model="book.date" ng-required="true"/>
+                               uib-datepicker-popup="dd-MMMM-yyyy" show-button-bar="false" on-open-focus="false" is-open="vm.date_popup_opened"
+                               ng-model="vm.book.date" ng-required="true"/>
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open()">
+                            <button type="button" class="btn btn-default" ng-click="vm.openDatePopup()">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                         </span>
@@ -71,9 +69,9 @@
             <div class="form-group">
                 <label for="language" class="col-sm-2 control-label">Language</label>
                 <div class="col-sm-10" >
-                    <select class="form-control" id="language" ng-model="book.language" >
+                    <select class="form-control" id="language" ng-model="vm.book.language" >
                         <option value="" selected disabled>Please select</option>
-                        <option ng-repeat="book_language in languages">{{book_language}}</option>
+                        <option ng-repeat="book_language in vm.languages">{{book_language}}</option>
                     </select>
                 </div>
             </div>
@@ -82,9 +80,9 @@
                 <label for="category" class="col-sm-2 control-label">Category</label>
                 <div class="col-sm-10">
                     <div class="row">
-                        <div class="col-sm-4" id="category" ng-repeat="book_category in categories">
+                        <div class="col-sm-4" id="category" ng-repeat="book_category in vm.categories">
                             <label class="checkbox-inline" >
-                                <input type="checkbox" ng-click="toggleSelection(book_category)" ng-checked="book.categories.indexOf(book_category) > -1">
+                                <input type="checkbox" ng-click="vm.toggleSelection(book_category)" ng-checked="vm.book.categories.indexOf(book_category) > -1">
                                 {{book_category}}
                             </label>
                         </div>
@@ -95,7 +93,7 @@
             <div class="form-group required" ng-class="{'has-error': bookForm.isbn.$invalid && (bookForm.isbn.$dirty || bookForm.$submitted)}">
                 <label for="isbn" class="col-sm-2 control-label">ISBN</label>
                 <div class="col-sm-10">
-                    <input type="text" id="isbn" name="isbn" class="form-control" data-mask="9-9999-9999-9" placeholder="ISBN" ng-model="book.isbn" required>
+                    <input type="text" id="isbn" name="isbn" class="form-control" data-mask="9-9999-9999-9" placeholder="ISBN" ng-model="vm.book.isbn" required>
                     <ng-messages class="has-error" for="bookForm.isbn.$error"  ng-if='bookForm.isbn.$dirty || bookForm.$submitted'>
                         <ng-message class="has-error help-block" when="required">You did not enter a isbn</ng-message>
                     </ng-messages>
@@ -106,7 +104,7 @@
                 <label for="price" class="col-sm-2 control-label">Price</label>
                 <div class="col-sm-10">
                     <div class="input-group">
-                        <input type="number" class="form-control" id="price" name="price" ng-model="book.price" placeholder="0" required min="0" max="99999.99">
+                        <input type="number" class="form-control" id="price" name="price" ng-model="vm.book.price" placeholder="0" required min="0" max="99999.99">
                         <div class="input-group-addon">$</div>
                     </div>
                     <ng-messages class="has-error" for="bookForm.price.$error"  ng-if='bookForm.price.$dirty || bookForm.$submitted'>
@@ -121,7 +119,7 @@
             <div class="form-group">
                 <label for="description" class="col-sm-2 control-label">Description</label>
                 <div class="col-sm-10" >
-                    <textarea class="form-control" id="description" rows="5" ng-model="book.description" maxlength="1000"></textarea>
+                    <textarea class="form-control" id="description" rows="5" ng-model="vm.book.description" maxlength="1000"></textarea>
                 </div>
             </div>
 
@@ -132,7 +130,7 @@
                             <button type="submit" class="btn btn-default">Save</button>
                         </div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default" ng-click="reset()">Reset</button>
+                            <button type="button" class="btn btn-default" ng-click="vm.reset()">Reset</button>
                         </div>
                     </div>
                 </div>

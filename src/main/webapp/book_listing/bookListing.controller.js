@@ -4,86 +4,94 @@
         .controller("BookListingController", BookListingController);
 
     function BookListingController($scope, bookListingService, $location) {
-        $scope.books = {};
-        $scope.pageLimits = [5, 10, 15, 20, 50];
-        $scope.booksPerPage = 10;
-        $scope.maxPagesInFooter = 5;
-        $scope.sortCriteria = 'title';
+        var vm = this;
         var filterByTitle = false;
         var filterByAuthor = false;
-        $scope.searchedTitle = "";
-        $scope.searchedAuthor = "";
         var filter = [];
 
+        vm.books = {};
+        vm.pageLimits = [5, 10, 15, 20, 50];
+        vm.booksPerPage = 10;
+        vm.maxPagesInFooter = 5;
+        vm.sortCriteria = 'title';
+        vm.searchedTitle = "";
+        vm.searchedAuthor = "";
 
-        $scope.showBook = function(bookId) {
+        vm.showBook = showBook;
+        vm.pageChanged = pageChanged;
+        vm.sortBy = sortBy;
+        vm.filterBooks = filterBooks;
+
+        function showBook(bookId) {
             $location.path($location.url() + "/" + bookId);
-        };
+        }
 
+        function pageChanged() {
+            start = vm.booksPerPage * (vm.currentPage - 1);
+            end = vm.booksPerPage * vm.currentPage - 1;
 
-        $scope.$watch('booksPerPage', function(newValue, oldValue) {
-            $scope.currentPage = 1;
-            $scope.pageChanged();
+            getBooks();
+        }
+
+        function getBooks() {
+            bookListingService
+                .getAllBooks(start, end, filter, vm.sortCriteria)
+                .then(success, error);
+
+            function success(data) {
+                data.books.forEach(function(book){
+                    book.coverUrl = "api" + $location.url() + "/" + book.id;
+                });
+                vm.books = data.books;
+                vm.totalBooks = data.booksCount;
+            }
+
+            function error() {
+                vm.books = {};
+                vm.totalBooks = 0;
+            }
+        }
+
+        function sortBy(criteria){
+            vm.sortCriteria = criteria;
+            vm.currentPage = 1;
+            vm.pageChanged();
+        }
+
+        function filterBooks(){
+            filter = [];
+
+            if (filterByTitle)
+                filter.push({
+                    name: 'title',
+                    value: vm.searchedTitle
+                });
+            if (filterByAuthor)
+                filter.push({
+                    name: 'author',
+                    value: vm.searchedAuthor
+                });
+
+            vm.pageChanged();
+        }
+
+        $scope.$watch('vm.booksPerPage', function(newValue, oldValue) {
+            vm.currentPage = 1;
+            vm.pageChanged();
         });
 
-        $scope.$watch('searchedTitle', function(newValue, oldValue) {
+        $scope.$watch('vm.searchedTitle', function(newValue, oldValue) {
             if (!newValue)
                 filterByTitle = false;
             else
                 filterByTitle = true;
         });
 
-        $scope.$watch('searchedAuthor', function(newValue, oldValue) {
+        $scope.$watch('vm.searchedAuthor', function(newValue, oldValue) {
             if (!newValue)
                 filterByAuthor = false;
             else
                 filterByAuthor = true;
         });
-
-
-
-
-        $scope.pageChanged = function() {
-            start = $scope.booksPerPage * ($scope.currentPage - 1);
-            end = $scope.booksPerPage * $scope.currentPage - 1;
-
-            getBooks();
-        };
-
-        function getBooks() {
-            bookListingService
-                .getAllBooks(start, end, filter, $scope.sortCriteria)
-                .then(function(data){
-                    data.books.forEach(function(book){
-                        book.coverUrl = "api" + $location.url() + "/" + book.id;
-                    });
-                    $scope.books = data.books;
-                    $scope.totalBooks = data.booksCount;
-                });
-        }
-
-
-
-
-        $scope.sortBy = function (criteria){
-            $scope.sortCriteria = criteria;
-            $scope.currentPage = 1;
-            $scope.pageChanged();
-        }
-
-        $scope.filterBooks = function (){
-            //console.log(filterByTitle + " - " + filterByAuthor + " -> " + $scope.searchedTitle + " - " + $scope.searchedAuthor);
-            filter = [];
-
-            if (filterByTitle)
-                filter.push({name: 'title', value:$scope.searchedTitle});
-            if (filterByAuthor)
-                filter.push({name: 'author', value:$scope.searchedAuthor});
-
-            $scope.pageChanged();
-        }
-
-
-
     }
 })();

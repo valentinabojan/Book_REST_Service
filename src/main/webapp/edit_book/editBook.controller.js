@@ -3,87 +3,112 @@
         .module("BookApp")
         .controller("EditBookController", EditBookController);
 
-    function EditBookController($scope, editBookService, bookDetailsService, $routeParams, $location) {
-        $scope.languages = ["English", "French", "German", "Romanian", "Spanish"];
-        $scope.categories = ["HISTORICAL", "ROMANCE", "FANTASY", "YOUNG_ADULT", "ACTION", "MYSTERY", "POETRY", "ART",
-                            "SCIENCE", "PROGRAMMING", "ADVENTURE", "WAR", "CHILDREN"];
+    function EditBookController(editBookService, bookDetailsService, $routeParams, $location) {
+        var vm = this;
+        var operationCallback = null;
 
-        if ($location.url().endsWith("edit")) {
+        vm.languages = [];
+        vm.categories = [];
+        vm.originalBook = {};
+        vm.book = {};
+        vm.date_popup_opened = false;
+
+        vm.reset = reset;
+        vm.toggleSelection = toggleSelection;
+        vm.deleteAuthor = deleteAuthor;
+        vm.addFormField = addFormField;
+        vm.openDatePopup = openDatePopup;
+        vm.updateBook = updateBook;
+
+        activate();
+
+        function activate() {
+            vm.languages = ["English", "French", "German", "Romanian", "Spanish"];
+            vm.categories = ["HISTORICAL", "ROMANCE", "FANTASY", "YOUNG_ADULT", "ACTION", "MYSTERY", "POETRY", "ART",
+                             "SCIENCE", "PROGRAMMING", "ADVENTURE", "WAR", "CHILDREN"];
+
+            if ($location.url().endsWith("edit")) {
+                activateEdit();
+            } else {
+                activateAdd();
+            }
+        }
+
+        function activateEdit() {
             bookDetailsService
                 .getBookDetails($routeParams.bookId)
                 .then(function(data){
-                    $scope.originalBook = data;
-                    $scope.book = angular.copy($scope.originalBook);
-                    $scope.book.date = moment(new Date($scope.book.date)).format("DD-MMMM-YYYY");
+                    vm.originalBook = data;
+                    vm.book = angular.copy(vm.originalBook);
+                    vm.book.date = moment(new Date(vm.book.date)).format("DD-MMMM-YYYY");
                 });
 
-            $scope.updateBook = function (bookForm) {
-                if(bookForm.$invalid)
-                    return;
-
-                $scope.book.date = moment(new Date($scope.book.date)).format("YYYY-MM-DD");
-
+            operationCallback = function() {
                 editBookService
-                    .updateBook($routeParams.bookId, $scope.book)
+                    .updateBook($routeParams.bookId, vm.book)
                     .then(function(data){
                         $location.path("/books/" + data.id);
                     });
-            }
-        } else {
-            $scope.originalBook = {
+            };
+        }
+
+        function activateAdd() {
+            vm.originalBook = {
                 authors: [""],
                 categories:[]
             };
-            $scope.book = angular.copy($scope.originalBook);
+            vm.book = angular.copy(vm.originalBook);
 
-            $scope.updateBook = function (bookForm) {
-                if(bookForm.$invalid)
-                    return;
-
-                $scope.book.date = moment(new Date($scope.book.date)).format("YYYY-MM-DD");
-
+            operationCallback = function() {
                 editBookService
-                    .addBook($scope.book)
+                    .addBook(vm.book)
                     .then(function(data){
                         $location.path("/books/" + data.id);
                     });
-            }
+            };
         }
 
-        $scope.reset = function () {
-            $scope.book = angular.copy($scope.originalBook);
+        function reset () {
+            vm.book = angular.copy(vm.originalBook);
         }
 
-        $scope.book = {
-            date: new Date(),
-            authors: [""],
-            categories:[]
-        };
+        //$scope.book = {
+        //    date: new Date(),
+        //    authors: [""],
+        //    categories:[]
+        //};
 
-        $scope.toggleSelection = function toggleSelection(book_category) {
-            var idx = $scope.book.categories.indexOf(book_category);
+        function toggleSelection(book_category) {
+            var idx = vm.book.categories.indexOf(book_category);
 
             if (idx > -1)
-                $scope.book.categories.splice(idx, 1);
+                vm.book.categories.splice(idx, 1);
             else
-                $scope.book.categories.push(book_category);
-        };
+                vm.book.categories.push(book_category);
+        }
 
-        $scope.deleteAuthor = function ($index) {
-            $scope.book.authors.splice($index, 1);
+        function deleteAuthor($index) {
+            vm.book.authors.splice($index, 1);
 
-            if ($scope.book.authors.length == 0)
-                $scope.book.authors.push("");
-        };
+            if (vm.book.authors.length == 0)
+                vm.book.authors.push("");
+        }
 
-        $scope.addFormField = function () {
-            $scope.book.authors.push("");
-        };
+        function addFormField() {
+            vm.book.authors.push("");
+        }
 
-        $scope.open = function() {
-            $scope.date_popup_opened = true;
-        };
+        function openDatePopup() {
+            vm.date_popup_opened = true;
+        }
 
-        $scope.date_popup_opened = false;
+        function updateBook(bookForm) {
+            if(bookForm.$invalid)
+                return;
+
+            vm.book.date = moment(new Date(vm.book.date)).format("YYYY-MM-DD");
+
+            operationCallback();
+        }
     }
 })();

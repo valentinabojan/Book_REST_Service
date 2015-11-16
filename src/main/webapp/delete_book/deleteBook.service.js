@@ -1,14 +1,17 @@
 (function() {
     angular
         .module("BookApp")
-        .factory("deleteBookService", DeleteBookService);
+        .factory("deleteBookService", deleteBookService);
 
-    function DeleteBookService($http) {
-        return {
-            deleteBook: function(bookId) {
-                return $http
-                    .delete("/api/books/" + bookId)
-            }
+    function deleteBookService($http) {
+        var service = {
+            deleteBook: deleteBook
         };
+
+        return service;
+
+        function deleteBook(bookId){
+            return $http.delete("/api/books/" + bookId);
+        }
     }
 })();

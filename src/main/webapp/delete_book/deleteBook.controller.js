@@ -3,19 +3,20 @@
         .module("BookApp")
         .controller("BookDeleteController", BookDeleteController);
 
-    function BookDeleteController($scope, deleteBookService, $uibModalInstance, book, $location) {
-        $scope.book = book;
+    function BookDeleteController(deleteBookService, $uibModalInstance, book, $location) {
+        var vm = this;
 
-        $scope.ok = function () {
+        vm.deleteBook = deleteBook;
+        vm.cancel = cancel;
+
+        function deleteBook() {
             deleteBookService.deleteBook(book.id);
-
-            $uibModalInstance.close($scope.book);
-
+            $uibModalInstance.close(book);
             $location.path("/books");
-        };
+        }
 
-        $scope.cancel = function () {
+        function cancel() {
             $uibModalInstance.dismiss('cancel');
-        };
+        }
     }
 })();
