@@ -57,9 +57,10 @@
         }
 
 
-        $scope.reset = function () {
-            $scope.review = {};
+        $scope.reset = function (reviewForm) {
+            $scope.review = {collapsed: true};
             $scope.rating = 0;
+            reviewForm.$setPristine();
         }
 
     }

@@ -1,13 +1,13 @@
 <div class="well span9">
 
-    <div class="row" style="display: flex; align-items: center;">
-        <div class="col-md-8">
+    <div class="row" >
+        <div class="col-md-6">
             <h3>{{book.title}}</h3>
         </div>
 
-        <div class="col-md-4" style="text-align: right;">
-            <button class="glyphicon glyphicon-pencil" ng-click="edit()"></button>
-            <button class="glyphicon glyphicon-trash" ng-click="delete()"></button>
+        <div class="col-md-6 text-right">
+            <button class="btn btn-default" ng-click="edit()"><i class="glyphicon glyphicon-pencil"></i></button>
+            <button class="btn btn-default" ng-click="delete()"><i class="glyphicon glyphicon-trash"></i></button>
         </div>
     </div>
 
@@ -18,7 +18,7 @@
     </p>
 
     <div class="row" style="display: flex; align-items: center;">
-        <div class="col-md-8">
+        <div class="col-md-8 col-xs-12">
 
             <table class="table">
                 <col width="35%"/>
@@ -49,11 +49,15 @@
                     <th>ISBN</th>
                     <td>{{book.isbn}}</td>
                 </tr>
+                <tr class="visible-xs visible-sm">
+                    <th>Price</th>
+                    <td>{{book.price | currency}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="col-md-4" >
+        <div class="col-md-4 hidden-sm hidden-xs" >
             <div class="center-block text-center" style="width: 50%;">
                 <img ng-src="{{book.coverUrl}}" error-src="resources/icons/default_book.png" class="img-responsive"/>
                 <h4><span class="label label-primary">{{book.price | currency}}</span></h4>
@@ -66,7 +70,7 @@
     <uib-tabset justified="true">
         <uib-tab heading="Description">
             <div class="panel panel-default panel-special">
-                <div class="panel-body">
+                <div class="panel-body text-justify">
                     {{book.description}}
                 </div>
             </div>
@@ -96,11 +100,9 @@
                         <div class="form-group">
                             <label for="content" class="col-sm-2 control-label">Review</label>
                             <div class="col-sm-10" >
-                                <textarea class="form-control" id="content" ng-model="review.content" maxlength="1000"></textarea>
+                                <textarea class="form-control" id="content" rows="5" ng-model="review.content" maxlength="1000"></textarea>
                             </div>
                         </div>
-
-
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Rating</label>
@@ -128,7 +130,7 @@
                                         <button type="submit" class="btn btn-default">Save</button>
                                     </div>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" ng-click="reset()">Cancel</button>
+                                        <button type="button" class="btn btn-default" ng-click="reset(reviewForm)">Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -136,12 +138,11 @@
                     </form>
                 </div>
 
-
                 <div class="list-group">
                     <div class="list-group-item" ng-repeat="review in book.reviews | orderBy:'-date'">
                         <h5 class="list-group-item-heading"><strong>{{review.title}}</strong></h5>
-                        <p style="text-align: justify" class="list-group-item-text">{{review.content}}</p>
-                        <p style="text-align: right; font-style: italic">by {{review.user}}, on {{review.date}}</p>
+                        <p class="list-group-item-text text-justify">{{review.content}}</p>
+                        <p class="text-right" style="font-style: italic">by {{review.user}}, on {{review.date}}</p>
                     </div>
                 </div>
             </div>

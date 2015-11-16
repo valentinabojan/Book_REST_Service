@@ -5,7 +5,8 @@
 
     function EditBookController($scope, editBookService, bookDetailsService, $routeParams, $location) {
         $scope.languages = ["English", "French", "German", "Romanian", "Spanish"];
-        $scope.categories = ["SCIENCE_FICTION", "DRAMA", "ACTION", "MYSTERY", "POETRY", "ART", "SCIENCE"];
+        $scope.categories = ["HISTORICAL", "ROMANCE", "FANTASY", "YOUNG_ADULT", "ACTION", "MYSTERY", "POETRY", "ART",
+                            "SCIENCE", "PROGRAMMING", "ADVENTURE", "WAR", "CHILDREN"];
 
         if ($location.url().endsWith("edit")) {
             bookDetailsService
