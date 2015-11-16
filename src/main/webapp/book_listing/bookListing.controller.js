@@ -75,19 +75,19 @@
             vm.pageChanged();
         }
 
-        $scope.$watch('vm.booksPerPage', function(newValue, oldValue) {
+        $scope.$watch('vm.booksPerPage', function() {
             vm.currentPage = 1;
             vm.pageChanged();
         });
 
-        $scope.$watch('vm.searchedTitle', function(newValue, oldValue) {
+        $scope.$watch('vm.searchedTitle', function(newValue) {
             if (!newValue)
                 filterByTitle = false;
             else
                 filterByTitle = true;
         });
 
-        $scope.$watch('vm.searchedAuthor', function(newValue, oldValue) {
+        $scope.$watch('vm.searchedAuthor', function(newValue) {
             if (!newValue)
                 filterByAuthor = false;
             else

@@ -54,6 +54,7 @@
 
         function activateAdd() {
             vm.originalBook = {
+                date: new Date(),
                 authors: [""],
                 categories:[]
             };
@@ -71,12 +72,6 @@
         function reset () {
             vm.book = angular.copy(vm.originalBook);
         }
-
-        //$scope.book = {
-        //    date: new Date(),
-        //    authors: [""],
-        //    categories:[]
-        //};
 
         function toggleSelection(book_category) {
             var idx = vm.book.categories.indexOf(book_category);

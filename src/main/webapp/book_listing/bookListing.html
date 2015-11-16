@@ -19,52 +19,48 @@
     <br/>
 
     <div class="panel panel-default">
-    <div class="panel-body table-responsive">
-        <table class="table table-hover" >
-            <thead>
-            <tr>
-                <th></th>
-                <th ng-click="vm.sortBy('title')" style="cursor: pointer">
-                    Title
-                    <i ng-show="vm.sortCriteria == 'title'" class="glyphicon glyphicon-sort-by-attributes" ></i>
-                </th>
-                <th>Authors</th>
-                <th ng-click="vm.sortBy('price')" style="cursor: pointer">
-                    Price
-                    <i ng-show="vm.sortCriteria == 'price'" class="glyphicon glyphicon-sort-by-attributes" ></i>
-                </th>
-                <th>Rating</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="book in vm.books" ng-click="vm.showBook(book.id)" style="cursor: pointer;">
-                <td>
-                    <div style="height: 4em" >
-                        <img ng-src="{{book.coverUrl}}" style="max-height: 100%"  error-src="resources/icons/default_book.png" class="img-responsive center-block"/>
-                    </div>
-                </td>
-                <td style="vertical-align: middle">{{book.title}}</td>
-                <td style="vertical-align: middle">{{book.authors.join(", ")}}</td>
-                <td style="vertical-align: middle">{{book.price | currency}}</td>
-                <td style="vertical-align: middle">
-                    <uib-rating ng-model="book.stars" readonly="true"/>
-                </td>
-            </tr>
+        <div class="panel-body table-responsive">
+            <table class="table table-hover" >
+                <thead>
+                <tr>
+                    <th></th>
+                    <th ng-click="vm.sortBy('title')" style="cursor: pointer">
+                        Title
+                        <i ng-show="vm.sortCriteria == 'title'" class="glyphicon glyphicon-sort-by-attributes" ></i>
+                    </th>
+                    <th>Authors</th>
+                    <th ng-click="vm.sortBy('price')" style="cursor: pointer">
+                        Price
+                        <i ng-show="vm.sortCriteria == 'price'" class="glyphicon glyphicon-sort-by-attributes" ></i>
+                    </th>
+                    <th>Rating</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="book in vm.books" ng-click="vm.showBook(book.id)" style="cursor: pointer;">
+                    <td>
+                        <div style="height: 4em" >
+                            <img ng-src="{{book.coverUrl}}" style="max-height: 100%"  error-src="resources/icons/default_book.png" class="img-responsive center-block"/>
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle">{{book.title}}</td>
+                    <td style="vertical-align: middle">{{book.authors.join(", ")}}</td>
+                    <td style="vertical-align: middle">{{book.price | currency}}</td>
+                    <td style="vertical-align: middle">
+                        <uib-rating ng-model="book.stars" readonly="true"/>
+                    </td>
+                </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel-footer text-center">
+            <uib-pagination style="margin: 0; padding: 0" class="pagination-sm"
+                            boundary-links="true" total-items="vm.totalBooks" max-size="vm.maxPagesInFooter" items-per-page="vm.booksPerPage"
+                            ng-model="vm.currentPage" ng-change="vm.pageChanged()"
+                            previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+            </uib-pagination>
+        </div>
     </div>
-
-
-    <div class="panel-footer text-center">
-        <uib-pagination style="margin: 0; padding: 0" class="pagination-sm"
-                        boundary-links="true" total-items="vm.totalBooks" max-size="vm.maxPagesInFooter" items-per-page="vm.booksPerPage"
-                        ng-model="vm.currentPage" ng-change="vm.pageChanged()"
-                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
-        </uib-pagination>
-    </div>
-
-    </div>
-
-
 </div>
